@@ -1,14 +1,22 @@
-import './App.css'
+import React from 'react'
 
-function App() {
+import Box from '@mui/material/Box'
+import { LoginComponent } from './pages/login/login.component'
+import { SignUpComponent } from './pages/signUp/signUp.component'
 
+export const App = () => {
   return (
-    <div className="App">
-       <p id='text'>
-          Hello world of notes !
-        </p>
-    </div>
+    <Box
+      sx={{
+        width: '100%',
+        minHeight: '100vh',
+        backgroundColor: ({ palette }) => palette.background.default,
+      }}
+    >
+    <LoginComponent />
+    {/* <SignUpComponent /> */}
+    </Box>
   )
 }
 
-export default App
+App.displayName = 'AppComponent'
