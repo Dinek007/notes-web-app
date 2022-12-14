@@ -3,6 +3,8 @@ import { RouterPaths } from "./router.paths";
 import { LocationChecker } from "./router.locationChecker";
 import { LoginComponent } from "../pages/login/login.component";
 import { SignUpComponent } from "../pages/signUp/signUp.component";
+import { MainComponent } from "../pages/main/main.component";
+import { NotesComponent } from "../pages/notes/main.component";
 
 
 export const routes: RouteObject[] = [
@@ -21,6 +23,14 @@ export const routes: RouteObject[] = [
       {
         element: <SignUpComponent />,
         path: RouterPaths.SignUp,
+      },
+      {
+        element: <NotesComponent />,
+        path: RouterPaths.Notes,
+      },
+      {
+        element: <MainComponent />,
+        index: true
       },
     ],
   },

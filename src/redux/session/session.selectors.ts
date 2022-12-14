@@ -6,11 +6,35 @@ const networkSlice: CreatedSelectors[StoreKeys.Session] = (
   state: StoreState
 ) => state[StoreKeys.Session]
 
-const isLoading = createSelector(
+const currentCategory = createSelector(
   networkSlice,
-  (reducerState) => reducerState.isLoading
+  (reducerState) => reducerState.currentCategory
+)
+
+const currentNote = createSelector(
+  networkSlice,
+  (reducerState) => reducerState.currentNote
+)
+
+const currentAction = createSelector(
+  networkSlice,
+  (reducerState) => reducerState.currentAction
+)
+
+const loginLoading = createSelector(
+  networkSlice,
+  (reducerState) => reducerState.loading.login
+)
+
+const foldersAndNotesLoading = createSelector(
+  networkSlice,
+  (reducerState) => reducerState.loading.foldersAndNotes
 )
 
 export const sessionSelectors = {
-  isLoading
+  currentCategory,
+  currentNote,
+  currentAction,
+  loginLoading,
+  foldersAndNotesLoading
 }

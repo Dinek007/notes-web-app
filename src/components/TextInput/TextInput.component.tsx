@@ -14,7 +14,7 @@ export const TextInput = ({
   ...inputProps
 }: TextInputProps) => (
   <Box sx={{ width: "100%" }}>
-    <Typography variant="subtitle1" sx={{ mb: 0, ...labelSx }}>
+    <Typography variant="h6" sx={{ mb: 0, ...labelSx }}>
       {title}
     </Typography>
     <OutlinedInput

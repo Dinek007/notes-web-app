@@ -4,11 +4,14 @@ import createPalette from "@mui/material/styles/createPalette";
 export const getPalette = () =>
   createPalette({
     mode: "light",
+    background: {
+      default: "#2F303A"
+    },
     primary: {
-      main: "#ff0000",
+      main: "#14548F",
     },
     secondary: {
-      main: "#E4CCC7",
+      main: "#2F303A",
     },
     success: {
       main: "#66C965",
@@ -23,7 +26,7 @@ export const getPalette = () =>
       main: "#FFC34A",
     },
     text: {
-      primary: "#2A3755",
+      primary: "#ffffff",
       secondary: "#545778",
     },
     grey: {

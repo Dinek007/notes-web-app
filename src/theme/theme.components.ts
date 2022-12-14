@@ -1,4 +1,5 @@
 import { Components, Palette, Theme } from "@mui/material/styles";
+import PoppinsMedium from "../assets/fonts/Poppins-Light.ttf"
 
 export const getComponents = (palette: Palette): Components<Theme> => ({
   MuiCssBaseline: {
@@ -7,7 +8,22 @@ export const getComponents = (palette: Palette): Components<Theme> => ({
       overflow: overlay;
       background-color: white;
     }
+
+    @font-face {
+      font-family: Poppins;
+      src: url(${PoppinsMedium}) format("truetype");
+      font-weight: normal;
+    }
+
     `,
+  },
+  MuiIconButton: {
+    styleOverrides: {
+      root: {
+        color: "#ffffff",
+        borderRadius: "7px"
+      }
+    }
   },
   MuiButton: {
     defaultProps: {
@@ -17,7 +33,7 @@ export const getComponents = (palette: Palette): Components<Theme> => ({
       root: {
         padding: "8px 16px",
         textTransform: "none",
-        borderRadius: "10px",
+        borderRadius: "7px",
         boxShadow: "none",
       },
       containedSecondary: {
@@ -35,25 +51,43 @@ export const getComponents = (palette: Palette): Components<Theme> => ({
       sizeLarge: {
         fontSize: "20px",
       },
+      text: {
+        color: "#ffffff"
+      },
+      disabled: {
+        color: "#ffffff"
+      }
     },
+  },
+  MuiCircularProgress: {
+    styleOverrides: {
+      svg: {
+        color: '#ffffff',
+      }
+    }
   },
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
         "& .MuiOutlinedInput-notchedOutline": {
           borderColor: palette.borderGrey.main,
+          width: "384px"
         },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: palette.secondary.main,
+          width: "384px"
         },
       },
       input: {
-        padding: "0.8rem",
-        background: "white",
+        background: "rgb(255, 255, 255, 0.1)",
+        borderRadius: "7px",
+        width: "384px"
       },
       notchedOutline: {
-        borderRadius: "6px",
-        borderWidth: "2px",
+        borderRadius: "7px",
+        border: "1.5px solid #FFFFFF",
+        width: "384px"
+
       },
     },
   },

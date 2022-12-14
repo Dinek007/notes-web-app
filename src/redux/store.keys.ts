@@ -1,4 +1,5 @@
 export enum StoreKeys {
   Session = 'session',
-  Navigation = 'navigation'
+  Navigation = 'navigation',
+  Notes = 'notes'
 }
