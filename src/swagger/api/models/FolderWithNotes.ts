@@ -2,8 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserModel = {
-    email: string;
+export type FolderWithNotes = {
+    description: string;
     name: string;
     id: string;
+    notesCnt: number;
 };

@@ -296,6 +296,32 @@
                 ]
             }
         },
+        "/notes/summary": {
+            "get": {
+                "operationId": "NotesController_getSummary",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotesSummaryResDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Notes"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/notes/{noteId}": {
             "get": {
                 "operationId": "NotesController_findOne",
@@ -397,6 +423,37 @@
                     {
                         "bearer": []
                     }
+                ]
+            }
+        },
+        "/notifications/one-time": {
+            "post": {
+                "operationId": "NotificationsController_create",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOneTimeNotificationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
                 ]
             }
         }
@@ -553,9 +610,6 @@
             "CreateNoteReqDto": {
                 "type": "object",
                 "properties": {
-                    "folderId": {
-                        "type": "string"
-                    },
                     "name": {
                         "type": "string"
                     },
@@ -574,24 +628,55 @@
                     "height": {
                         "type": "number"
                     },
+                    "zIndex": {
+                        "type": "number"
+                    },
                     "color": {
+                        "type": "string"
+                    },
+                    "folderId": {
                         "type": "string"
                     }
                 },
                 "required": [
-                    "folderId",
                     "name",
                     "content",
                     "x",
                     "y",
                     "width",
                     "height",
-                    "color"
+                    "zIndex",
+                    "color",
+                    "folderId"
                 ]
             },
             "NoteModel": {
                 "type": "object",
                 "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "x": {
+                        "type": "number"
+                    },
+                    "y": {
+                        "type": "number"
+                    },
+                    "width": {
+                        "type": "number"
+                    },
+                    "height": {
+                        "type": "number"
+                    },
+                    "zIndex": {
+                        "type": "number"
+                    },
+                    "color": {
+                        "type": "string"
+                    },
                     "userId": {
                         "type": "string"
                     },
@@ -600,40 +685,20 @@
                     },
                     "id": {
                         "type": "string"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "content": {
-                        "type": "string"
-                    },
-                    "x": {
-                        "type": "number"
-                    },
-                    "y": {
-                        "type": "number"
-                    },
-                    "width": {
-                        "type": "number"
-                    },
-                    "height": {
-                        "type": "number"
-                    },
-                    "color": {
-                        "type": "string"
                     }
                 },
                 "required": [
-                    "userId",
-                    "folderId",
-                    "id",
                     "name",
                     "content",
                     "x",
                     "y",
                     "width",
                     "height",
-                    "color"
+                    "zIndex",
+                    "color",
+                    "userId",
+                    "folderId",
+                    "id"
                 ]
             },
             "GetFolderNotesResDTO": {
@@ -648,6 +713,47 @@
                 },
                 "required": [
                     "notes"
+                ]
+            },
+            "FolderWithNotes": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "notesCnt": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "description",
+                    "name",
+                    "id",
+                    "notesCnt"
+                ]
+            },
+            "NotesSummaryResDto": {
+                "type": "object",
+                "properties": {
+                    "foldersCnt": {
+                        "type": "number"
+                    },
+                    "folders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FolderWithNotes"
+                        }
+                    }
+                },
+                "required": [
+                    "foldersCnt",
+                    "folders"
                 ]
             },
             "UpdateNoteReqDto": {
@@ -671,6 +777,9 @@
                     "height": {
                         "type": "number"
                     },
+                    "zIndex": {
+                        "type": "number"
+                    },
                     "color": {
                         "type": "string"
                     },
@@ -678,6 +787,21 @@
                         "type": "string"
                     }
                 }
+            },
+            "CreateOneTimeNotificationDto": {
+                "type": "object",
+                "properties": {
+                    "triggerTime": {
+                        "type": "string"
+                    },
+                    "noteId": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "triggerTime",
+                    "noteId"
+                ]
             }
         }
     }

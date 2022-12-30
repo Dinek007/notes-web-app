@@ -3,15 +3,15 @@
 /* eslint-disable */
 
 export type NoteModel = {
-    userId: string;
-    folderId: string;
-    id: string;
     name: string;
     content: string;
     'x': number;
     'y': number;
     width: number;
     height: number;
+    zIndex: number;
     color: string;
+    userId: string;
+    folderId: string;
+    id: string;
 };
-

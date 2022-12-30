@@ -20,6 +20,4 @@ export function* updateNoteSaga(action: notesActions['updateNote']) {
     yield* call(getCategoriesAndNotesSaga)
     //   yield* put(sessionActions.setFoldersAndNotesLoading(false))
     yield* put(sessionActions.setCurrentAction(''))
-
-    console.log(responseCreateFolder)
 } 

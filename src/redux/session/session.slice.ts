@@ -37,6 +37,7 @@ export const sessionSlice = createSlice({
   reducers: {
     login: (state, _action: PayloadAction<LoginReqDTO>) => state,
     signUp: (state, _action: PayloadAction<SignupReqDTO>) => state,
+    refreshPage: (state, _action) => state,
     setCurrentCategory: (state, action: PayloadAction<{ id: string, name: string }>) => {
       state.currentCategory = action.payload
     },

@@ -2,33 +2,38 @@ import { createSelector } from '@reduxjs/toolkit'
 import { StoreKeys } from '../store.keys'
 import { CreatedSelectors, StoreState } from '../store.types'
 
-const networkSlice: CreatedSelectors[StoreKeys.Session] = (
+const sessionSlice: CreatedSelectors[StoreKeys.Session] = (
   state: StoreState
 ) => state[StoreKeys.Session]
 
 const currentCategory = createSelector(
-  networkSlice,
+  sessionSlice,
   (reducerState) => reducerState.currentCategory
 )
 
 const currentNote = createSelector(
-  networkSlice,
+  sessionSlice,
   (reducerState) => reducerState.currentNote
 )
 
 const currentAction = createSelector(
-  networkSlice,
+  sessionSlice,
   (reducerState) => reducerState.currentAction
 )
 
 const loginLoading = createSelector(
-  networkSlice,
+  sessionSlice,
   (reducerState) => reducerState.loading.login
 )
 
 const foldersAndNotesLoading = createSelector(
-  networkSlice,
+  sessionSlice,
   (reducerState) => reducerState.loading.foldersAndNotes
+)
+
+const authToken = createSelector(
+  sessionSlice,
+  (reducerState) => reducerState.authToken
 )
 
 export const sessionSelectors = {
@@ -36,5 +41,6 @@ export const sessionSelectors = {
   currentNote,
   currentAction,
   loginLoading,
-  foldersAndNotesLoading
+  foldersAndNotesLoading,
+  authToken
 }

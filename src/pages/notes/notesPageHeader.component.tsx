@@ -110,7 +110,7 @@ export const NotesPageHeaderComponent = () => {
                                     marginLeft: '10px'
                                 }}
                                 variant="h6">
-                                Remove Folder
+                                Remove Category
                             </Typography>
                         </IconButton>
                     </>)}

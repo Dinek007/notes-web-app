@@ -26,7 +26,6 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
     })
 
     const handleAddCategoryConfirm = (values: AddCategoryValues) => {
-        console.log('sieeema')
         dispatch(notesActions.newCategory({
             name: values.title,
             description: values.description

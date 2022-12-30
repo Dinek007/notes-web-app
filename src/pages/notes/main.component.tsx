@@ -32,10 +32,11 @@ export const NotesComponent = () => {
             />
 
             <Box sx={{
+                position: 'fixed',
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'flex-start',
-                float: 'left',
+                right: '0px',
                 width: '85vw'
             }}>
                 <NotesPageHeaderComponent />

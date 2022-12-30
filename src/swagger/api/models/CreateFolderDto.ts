@@ -6,4 +6,3 @@ export type CreateFolderDto = {
     description: string;
     name: string;
 };
-

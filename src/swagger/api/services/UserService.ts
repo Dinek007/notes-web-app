@@ -12,13 +12,13 @@ import { request as __request } from '../core/request';
 export class UserService {
 
     /**
-     * @param requestBody
-     * @returns LoginResDTO
+     * @param requestBody 
+     * @returns LoginResDTO 
      * @throws ApiError
      */
     public static userControllerLogin(
-        requestBody: LoginReqDTO,
-    ): CancelablePromise<LoginResDTO> {
+requestBody: LoginReqDTO,
+): CancelablePromise<LoginResDTO> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/login',
@@ -28,13 +28,13 @@ export class UserService {
     }
 
     /**
-     * @param requestBody
-     * @returns LoginResDTO
+     * @param requestBody 
+     * @returns LoginResDTO 
      * @throws ApiError
      */
     public static userControllerSignUp(
-        requestBody: SignupReqDTO,
-    ): CancelablePromise<LoginResDTO> {
+requestBody: SignupReqDTO,
+): CancelablePromise<LoginResDTO> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/user/signUp',

@@ -4,6 +4,7 @@
 import type { CreateNoteReqDto } from '../models/CreateNoteReqDto';
 import type { GetFolderNotesResDTO } from '../models/GetFolderNotesResDTO';
 import type { NoteModel } from '../models/NoteModel';
+import type { NotesSummaryResDto } from '../models/NotesSummaryResDto';
 import type { UpdateNoteReqDto } from '../models/UpdateNoteReqDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -13,13 +14,13 @@ import { request as __request } from '../core/request';
 export class NotesService {
 
     /**
-     * @param requestBody
-     * @returns NoteModel
+     * @param requestBody 
+     * @returns NoteModel 
      * @throws ApiError
      */
     public static notesControllerCreate(
-        requestBody: CreateNoteReqDto,
-    ): CancelablePromise<NoteModel> {
+requestBody: CreateNoteReqDto,
+): CancelablePromise<NoteModel> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/notes',
@@ -29,13 +30,13 @@ export class NotesService {
     }
 
     /**
-     * @param folderId
-     * @returns GetFolderNotesResDTO
+     * @param folderId 
+     * @returns GetFolderNotesResDTO 
      * @throws ApiError
      */
     public static notesControllerFindAll(
-        folderId: string,
-    ): CancelablePromise<GetFolderNotesResDTO> {
+folderId: string,
+): CancelablePromise<GetFolderNotesResDTO> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/notes',
@@ -46,13 +47,24 @@ export class NotesService {
     }
 
     /**
-     * @param noteId
-     * @returns NoteModel
+     * @returns NotesSummaryResDto 
+     * @throws ApiError
+     */
+    public static notesControllerGetSummary(): CancelablePromise<NotesSummaryResDto> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/notes/summary',
+        });
+    }
+
+    /**
+     * @param noteId 
+     * @returns NoteModel 
      * @throws ApiError
      */
     public static notesControllerFindOne(
-        noteId: string,
-    ): CancelablePromise<NoteModel> {
+noteId: string,
+): CancelablePromise<NoteModel> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/notes/{noteId}',
@@ -63,15 +75,15 @@ export class NotesService {
     }
 
     /**
-     * @param noteId
-     * @param requestBody
-     * @returns NoteModel
+     * @param noteId 
+     * @param requestBody 
+     * @returns NoteModel 
      * @throws ApiError
      */
     public static notesControllerUpdate(
-        noteId: string,
-        requestBody: UpdateNoteReqDto,
-    ): CancelablePromise<NoteModel> {
+noteId: string,
+requestBody: UpdateNoteReqDto,
+): CancelablePromise<NoteModel> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/notes/{noteId}',
@@ -84,13 +96,13 @@ export class NotesService {
     }
 
     /**
-     * @param noteId
-     * @returns any
+     * @param noteId 
+     * @returns any 
      * @throws ApiError
      */
     public static notesControllerRemove(
-        noteId: string,
-    ): CancelablePromise<any> {
+noteId: string,
+): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/notes/{noteId}',

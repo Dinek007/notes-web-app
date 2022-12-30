@@ -7,4 +7,3 @@ export type SignupReqDTO = {
     password: string;
     name: string;
 };
-

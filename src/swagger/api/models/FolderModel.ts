@@ -7,4 +7,3 @@ export type FolderModel = {
     name: string;
     id: string;
 };
-

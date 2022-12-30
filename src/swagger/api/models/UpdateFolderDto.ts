@@ -6,4 +6,3 @@ export type UpdateFolderDto = {
     description?: string;
     name?: string;
 };
-

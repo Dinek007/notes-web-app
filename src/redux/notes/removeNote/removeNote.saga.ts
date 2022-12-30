@@ -27,6 +27,4 @@ export function* removeNoteSaga(action: notesActions['removeNote']) {
     }))
     yield* put(sessionActions.setFoldersAndNotesLoading(false))
     yield* put(sessionActions.setCurrentAction(''))
-
-    console.log(responseRemoveNote)
 } 

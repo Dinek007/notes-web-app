@@ -13,13 +13,13 @@ import { request as __request } from '../core/request';
 export class FoldersService {
 
     /**
-     * @param requestBody
-     * @returns FolderModel
+     * @param requestBody 
+     * @returns FolderModel 
      * @throws ApiError
      */
     public static foldersControllerCreate(
-        requestBody: CreateFolderDto,
-    ): CancelablePromise<FolderModel> {
+requestBody: CreateFolderDto,
+): CancelablePromise<FolderModel> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/folders',
@@ -29,7 +29,7 @@ export class FoldersService {
     }
 
     /**
-     * @returns GetAllUserFoldersResDTO
+     * @returns GetAllUserFoldersResDTO 
      * @throws ApiError
      */
     public static foldersControllerGetUserFolders(): CancelablePromise<GetAllUserFoldersResDTO> {
@@ -40,13 +40,13 @@ export class FoldersService {
     }
 
     /**
-     * @param folderId
-     * @returns FolderModel
+     * @param folderId 
+     * @returns FolderModel 
      * @throws ApiError
      */
     public static foldersControllerFindUserFolder(
-        folderId: string,
-    ): CancelablePromise<FolderModel> {
+folderId: string,
+): CancelablePromise<FolderModel> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/folders/{folderId}',
@@ -57,15 +57,15 @@ export class FoldersService {
     }
 
     /**
-     * @param folderId
-     * @param requestBody
-     * @returns FolderModel
+     * @param folderId 
+     * @param requestBody 
+     * @returns FolderModel 
      * @throws ApiError
      */
     public static foldersControllerUpdateUserFolder(
-        folderId: string,
-        requestBody: UpdateFolderDto,
-    ): CancelablePromise<FolderModel> {
+folderId: string,
+requestBody: UpdateFolderDto,
+): CancelablePromise<FolderModel> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/folders/{folderId}',
@@ -78,13 +78,13 @@ export class FoldersService {
     }
 
     /**
-     * @param folderId
-     * @returns any
+     * @param folderId 
+     * @returns any 
      * @throws ApiError
      */
     public static foldersControllerRemoveUserFolder(
-        folderId: string,
-    ): CancelablePromise<any> {
+folderId: string,
+): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/folders/{folderId}',

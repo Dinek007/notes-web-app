@@ -1,8 +1,9 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { persistReducer } from 'redux-persist'
+import { persistReducer, persistStore } from 'redux-persist'
 import { navigationReducer } from './navigation/navigation.slice'
 import { notesReducer } from './notes/notes.slice'
 import { sessionReducer } from './session/session.slice'
+import storage from 'redux-persist/lib/storage'
 
 import { StoreKeys } from './store.keys'
 
@@ -11,9 +12,11 @@ import { StoreType } from './store.types'
 const persistConfig = {
   key: 'root',
   throttle: 1000,
-  storage: localStorage,
+  storage: storage,
   whitelist: [
-
+    StoreKeys.Session,
+    StoreKeys.Navigation,
+    StoreKeys.Notes
   ],
   transforms: []
 }

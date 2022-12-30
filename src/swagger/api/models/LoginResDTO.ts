@@ -8,4 +8,3 @@ export type LoginResDTO = {
     user: UserModel;
     accessToken: string;
 };
-

@@ -9,7 +9,7 @@ export type UpdateNoteReqDto = {
     'y'?: number;
     width?: number;
     height?: number;
+    zIndex?: number;
     color?: string;
     folderId?: string;
 };
-

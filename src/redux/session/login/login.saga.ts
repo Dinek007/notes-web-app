@@ -23,8 +23,8 @@ export function* loginSaga(action: SessionActions['login']) {
     )
 
     yield* put(navigationActions.navigate(RouterPaths.Notes))
+    
     yield* put(sessionActions.setAuthToken(responseLogin.accessToken))
-
     yield* call(setToken, responseLogin.accessToken)
 
     yield* call(getCategoriesAndNotesSaga)

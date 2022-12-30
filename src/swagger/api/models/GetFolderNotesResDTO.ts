@@ -7,4 +7,3 @@ import type { NoteModel } from './NoteModel';
 export type GetFolderNotesResDTO = {
     notes: Array<NoteModel>;
 };
-

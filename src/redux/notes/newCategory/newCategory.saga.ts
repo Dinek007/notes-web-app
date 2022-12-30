@@ -28,5 +28,4 @@ export function* newCategorySaga(action: notesActions['newCategory']) {
     yield* put(sessionActions.setFoldersAndNotesLoading(false))
 
     yield* put(sessionActions.setCurrentAction(''))
-    console.log(responseCreateFolder)
 } 

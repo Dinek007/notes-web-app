@@ -18,7 +18,6 @@ export function* getCategoriesAndNotesSaga() {
             NotesService.notesControllerFindAll,
             folder.id
         )
-        console.log('response note', responseGetAllNotes)
         notes[folder.id] = responseGetAllNotes.notes
     }
 

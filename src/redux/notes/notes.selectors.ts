@@ -18,7 +18,6 @@ const currentCategoryNotes = createSelector(
   noteCategories,
   sessionSelectors.currentCategory,
   (base, category) => {
-    console.log(category.id)
     return base[category.id]
   }
 )

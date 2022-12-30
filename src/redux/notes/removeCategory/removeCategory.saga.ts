@@ -28,6 +28,4 @@ export function* removeCategorySaga(action: notesActions['removeCategory']) {
     }))
     yield* put(sessionActions.setFoldersAndNotesLoading(false))
     yield* put(sessionActions.setCurrentAction(''))
-
-    console.log(responseRemoveFolder)
 } 

@@ -4,6 +4,7 @@ import rootSaga from './root.saga'
 import reducers from './reducers'
 import { configureStore } from '@reduxjs/toolkit'
 import { createBrowserHistory } from 'history'
+import persistStore from 'redux-persist/es/persistStore'
 
 const sagaMiddleware = createSagaMiddleware({
   onError(err) {
@@ -19,5 +20,8 @@ export default () => {
     middleware: [sagaMiddleware]
   })
   sagaMiddleware.run(rootSaga, browserHistory)
-  return store
+
+  const persistor = persistStore(store)
+
+  return {store, persistor}
 }
