@@ -87,9 +87,6 @@ export const getComponents = (palette: any) => ({
       text: {
         color: "#ffffff",
       },
-      disabled: {
-        color: "#ffffff",
-      },
     },
   },
   MuiCircularProgress: {

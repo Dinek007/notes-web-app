@@ -107,7 +107,7 @@ export const NotesFieldComponent: React.FC<
 
       {pageToShow === pageNames.notes &&
         currentCategoryNotes.map((note: NoteModel) => {
-          return <NoteComponent note={note} />;
+          return <NoteComponent key={note.id} note={note} />;
         })}
 
       {pageToShow === pageNames.home && (

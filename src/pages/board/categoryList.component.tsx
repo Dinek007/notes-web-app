@@ -65,22 +65,21 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
       {Object.values(categories).map((category) => {
         const isSelected = category.id === currentCategory.id;
         return (
-          <>
-            <Button
-              style={{
-                width: "13vw",
-                height: "37px",
-                borderRadius: "5px",
-              }}
-              color={isSelected ? "secondary" : "primary"}
-              title={category.description}
-              onClick={() => {
-                handleCategoryClick({ id: category.id, name: category.name });
-              }}
-            >
-              <Typography variant="h6">{category.name}</Typography>
-            </Button>
-          </>
+          <Button
+            key={category.id}
+            style={{
+              width: "13vw",
+              height: "37px",
+              borderRadius: "5px",
+            }}
+            color={isSelected ? "secondary" : "primary"}
+            title={category.description}
+            onClick={() => {
+              handleCategoryClick({ id: category.id, name: category.name });
+            }}
+          >
+            <Typography variant="h6">{category.name}</Typography>
+          </Button>
         );
       })}
     </Box>
