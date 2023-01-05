@@ -26,10 +26,14 @@ export enum pageNames {
   notes = "notes",
   loading = "loading",
   home = "Home",
-  settings = "Settings"
+  settings = "Settings",
 }
 
-export const NotesFieldComponent = () => {
+export interface CategoryListComponentProps {}
+
+export const NotesFieldComponent: React.FC<
+  CategoryListComponentProps
+> = ({}) => {
   const dispatch = useDispatch();
   const [pageToShow, setPageToShow] = useState<string>("");
 
@@ -103,8 +107,6 @@ export const NotesFieldComponent = () => {
 
       {pageToShow === pageNames.notes &&
         currentCategoryNotes.map((note: NoteModel) => {
-          console.log("cooomp", note.x);
-
           return <NoteComponent note={note} />;
         })}
 

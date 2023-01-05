@@ -1,7 +1,7 @@
 import { Components, Palette, Theme } from "@mui/material/styles";
 import PoppinsMedium from "../assets/fonts/Poppins-Light.ttf"
 
-export const getComponents = (palette: Palette): Components<Theme> => ({
+export const getComponents = (palette: any) => ({
   MuiCssBaseline: {
     styleOverrides: `
     body {
@@ -21,9 +21,42 @@ export const getComponents = (palette: Palette): Components<Theme> => ({
     styleOverrides: {
       root: {
         color: "#ffffff",
-        borderRadius: "7px"
-      }
-    }
+        borderRadius: "7px",
+      },
+    },
+  },
+  MUIRichTextEditor: {
+    styleOverrides: {
+      root: {
+        "& #mui-rte-toolbar": {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center",
+          position: "fixed",
+          top: "50%",
+          transform: "translate(0, -50%)",
+        },
+        "& .MuiButtonBase-root": {
+          color: "black",
+          border: "1px solid #000000",
+          borderRadius: "10px",
+          height: "3vh",
+          width: "3vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          alignContent: "center",
+          marginRight: "10px",
+        },
+        "& #mui-rte-container": {
+          left: "0px",
+          top: "3vh",
+          position: "absolute",
+          width: "81vw",
+        },
+      },
+    },
   },
   MuiButton: {
     defaultProps: {
@@ -52,42 +85,41 @@ export const getComponents = (palette: Palette): Components<Theme> => ({
         fontSize: "20px",
       },
       text: {
-        color: "#ffffff"
+        color: "#ffffff",
       },
       disabled: {
-        color: "#ffffff"
-      }
+        color: "#ffffff",
+      },
     },
   },
   MuiCircularProgress: {
     styleOverrides: {
       svg: {
-        color: '#ffffff',
-      }
-    }
+        color: "#ffffff",
+      },
+    },
   },
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
         "& .MuiOutlinedInput-notchedOutline": {
           borderColor: palette.borderGrey.main,
-          width: "384px"
+          width: "384px",
         },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: palette.secondary.main,
-          width: "384px"
+          width: "384px",
         },
       },
       input: {
         background: "rgb(255, 255, 255, 0.1)",
         borderRadius: "7px",
-        width: "384px"
+        width: "384px",
       },
       notchedOutline: {
         borderRadius: "7px",
         border: "1.5px solid #FFFFFF",
-        width: "384px"
-
+        width: "384px",
       },
     },
   },

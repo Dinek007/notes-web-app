@@ -18,7 +18,7 @@ export const getTypography = (palette: Palette) =>
     h3: {
       fontSize: "2rem",
       fontFamily: "Poppins",
-    },
+    },  
     h4: {
       fontSize: "1.8rem",
       fontFamily: "Poppins",
@@ -38,5 +38,10 @@ export const getTypography = (palette: Palette) =>
     subtitle2: { fontSize: "1rem" },
     button: {
       fontSize: "16px",
+    },
+    body2:{
+      fontSize: "1.8rem",
+      fontFamily: "Poppins",
+      fontWeight: "bold"
     },
   });

@@ -4,7 +4,7 @@ import { LocationChecker } from "./router.locationChecker";
 import { LoginComponent } from "../pages/login/login.component";
 import { SignUpComponent } from "../pages/signUp/signUp.component";
 import { MainComponent } from "../pages/main/main.component";
-import { NotesComponent } from "../pages/notes/main.component";
+import { NotesComponent } from "../pages/board/main.component";
 
 
 export const routes: RouteObject[] = [

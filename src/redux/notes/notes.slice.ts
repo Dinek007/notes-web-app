@@ -22,7 +22,8 @@ export type SetNotesAndCategoriesPayload = {
 }
 
 export type updateNotePayload = {
-  id: string,
+  noteId: string,
+  folderId: string,
   noteElements: UpdateNoteReqDto
 }
 
@@ -34,7 +35,29 @@ export const notesSlice = createSlice({
     removeCategory: (state, _action: PayloadAction<string>) => state,
     newNote: (state, _action) => state,
     removeNote: (state, _action: PayloadAction<string>) => state,
-    updateNote: (state, _action: PayloadAction<updateNotePayload>) => state,
+    updateNote: (state, action: PayloadAction<updateNotePayload>) => {
+      const {folderId, noteId} = action.payload
+
+      notesAdapter.updateOne(
+        state.categories.entities[folderId].notes,
+        {
+          id: noteId,
+          changes: action.payload.noteElements
+        }
+      )
+
+      // noteCategoriesAdapter.updateOne(
+      //   state.categories,
+      //   {id: folderId,
+      //   changes: {
+      //     notes:{
+      //       ...state.categories.entities[folderId].notes
+      //     },
+        
+      //   }
+      //   }
+      // )
+    },
     getCategoriesAndNotes: (state, _action) => state,
     setCategoriesWithNotes: (state, action: PayloadAction<SetNotesAndCategoriesPayload>) => {
       const { categories, notes } = action.payload

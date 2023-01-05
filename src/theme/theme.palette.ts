@@ -5,7 +5,7 @@ export const getPalette = () =>
   createPalette({
     mode: "light",
     background: {
-      default: "#2F303A"
+      default: "#2F303A",
     },
     primary: {
       main: "#14548F",
@@ -33,3 +33,4 @@ export const getPalette = () =>
       "200": "#F0F0F4",
     },
   });
+

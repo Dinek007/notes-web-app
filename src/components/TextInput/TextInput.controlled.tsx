@@ -1,10 +1,8 @@
+import { Checkbox } from "@mui/material";
 import { Controller, FieldValues, UseControllerProps } from "react-hook-form";
 import { FieldsErrors } from "../../constants";
 import { TextInput } from "./TextInput.component";
-import {
-  InputType,
-  ControlledInputProps
-} from "./TextInput.types";
+import { InputType, ControlledInputProps } from "./TextInput.types";
 
 const inputValidation: Record<InputType, UseControllerProps["rules"]> = {
   email: {

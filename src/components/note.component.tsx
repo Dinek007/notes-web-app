@@ -1,19 +1,16 @@
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import { borderRadius, maxHeight } from "@mui/system";
-import { useCallback, useEffect, useState } from "react";
-import Draggable from "react-draggable";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { notesActions } from "../redux/notes/notes.slice";
 import { NoteModel } from "../swagger/api";
-import { Resizable } from "react-resizable";
 import { Rnd } from "react-rnd";
-import { sessionSelectors } from "../redux/session/session.selectors";
 import SouthEastIcon from "@mui/icons-material/SouthEast";
 import EditIcon from "@mui/icons-material/Edit";
-import { sessionActions } from "../redux/session/session.slice";
-import { pageNames } from "../pages/notes/notesField.component";
-import { EditNoteComponent } from "../pages/notes/editNote.component";
+import { EditNoteComponent } from "../pages/board/editNote.component";
+import { colorShade } from "../common";
+import { convertFromRaw, RawDraftContentState } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
 export interface NoteComponentProps {
   note: NoteModel;
 }
@@ -23,10 +20,11 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
 
   const [noteWidth, setNoteWidth] = useState<number>(note.width);
   const [noteHeight, setNoteHeight] = useState<number>(note.height);
-  const [noteColor, setNoteColor] = useState<string>(note.color);
   const [noteX, setNoteX] = useState<number>(note.x);
   const [noteY, setNoteY] = useState<number>(note.y);
   const [openEditing, setOpenEditing] = useState<boolean>(false);
+
+  const darkNoteColor = colorShade(note.color, -30);
 
   useEffect(() => {
     setNoteWidth(note.width);
@@ -38,14 +36,24 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const handleDragStop = (x: number, y: number) => {
     setNoteX(x);
     setNoteY(y);
-    dispatch(notesActions.updateNote({ id: note.id, noteElements: { x, y } }));
+    dispatch(
+      notesActions.updateNote({
+        noteId: note.id,
+        folderId: note.folderId,
+        noteElements: { x, y },
+      })
+    );
   };
 
   const handleResizeStop = (width: number, height: number) => {
     setNoteWidth(width);
     setNoteHeight(height);
     dispatch(
-      notesActions.updateNote({ id: note.id, noteElements: { width, height } })
+      notesActions.updateNote({
+        noteId: note.id,
+        folderId: note.folderId,
+        noteElements: { width, height },
+      })
     );
   };
 
@@ -55,8 +63,16 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   };
 
   const handleClickEdit = () => {
-    setOpenEditing(true)
-};
+    setOpenEditing(true);
+  };
+
+  const handleCloseNoteEdit = () => {
+    setOpenEditing(false);
+  };
+
+  const parsedRawContent = JSON.parse(note.content);
+  const contentState = convertFromRaw(parsedRawContent);
+  const htmlContent = stateToHTML(contentState);
 
   return (
     <Box
@@ -100,8 +116,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
           <Box
             className="handle"
             sx={{
-              background:
-                "linear-gradient(180deg, #FFFFFF 0%, rgba(217, 217, 217, 0.375) 50%, #D9D9D9 100%)",
+              background: `linear-gradient(${note.color}, ${darkNoteColor})`,
               backgroundBlendMode: "multiply",
               height: "20px",
               textAlign: "center",
@@ -124,10 +139,30 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
           </IconButton>
           <Box
             sx={{
-              padding: "15px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              top: "30px",
+              height: " calc(100% - 50px)",
+              width: `${noteWidth}px`,
+              left: "0px",
+              position: "absolute",
             }}
           >
-            <Typography variant="h6">{note.content}</Typography>
+            {/* <Typography variant="h6"></Typography> */}
+            <Box
+              sx={{
+                width: `${noteWidth}px`,
+                paddingLeft: "10px",
+                paddingRight: "10px",
+                height: "100%",
+                inlineSize: `${noteWidth}px`,
+                overflowWrap: "break-word",
+                position: "absolute",
+                left: "0px",
+                overflowY: "auto",
+              }}
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
           </Box>
 
           <SouthEastIcon
@@ -136,11 +171,14 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
               right: "0px",
               bottom: "0px",
             }}
+            fontSize="small"
           />
         </Box>
       </Rnd>
 
-      {openEditing && (<EditNoteComponent note={note}/>)}
+      {openEditing && (
+        <EditNoteComponent note={note} handleClose={handleCloseNoteEdit} />
+      )}
     </Box>
   );
 };
