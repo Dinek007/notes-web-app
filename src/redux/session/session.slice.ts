@@ -22,13 +22,35 @@ export enum currentActionNames {
   updateNote = "Updating note",
 }
 
-export class SessionState {
-  public currentCategory: { id: string, name: string } = { id: '', name: currentCategoryNames.home }
-  public currentNote: { id: string, name: string } = { id: '', name: '' }
-  public currentAction: string = 'Editing Note'
+export type settings = {
+  mainColor: string;
+  noteColor: string;
+  noteSize: {
+    width: number;
+    height: number;
+  };
+  boardSize: {
+    width: number;
+    height: number;
+  };
+  fontSize: number;
+};
 
-  public authToken: string = ''
-  public loading: { login: boolean, foldersAndNotes: boolean } = { login: false, foldersAndNotes: false }
+export class SessionState {
+  public currentCategory: { id: string; name: string } = {
+    id: "",
+    name: currentCategoryNames.home,
+  };
+  public currentNote: { id: string; name: string } = { id: "", name: "" };
+  public currentAction: string = "Editing Note";
+
+  public authToken: string = "";
+  public loading: { login: boolean; foldersAndNotes: boolean } = {
+    login: false,
+    foldersAndNotes: false,
+  };
+
+  public settings;
 }
 
 export const sessionSlice = createSlice({

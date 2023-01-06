@@ -74,6 +74,7 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
               width: "203px",
               height: "55px",
               backgroundColor: getPalette().primary.main,
+              boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"
           >

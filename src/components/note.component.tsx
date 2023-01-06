@@ -9,7 +9,7 @@ import SouthEastIcon from "@mui/icons-material/SouthEast";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditNoteComponent } from "../pages/board/editNote.component";
 import { colorShade } from "../common";
-import { convertFromRaw, RawDraftContentState } from "draft-js";
+import { convertFromRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import { notesSelectors } from "../redux/notes/notes.selectors";
 export interface NoteComponentProps {

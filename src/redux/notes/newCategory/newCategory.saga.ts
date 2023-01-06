@@ -8,24 +8,28 @@ import { notesActions } from '../notes.slice';
 
 
 export function* newCategorySaga(action: notesActions['newCategory']) {
-    yield* put(sessionActions.setFoldersAndNotesLoading(true))
-    yield* put(sessionActions.setCurrentCategory({
-        id: '',
-        name: currentCategoryNames.home
-    }))
-    yield* put(sessionActions.setCurrentAction(currentActionNames.addingFolder))
+  yield * put(sessionActions.setFoldersAndNotesLoading(true));
+  yield *
+    put(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.home,
+      })
+    );
+  yield * put(sessionActions.setCurrentAction(currentActionNames.addingFolder));
 
-    const responseCreateFolder = yield* call(
-        FoldersService.foldersControllerCreate,
-        action.payload
-    )
+  const responseCreateFolder =
+    yield * call(FoldersService.foldersControllerCreate, action.payload);
 
-    yield* call(getCategoriesAndNotesSaga)
-    yield* put(sessionActions.setCurrentCategory({
+  yield * call(getCategoriesAndNotesSaga);
+  yield *
+    put(
+      sessionActions.setCurrentCategory({
         id: responseCreateFolder.id,
-        name: responseCreateFolder.name
-    }))
-    yield* put(sessionActions.setFoldersAndNotesLoading(false))
+        name: responseCreateFolder.name,
+      })
+    );
+  yield * put(sessionActions.setFoldersAndNotesLoading(false));
 
-    yield* put(sessionActions.setCurrentAction(''))
+  yield * put(sessionActions.setCurrentAction(""));
 } 
