@@ -1,5 +1,5 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React from "react";
+import { useForm } from "react-hook-form";
 
 import { AddCategoryValues } from "../pages/board/main.field";
 import { Box, Button, IconButton, Typography } from "@mui/material";
@@ -11,57 +11,42 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { notesActions } from "../redux/notes/notes.slice";
 import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
+import { NoteModel } from "../swagger/api";
 
-export interface AddItemComponentProps {
-  handleCloseAddCategoryPopup: () => void;
+export interface OneInputComponentProps {
+  handleClosePopup: () => void;
+  handleConfirm: (value) => void;
+  popupTtitle: string;
+  inputTitle: string;
 }
 
-export const AddItemComponent: React.FC<AddItemComponentProps> = ({
-  handleCloseAddCategoryPopup,
+export const OneInputComponent: React.FC<OneInputComponentProps> = ({
+  handleClosePopup,
+  popupTtitle,
+  inputTitle,
+  handleConfirm,
 }) => {
   const dispatch = useDispatch();
 
-  const { handleSubmit, control, formState } = useForm<AddCategoryValues>({
-    defaultValues: defaultAddCategoryValues,
+  const { handleSubmit, control, formState } = useForm({
+    defaultValues: { value: "" },
     mode: "onChange",
   });
 
-  const handleAddCategoryConfirm = (values: AddCategoryValues) => {
-    dispatch(
-      notesActions.newCategory({
-        name: values.title,
-        description: values.description,
-      })
-    );
-    handleCloseAddCategoryPopup();
-  };
-
   return (
     <PopupComponent
-      title="Create new category"
-      handleClosePopup={handleCloseAddCategoryPopup}
+      title={popupTtitle}
+      handleClosePopup={handleClosePopup}
       children={
-        <form onSubmit={handleSubmit(handleAddCategoryConfirm)}>
+        <form onSubmit={handleSubmit(handleConfirm)}>
           <Box sx={{ marginTop: "10px" }}>
             <ControlledInput
               style={{
                 width: "384px",
                 height: "54px",
               }}
-              name={"title"}
-              title="Category name"
-              control={control}
-              type="text"
-            />
-          </Box>
-          <Box sx={{ marginTop: "20px" }}>
-            <ControlledInput
-              style={{
-                width: "384px",
-                height: "54px",
-              }}
-              name={"description"}
-              title="Description"
+              name={"value"}
+              title={inputTitle}
               control={control}
               type="text"
             />

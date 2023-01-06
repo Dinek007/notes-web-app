@@ -12,14 +12,14 @@ export enum currentCategoryNames {
 }
 
 export enum currentActionNames {
-  addingFolder = 'Adding folder',
-  addingNote = 'Adding note',
-  removingFolder = 'Removing folder',
-  removingNote = 'Removing note',
-  savingNote = 'Saving Note',
-  editingNote = 'Editing note',
-  loadingFoldersAndNotes = 'Loading folders and notes',
-  updateNote = 'Update note'
+  addingFolder = "Adding folder",
+  addingNote = "Adding note",
+  removingFolder = "Removing folder",
+  removingNote = "Removing note",
+  savingNote = "Saving Note",
+  editingNote = "Editing note",
+  loadingFoldersAndNotes = "Loading folders and notes",
+  updateNote = "Updating note",
 }
 
 export class SessionState {

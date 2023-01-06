@@ -1,5 +1,10 @@
 import { call, put, select } from 'typed-redux-saga';
-import { CreateNoteReqDto, FoldersService, NotesService } from '../../../swagger/api';
+import { noteColorsPalette } from "../../../components/changeNoteColor.component";
+import {
+  CreateNoteReqDto,
+  FoldersService,
+  NotesService,
+} from "../../../swagger/api";
 import { sessionSelectors } from "../../session/session.selectors";
 import {
   currentActionNames,
@@ -15,7 +20,7 @@ export function* newNoteSaga(_action: notesActions["newNote"]) {
 
   const newNoteContent = `{"blocks":[{"key":"","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`;
   const note: CreateNoteReqDto = {
-    color: "#FFDF6D",
+    color: noteColorsPalette.yellow,
     content: newNoteContent,
     folderId: currentCategoryData.id,
     height: 270,

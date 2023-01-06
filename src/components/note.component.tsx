@@ -1,7 +1,7 @@
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notesActions } from "../redux/notes/notes.slice";
 import { NoteModel } from "../swagger/api";
 import { Rnd } from "react-rnd";
@@ -11,18 +11,21 @@ import { EditNoteComponent } from "../pages/board/editNote.component";
 import { colorShade } from "../common";
 import { convertFromRaw, RawDraftContentState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
+import { notesSelectors } from "../redux/notes/notes.selectors";
 export interface NoteComponentProps {
   note: NoteModel;
 }
 
 export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const dispatch = useDispatch();
+  const biggestIndex = useSelector(notesSelectors.biggestZIndex);
 
   const [noteWidth, setNoteWidth] = useState<number>(note.width);
   const [noteHeight, setNoteHeight] = useState<number>(note.height);
   const [noteX, setNoteX] = useState<number>(note.x);
   const [noteY, setNoteY] = useState<number>(note.y);
   const [openEditing, setOpenEditing] = useState<boolean>(false);
+  const [zIndex, setZIndex] = useState<number>(note.zIndex);
 
   const darkNoteColor = colorShade(note.color, -30);
 
@@ -31,6 +34,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     setNoteHeight(note.height);
     setNoteX(note.x);
     setNoteY(note.y);
+    setZIndex(note.zIndex);
   }, [note.x, note.y, note.width, note.height, note]);
 
   const handleDragStop = (x: number, y: number) => {
@@ -40,7 +44,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
       notesActions.updateNote({
         noteId: note.id,
         folderId: note.folderId,
-        noteElements: { x, y },
+        noteElements: { x, y, zIndex: zIndex },
       })
     );
   };
@@ -48,11 +52,12 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const handleResizeStop = (width: number, height: number) => {
     setNoteWidth(width);
     setNoteHeight(height);
+
     dispatch(
       notesActions.updateNote({
         noteId: note.id,
         folderId: note.folderId,
-        noteElements: { width, height },
+        noteElements: { width, height, zIndex: zIndex },
       })
     );
   };
@@ -76,8 +81,19 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
 
   return (
     <Box
+      onMouseDown={() => {
+        setZIndex(biggestIndex + 1);
+        dispatch(
+          notesActions.updateNote({
+            noteId: note.id,
+            folderId: note.folderId,
+            noteElements: { zIndex: biggestIndex + 1 },
+          })
+        );
+      }}
       sx={{
         position: "relative",
+        zIndex: zIndex,
       }}
     >
       <Rnd
@@ -111,19 +127,26 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
             backgroundColor: `${note.color}`,
             borderRadius: "0px, 0px, 0px, 0px",
             color: "#000000",
+
+            boxShadow:
+              "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;   ",
           }}
         >
           <Box
             className="handle"
             sx={{
+              display: "flex",
               background: `linear-gradient(${note.color}, ${darkNoteColor})`,
               backgroundBlendMode: "multiply",
-              height: "20px",
-              textAlign: "center",
-              paddingBottom: "30px",
+              height: "30px",
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center",
             }}
           >
-            <Typography variant="h6">{note.name}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+              {note.name}
+            </Typography>
           </Box>
           <IconButton
             size="small"
@@ -148,7 +171,6 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
               position: "absolute",
             }}
           >
-            {/* <Typography variant="h6"></Typography> */}
             <Box
               sx={{
                 width: `${noteWidth}px`,

@@ -7,6 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { notesActions } from "../../redux/notes/notes.slice";
 import { sessionActions } from "../../redux/session/session.slice";
 import { sessionSelectors } from "../../redux/session/session.selectors";
+import { getPalette } from "../../theme/theme.palette";
 
 export interface CategoryListComponentProps {
   handleShowAddCategoryPopup: () => void;
@@ -30,7 +31,7 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
         width: "15vw",
         left: "0px",
         top: "0px",
-        background: "#14548F",
+        backgroundColor: getPalette().primary.dark,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -44,6 +45,7 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
           border: "2.7px solid #D9D9D9",
           borderRadius: "9px",
           marginBottom: "68px",
+          backgroundColor: getPalette().primary.dark,
         }}
         onClick={handleShowAddCategoryPopup}
       >
@@ -57,9 +59,10 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
           borderBottom: "1px solid #D9D9D9",
           textAlign: "center",
           marginBottom: "5px",
+          paddingBottom: "15px",
         }}
       >
-        Category list:
+        Category list
       </Typography>
 
       {Object.values(categories).map((category) => {
@@ -68,11 +71,14 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
           <Button
             key={category.id}
             style={{
-              width: "13vw",
-              height: "37px",
+              width: "12vw",
+              height: "42px",
               borderRadius: "5px",
+              marginTop: "10px",
+              backgroundColor: isSelected
+                ? getPalette().secondary.dark
+                : getPalette().primary.dark,
             }}
-            color={isSelected ? "secondary" : "primary"}
             title={category.description}
             onClick={() => {
               handleCategoryClick({ id: category.id, name: category.name });

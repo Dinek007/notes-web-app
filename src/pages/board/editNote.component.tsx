@@ -10,7 +10,12 @@ import MUIRichTextEditor from "mui-rte";
 import { useDispatch } from "react-redux";
 import { notesActions } from "../../redux/notes/notes.slice";
 import { colorShade, invertColor } from "../../common";
-
+import { ChangeNoteColorComponent } from "../../components/changeNoteColor.component";
+import { convertToRaw } from "draft-js";
+import { OneInputComponent } from "../../components/oneInputPopup.component";
+import EditIcon from "@mui/icons-material/Edit";
+import { convertFromRaw, RawDraftContentState } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
 export interface EditNoteComponentProps {
   note: NoteModel;
   handleClose: () => void;
@@ -22,6 +27,31 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [color, setColor] = useState<string>(note.color);
+  const [showChangeNoteColorComponent, setShowChangeNoteColorComponent] =
+    useState<boolean>(false);
+  const [changeNoteName, setChangeNoteName] = useState<boolean>(false);
+  const [blink, setBlink] = useState<string>("");
+
+  const handleCloseColorPopup = () => {
+    setShowChangeNoteColorComponent(false);
+  };
+
+  const handleShowColorsPopup = () => {
+    setShowChangeNoteColorComponent(true);
+  };
+
+  const handleCloseChangeNoteName = () => {
+    setChangeNoteName(false);
+  };
+
+  const handleShowChangeNoteName = () => {
+    setChangeNoteName(true);
+  };
+
+  const handleChangeColor = (color: string) => {
+    setBlink("blink_me");
+    setColor(color);
+  };
 
   const ref = useRef(null);
   const handleClick = () => {
@@ -35,6 +65,32 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
         noteElements: { content: `${data}`, color },
       })
     );
+    setBlink("");
+  };
+
+  const handleOnChange = (data) => {
+    const currentHtmlContent = stateToHTML(data.getCurrentContent());
+
+    const parsedRawContent = JSON.parse(note.content);
+    const contentState = convertFromRaw(parsedRawContent);
+    const htmlContent = stateToHTML(contentState);
+
+    if (currentHtmlContent !== htmlContent) {
+      setBlink("blink_me");
+    } else {
+      setBlink("");
+    }
+  };
+
+  const handleConfirmChangeNoteName = (value) => {
+    dispatch(
+      notesActions.updateNote({
+        noteId: note.id,
+        folderId: note.folderId,
+        noteElements: { name: value.value },
+      })
+    );
+    handleCloseChangeNoteName();
   };
 
   const darkNoteColor = colorShade(color, -30);
@@ -48,15 +104,33 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
         backgroundColor: `${color}`,
         display: "flex",
         width: "85vw",
-        height: "92vh",
+        height: "95vh",
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
         left: "15vw",
-        top: "8vh",
+        top: "5vh",
         zIndex: 99999999999999999999,
+        overflow: "auto",
       }}
     >
+      {showChangeNoteColorComponent && (
+        <ChangeNoteColorComponent
+          handleCloseColorPopup={handleCloseColorPopup}
+          handleChangeColor={handleChangeColor}
+          note={note}
+        />
+      )}
+
+      {changeNoteName && (
+        <OneInputComponent
+          handleClosePopup={handleCloseChangeNoteName}
+          handleConfirm={handleConfirmChangeNoteName}
+          inputTitle="Note name"
+          popupTtitle="Change note name"
+        />
+      )}
+
       <Box
         sx={{
           position: "absolute",
@@ -90,6 +164,9 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             ]}
             ref={ref}
             customControls={[]}
+            onChange={(data) => {
+              handleOnChange(data);
+            }}
             onSave={(data) => {
               handleSaveClick(data);
             }}
@@ -114,6 +191,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             sx={{
               color: "black",
             }}
+            onClick={handleShowColorsPopup}
           >
             <ColorLensIcon fontSize="large" />
           </IconButton>
@@ -135,8 +213,9 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             sx={{
               color: "black",
             }}
+            onClick={handleShowChangeNoteName}
           >
-            <NotificationsIcon fontSize="large" />
+            <EditIcon fontSize="large" />
           </IconButton>
         </Box>
 
@@ -154,18 +233,19 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
           <IconButton
             onClick={handleClick}
             sx={{
-              color: invertedNoteColor,
+              color: "black",
               marginRight: "10px",
             }}
           >
             <Typography
+              className={blink}
               style={{
                 marginRight: "8px",
                 fontWeight: "bold",
               }}
               variant="h5"
             >
-              Save Changes
+              {blink ? "Save Changes" : "No Change"}
             </Typography>
             <SaveIcon fontSize="large" />
           </IconButton>

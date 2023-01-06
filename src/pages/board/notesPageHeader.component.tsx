@@ -9,116 +9,134 @@ import HomeIcon from '@mui/icons-material/Home';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { currentCategoryNames, sessionActions } from '../../redux/session/session.slice'
+import { getPalette } from "../../theme/theme.palette";
 
 export const NotesPageHeaderComponent = () => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-    const currentCategory = useSelector(sessionSelectors.currentCategory)
-    const currentAction = useSelector(sessionSelectors.currentAction)
+  const currentCategory = useSelector(sessionSelectors.currentCategory);
+  const currentAction = useSelector(sessionSelectors.currentAction);
 
-    const handleRemoveCategory = () => {
-        dispatch(notesActions.removeCategory(currentCategory.id))
-    }
+  const handleRemoveCategory = () => {
+    dispatch(notesActions.removeCategory(currentCategory.id));
+  };
 
-    const handleOpenSettings = () => {
-        dispatch(sessionActions.setCurrentCategory({ id: '', name: currentCategoryNames.settings }))
-    }
+  const handleOpenSettings = () => {
+    dispatch(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.settings,
+      })
+    );
+  };
 
-    const handleGoHome = () => {
-        dispatch(sessionActions.setCurrentCategory({ id: '', name: currentCategoryNames.home }))
-    }
+  const handleGoHome = () => {
+    dispatch(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.home,
+      })
+    );
+  };
 
-    const handleAddNote = () => {
-        dispatch(notesActions.newNote({}))
-    }
+  const handleAddNote = () => {
+    dispatch(notesActions.newNote({}));
+  };
 
-    return (
-        <Box sx={{
-            display: 'flex',
-            height: '8vh',
-            width: '85vw',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            alignContent: 'center',
-            borderBottom: '1px solid #666666'
-        }}>
-            <IconButton onClick={handleGoHome}>
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        height: "5vh",
+        width: "85vw",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        alignContent: "center",
+        backgroundColor: getPalette().secondary.dark,
+      }}
+    >
+      <IconButton onClick={handleGoHome}>
+        <HomeIcon
+          fontSize="large"
+          style={{
+            marginLeft: "25px",
+          }}
+        />
+      </IconButton>
+      <ArrowForwardIosIcon
+        fontSize="small"
+        style={{
+          marginLeft: "10px",
+        }}
+      />
+      <Typography
+        style={{
+          marginLeft: "10px",
+        }}
+        variant="h5"
+      >
+        {currentCategory.name}
+      </Typography>
 
-                <HomeIcon
-                    fontSize='large'
-                    style={{
-                        marginLeft: '25px'
-                    }}
-                />
+      {currentAction && (
+        <>
+          <ArrowForwardIosIcon
+            fontSize="small"
+            style={{
+              marginLeft: "10px",
+            }}
+          />
+          <Typography
+            style={{
+              marginLeft: "10px",
+            }}
+            variant="h5"
+          >
+            {currentAction}
+          </Typography>
+        </>
+      )}
+
+      <Box
+        sx={{
+          position: "absolute",
+          right: "20px",
+        }}
+      >
+        {currentCategory.id && (
+          <>
+            <IconButton onClick={handleAddNote}>
+              <NoteAddIcon fontSize="large" />
+              <Typography
+                style={{
+                  marginRight: "30px",
+                  marginLeft: "12px",
+                }}
+                variant="h6"
+              >
+                Add Note
+              </Typography>
             </IconButton>
-            <ArrowForwardIosIcon
-                fontSize='small'
+
+            <IconButton onClick={handleRemoveCategory}>
+              <DeleteForeverIcon fontSize="large" />
+
+              <Typography
                 style={{
-                    marginLeft: "10px"
+                  marginRight: "30px",
+                  marginLeft: "10px",
                 }}
-            />
-            <Typography
-                style={{
-                    marginLeft: '10px'
-                }}
-                variant="h5">
-                {currentCategory.name}
-            </Typography>
-
-            {currentAction && (<>
-                <ArrowForwardIosIcon
-                    fontSize='small'
-                    style={{
-                        marginLeft: "10px"
-                    }}
-                />
-                <Typography
-                    style={{
-                        marginLeft: '10px'
-                    }}
-                    variant="h5">
-                    {currentAction}
-                </Typography>
-            </>)}
-
-            <Box sx={{
-                position: 'absolute',
-                right: '20px'
-            }} >
-                {currentCategory.id && (
-
-                    <>
-                        <IconButton onClick={handleAddNote}>
-                            <NoteAddIcon fontSize='large' />
-                            <Typography
-                                style={{
-                                    marginRight: '30px',
-                                    marginLeft: '12px'
-
-                                }}
-                                variant="h6">
-                                Add Note
-                            </Typography>
-                        </IconButton>
-
-                        <IconButton onClick={handleRemoveCategory}>
-                            <DeleteForeverIcon fontSize='large' />
-
-                            <Typography
-                                style={{
-                                    marginRight: '30px',
-                                    marginLeft: '10px'
-                                }}
-                                variant="h6">
-                                Remove Category
-                            </Typography>
-                        </IconButton>
-                    </>)}
-                <IconButton onClick={handleOpenSettings}>
-                    <SettingsIcon fontSize='large' />
-                </IconButton>
-
-            </Box>
-        </Box >
-    )
-}
+                variant="h6"
+              >
+                Remove Category
+              </Typography>
+            </IconButton>
+          </>
+        )}
+        <IconButton onClick={handleOpenSettings}>
+          <SettingsIcon fontSize="large" />
+        </IconButton>
+      </Box>
+    </Box>
+  );
+};

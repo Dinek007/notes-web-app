@@ -38,8 +38,17 @@ const foldersAndNotesCount = createSelector(
   }
 )
 
+const biggestZIndex = createSelector(currentCategoryNotes, (notes) => {
+  let index = 0;
+  Object.values(notes.notes.entities).forEach((note) => {
+    if (note.zIndex > index) index = note.zIndex;
+  });
+  return index;
+});
+
 export const notesSelectors = {
   noteCategories,
   currentCategoryNotes,
-  foldersAndNotesCount
-}
+  foldersAndNotesCount,
+  biggestZIndex,
+};

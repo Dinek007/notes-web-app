@@ -81,7 +81,7 @@ export const NotesFieldComponent: React.FC<
         display: "flex",
         backgroundColor: getPalette().secondary.main,
         width: "85vw",
-        height: "92vh",
+        height: "95vh",
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
