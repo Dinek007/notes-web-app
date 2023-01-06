@@ -16,6 +16,8 @@ import { OneInputComponent } from "../../components/oneInputPopup.component";
 import EditIcon from "@mui/icons-material/Edit";
 import { convertFromRaw, RawDraftContentState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
+import { ConfirmPopupComponent } from "../../components/confirmPopup";
+import { getPalette } from "../../theme/theme.palette";
 export interface EditNoteComponentProps {
   note: NoteModel;
   handleClose: () => void;
@@ -93,6 +95,20 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
     handleCloseChangeNoteName();
   };
 
+  const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
+
+  const handleCloseConfirmPopup = () => {
+    setShowConfirmPopup(false);
+  };
+
+  const handleShowConfirmPopup = () => {
+    setShowConfirmPopup(true);
+  };
+
+  const handleClickConfirmPopup = () => {
+    handleClose();
+  };
+
   const darkNoteColor = colorShade(color, -30);
   const lightNoteColor = colorShade(color, 65);
   const invertedNoteColor = invertColor(color);
@@ -128,6 +144,21 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
           handleConfirm={handleConfirmChangeNoteName}
           inputTitle="Note name"
           popupTtitle="Change note name"
+        />
+      )}
+
+      {showConfirmPopup && (
+        <ConfirmPopupComponent
+          handleClose={handleCloseConfirmPopup}
+          handleConfirm={handleClickConfirmPopup}
+          popupTitle="Close note editing"
+          popupContent={
+            <Typography variant="h5">
+              Are you sure you want to close note editing ?
+              <br />
+              You will lose all new changes.
+            </Typography>
+          }
         />
       )}
 
@@ -254,7 +285,13 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             sx={{
               color: "black",
             }}
-            onClick={handleClose}
+            onClick={() => {
+              if (blink) {
+                handleShowConfirmPopup();
+              } else {
+                handleClose();
+              }
+            }}
           >
             {/* <Typography
               style={{

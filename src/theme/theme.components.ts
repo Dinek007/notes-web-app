@@ -48,6 +48,7 @@ export const getComponents = (palette: any) => ({
           alignItems: "center",
           alignContent: "center",
           marginRight: "10px",
+          backgroundColor: "rgba(255,255,255, 0.5)",
         },
         "& #mui-rte-container": {
           left: "0px",

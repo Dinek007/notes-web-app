@@ -1,15 +1,19 @@
-import React from 'react'
-import { Box, IconButton, Typography } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { notesActions } from '../../redux/notes/notes.slice'
-import { sessionSelectors } from '../../redux/session/session.selectors'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import HomeIcon from '@mui/icons-material/Home';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { currentCategoryNames, sessionActions } from '../../redux/session/session.slice'
+import React, { useState } from "react";
+import { Box, IconButton, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { notesActions } from "../../redux/notes/notes.slice";
+import { sessionSelectors } from "../../redux/session/session.selectors";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import HomeIcon from "@mui/icons-material/Home";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import SettingsIcon from "@mui/icons-material/Settings";
+import {
+  currentCategoryNames,
+  sessionActions,
+} from "../../redux/session/session.slice";
 import { getPalette } from "../../theme/theme.palette";
+import { ConfirmPopupComponent } from "../../components/confirmPopup";
 
 export const NotesPageHeaderComponent = () => {
   const dispatch = useDispatch();
@@ -43,6 +47,20 @@ export const NotesPageHeaderComponent = () => {
     dispatch(notesActions.newNote({}));
   };
 
+  const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
+
+  const handleCloseConfirmPopup = () => {
+    setShowConfirmPopup(false);
+  };
+
+  const handleShowConfirmPopup = () => {
+    setShowConfirmPopup(true);
+  };
+
+  const handleClickConfirmPopup = () => {
+    handleRemoveCategory();
+  };
+
   return (
     <Box
       sx={{
@@ -55,6 +73,24 @@ export const NotesPageHeaderComponent = () => {
         backgroundColor: getPalette().secondary.dark,
       }}
     >
+      {showConfirmPopup && (
+        <ConfirmPopupComponent
+          handleClose={handleCloseConfirmPopup}
+          handleConfirm={handleClickConfirmPopup}
+          popupTitle="Remove category"
+          popupContent={
+            <Typography variant="h5">
+              Are you sure you want to delete category ?
+              <br />
+              You will lose all the notes located in
+              <text style={{ color: getPalette().primary.light }}>
+                {" " + currentCategory.name}
+              </text>
+              .
+            </Typography>
+          }
+        />
+      )}
       <IconButton onClick={handleGoHome}>
         <HomeIcon
           fontSize="large"
@@ -118,7 +154,7 @@ export const NotesPageHeaderComponent = () => {
               </Typography>
             </IconButton>
 
-            <IconButton onClick={handleRemoveCategory}>
+            <IconButton onClick={handleShowConfirmPopup}>
               <DeleteForeverIcon fontSize="large" />
 
               <Typography

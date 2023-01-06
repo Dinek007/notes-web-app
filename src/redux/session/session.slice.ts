@@ -12,13 +12,13 @@ export enum currentCategoryNames {
 }
 
 export enum currentActionNames {
-  addingFolder = "Adding folder",
+  addingFolder = "Adding category",
   addingNote = "Adding note",
-  removingFolder = "Removing folder",
+  removingFolder = "Removing category",
   removingNote = "Removing note",
   savingNote = "Saving Note",
   editingNote = "Editing note",
-  loadingFoldersAndNotes = "Loading folders and notes",
+  loadingFoldersAndNotes = "Loading categories and notes",
   updateNote = "Updating note",
 }
 

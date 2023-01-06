@@ -21,12 +21,12 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
     <Box
       sx={{
         position: "fixed",
-        background: "#000000d0",
+        background: "#000000e0",
         width: "100%",
         height: "100vh",
         top: "0",
         left: "0",
-        zIndex: "1",
+        zIndex: "10000000000000000000000000000000",
       }}
     >
       <Box
