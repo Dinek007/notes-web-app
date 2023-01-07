@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
 import { NoteModel } from "../../swagger/api";
@@ -31,6 +31,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
   handleClose,
 }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [color, setColor] = useState<string>(note.color);
   const [showChangeNoteColorComponent, setShowChangeNoteColorComponent] =
@@ -176,7 +177,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
           popupContent={
             <Typography variant="h5">
               Are you sure you want to delete
-              <text style={{ color: getPalette().primary.light }}>
+              <text style={{ color: theme.palette.primary.light }}>
                 {" " + note.name + " "}
               </text>
               note?

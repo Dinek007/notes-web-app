@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { notesSelectors } from "../../redux/notes/notes.selectors";
 import {
@@ -17,6 +17,8 @@ export interface CategoryListComponentProps {}
 export const CategoryListComponent: React.FC<
   CategoryListComponentProps
 > = ({}) => {
+  const theme = useTheme();
+
   const dispatch = useDispatch();
   const categories = useSelector(notesSelectors.noteCategories);
   const currentCategory = useSelector(sessionSelectors.currentCategory);
@@ -60,7 +62,7 @@ export const CategoryListComponent: React.FC<
         width: "15vw",
         left: "0px",
         top: "0px",
-        backgroundColor: getPalette().primary.dark,
+        backgroundColor: theme.palette.primary.dark,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -79,10 +81,11 @@ export const CategoryListComponent: React.FC<
         style={{
           width: "90px",
           height: "90px",
-          border: "2.7px solid #D9D9D9",
+          border: `2.7px solid ${theme.palette.text.primary}`,
           borderRadius: "9px",
           marginBottom: "68px",
-          backgroundColor: getPalette().primary.dark,
+          backgroundColor: theme.palette.primary.dark,
+          color: theme.palette.text.primary,
         }}
         onClick={() => {
           setIsNewCategory(true);
@@ -96,7 +99,7 @@ export const CategoryListComponent: React.FC<
         variant="h5"
         style={{
           width: "15vw",
-          borderBottom: "1px solid #D9D9D9",
+          borderBottom: `1px solid ${theme.palette.text.primary}`,
           textAlign: "center",
           marginBottom: "5px",
           paddingBottom: "15px",
@@ -111,6 +114,7 @@ export const CategoryListComponent: React.FC<
           <Button
             key={category.id}
             style={{
+              color: theme.palette.text.primary,
               width: "12vw",
               height: "42px",
               borderRadius: "5px",
@@ -118,21 +122,21 @@ export const CategoryListComponent: React.FC<
               display: "flex",
               justifyContent: "left",
               backgroundColor: isSelected
-                ? getPalette().secondary.dark
-                : getPalette().primary.dark,
+                ? theme.palette.secondary.dark
+                : theme.palette.primary.dark,
             }}
             title={category.description}
             onClick={() => {
               handleCategoryClick({ id: category.id, name: category.name });
             }}
           >
-            <Typography textAlign={"left"} variant="h6">
+            <Typography textAlign={"left"} variant="h5">
               {category.name}
             </Typography>
             <IconButton
               size="small"
               sx={{
-                color: getPalette().primary.light,
+                color: theme.palette.primary.light,
                 position: "absolute",
                 right: "0px",
               }}

@@ -11,22 +11,23 @@ import { AppRoutes } from './router'
 import { browserHistory } from './redux/create';
 import { setBaseUrls } from './swagger/swagger.config';
 import { PersistGate } from 'redux-persist/integration/react';
+import { HistoryRouterProps } from "react-router-dom";
 
-setBaseUrls()
+setBaseUrls();
 
-ReactDOM.createRoot(
-  document.getElementById('root'),
-).render(
-<StyledEngineProvider injectFirst>
-  <Provider store={reducer.store}>
-  <PersistGate loading={null} persistor={reducer.persistor}>
-    <ThemeProvider>
-      <HistoryRouter history={browserHistory}>
-      <AppRoutes />
-        <App />
-      </HistoryRouter>
-    </ThemeProvider>
-    </PersistGate>
-  </Provider>
-</StyledEngineProvider>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <StyledEngineProvider injectFirst>
+    <Provider store={reducer.store}>
+      <PersistGate loading={null} persistor={reducer.persistor}>
+        <ThemeProvider>
+          <HistoryRouter
+            history={browserHistory as unknown as HistoryRouterProps["history"]}
+          >
+            <AppRoutes />
+            <App />
+          </HistoryRouter>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
+  </StyledEngineProvider>
+);

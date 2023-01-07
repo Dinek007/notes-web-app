@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { getPalette } from "../theme/theme.palette";
 
 export interface SettingComponentProps {
@@ -11,12 +11,14 @@ export const SettingComponent: React.FC<SettingComponentProps> = ({
   children,
   title,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
         marginTop: "50px",
         paddingBottom: "10px",
-        borderBottom: `2px solid ${getPalette().secondary.light} `,
+        borderBottom: `2px solid ${theme.palette.secondary.light} `,
         display: "flex",
         alignItems: "flex-end",
       }}

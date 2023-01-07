@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { getPalette } from "../../theme/theme.palette";
 import { useSelector } from "react-redux";
 import { sessionSelectors } from "../../redux/session/session.selectors";
@@ -23,6 +29,8 @@ export interface CategoryListComponentProps {}
 export const NotesFieldComponent: React.FC<
   CategoryListComponentProps
 > = ({}) => {
+  const theme = useTheme();
+
   const [pageToShow, setPageToShow] = useState<string>("");
   const [openList, setOpenList] = useState<boolean>(false);
 
@@ -64,7 +72,7 @@ export const NotesFieldComponent: React.FC<
       id={"notesContainer"}
       sx={{
         display: "flex",
-        backgroundColor: getPalette().secondary.main,
+        backgroundColor: theme.palette.secondary.main,
         width: "85vw",
         height: "95vh",
         justifyContent: "flex-start",
@@ -96,7 +104,7 @@ export const NotesFieldComponent: React.FC<
           {/* <AccountCircleIcon
             style={{
               fontSize: "90px",
-              color: getPalette().primary.main,
+              color: theme.palette.primary.main,
             }}
           />
           <Typography variant="h4"> Damian </Typography>

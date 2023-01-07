@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ export interface NoteComponentProps {
 
 export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [noteWidth, setNoteWidth] = useState<number>(note.width);
   const [noteHeight, setNoteHeight] = useState<number>(note.height);
@@ -114,7 +115,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
           popupContent={
             <Typography variant="h5">
               Are you sure you want to delete
-              <text style={{ color: getPalette().primary.light }}>
+              <text style={{ color: theme.palette.primary.light }}>
                 {" " + note.name + " "}
               </text>
               note?

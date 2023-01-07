@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { notesActions } from "../../redux/notes/notes.slice";
 import { sessionSelectors } from "../../redux/session/session.selectors";
@@ -19,6 +19,7 @@ import { OneInputComponent } from "../../components/oneInputPopup.component";
 
 export const NotesPageHeaderComponent = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const [showRemoveCategory, setShowRemoveCategory] = useState<boolean>(false);
   const [openRemoveCategory, setOpenRemoveCategory] = useState<boolean>(false);
@@ -89,7 +90,7 @@ export const NotesPageHeaderComponent = () => {
         justifyContent: "flex-start",
         alignItems: "center",
         alignContent: "center",
-        backgroundColor: getPalette().secondary.dark,
+        backgroundColor: theme.palette.secondary.dark,
       }}
     >
       {openAddNote && (
@@ -113,7 +114,7 @@ export const NotesPageHeaderComponent = () => {
               Are you sure you want to delete category ?
               <br />
               You will lose all the notes located in
-              <text style={{ color: getPalette().primary.light }}>
+              <text style={{ color: theme.palette.primary.light }}>
                 {" " + currentCategory.name}
               </text>
               .

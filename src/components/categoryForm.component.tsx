@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { AddCategoryValues } from "../pages/board/main.field";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { ControlledInput } from "./TextInput/TextInput.controlled";
 import { defaultAddCategoryValues } from "../pages/board/main.field";
 
-import { getPalette } from "../theme/theme.palette";
 import { notesActions } from "../redux/notes/notes.slice";
 import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
@@ -26,6 +25,7 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
   folderId,
 }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const { handleSubmit, control, formState } = useForm<AddCategoryValues>({
     defaultValues: defaultAddCategoryValues,
@@ -93,7 +93,7 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
               transform: "translate(-50%, 0)",
               width: "203px",
               height: "55px",
-              backgroundColor: getPalette().primary.main,
+              backgroundColor: theme.palette.primary.dark,
               boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"

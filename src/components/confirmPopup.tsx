@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { getPalette } from "../theme/theme.palette";
 import { PopupComponent } from "./popup.component";
 import { LoadingButton } from "@mui/lab";
@@ -19,6 +19,8 @@ export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
   handleConfirm,
   isLoading,
 }) => {
+  const theme = useTheme();
+
   return (
     <PopupComponent
       title={popupTitle}
@@ -41,7 +43,7 @@ export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
                 transform: "translate(-50%, 0)",
                 width: "203px",
                 height: "55px",
-                backgroundColor: getPalette().primary.main,
+                backgroundColor: theme.palette.primary.dark,
                 boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
               }}
               type="submit"

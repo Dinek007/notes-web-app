@@ -9,6 +9,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { getPalette } from "./theme.palette";
 import { getTypography } from "./theme.typography";
 import { getComponents } from "./theme.components";
+import { useSelector } from "react-redux";
+import { settingsSelectors } from "../redux/settings/settings.selectors";
 
 declare module "@mui/material/styles/createPalette" {
   interface Palette {
@@ -19,21 +21,26 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
-const palette = getPalette();
-const typography = getTypography(palette);
-const components = getComponents(palette);
+export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  const themeColor = useSelector(settingsSelectors.theme);
+  const mainColor = useSelector(settingsSelectors.mainColor);
 
-const theme = responsiveFontSizes(
-  createTheme({
-    palette,
-    components,
-    typography,
-  })
-);
+  const palette = getPalette(themeColor, mainColor);
+  const typography = getTypography(palette);
+  const components = getComponents(palette) as any;
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => (
-  <MuiThemeProvider theme={theme}>
-    <CssBaseline />
-    {children}
-  </MuiThemeProvider>
-);
+  const theme = responsiveFontSizes(
+    createTheme({
+      palette,
+      components,
+      typography,
+    })
+  );
+
+  return (
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </MuiThemeProvider>
+  );
+};

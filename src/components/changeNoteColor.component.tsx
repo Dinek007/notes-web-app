@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { getPalette } from "../theme/theme.palette";
 import { PopupComponent } from "./popup.component";
 import OpacityIcon from "@mui/icons-material/Opacity";
@@ -17,6 +17,8 @@ export interface ChangeNoteColorComponentProps {
 export const ChangeNoteColorComponent: React.FC<
   ChangeNoteColorComponentProps
 > = ({ handleCloseColorPopup, handleChangeColor, note }) => {
+  const theme = useTheme();
+
   const [currentColor, setCurrentColor] = useState<string>(note.color);
   const borderColor = useSelector(settingsSelectors.mainColor);
 
@@ -69,7 +71,7 @@ export const ChangeNoteColorComponent: React.FC<
               transform: "translate(-50%, 0)",
               width: "203px",
               height: "55px",
-              backgroundColor: getPalette().primary.main,
+              backgroundColor: theme.palette.primary.dark,
               boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"

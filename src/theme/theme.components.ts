@@ -1,6 +1,8 @@
 import { Components, Palette, Theme } from "@mui/material/styles";
 import PoppinsMedium from "../assets/fonts/Poppins-Light.ttf"
 
+
+
 export const getComponents = (palette: any) => ({
   MuiCssBaseline: {
     styleOverrides: `
@@ -20,7 +22,7 @@ export const getComponents = (palette: any) => ({
   MuiIconButton: {
     styleOverrides: {
       root: {
-        color: "#ffffff",
+        color: palette.text.primary,
         borderRadius: "7px",
       },
     },
@@ -73,7 +75,7 @@ export const getComponents = (palette: any) => ({
       containedSecondary: {
         ":disabled": {
           background: "#E4CCC7",
-          color: "white",
+          color: palette.text.primary,
         },
       },
       sizeSmall: {
@@ -86,14 +88,14 @@ export const getComponents = (palette: any) => ({
         fontSize: "20px",
       },
       text: {
-        color: "#ffffff",
+        color: palette.text.primary,
       },
     },
   },
   MuiCircularProgress: {
     styleOverrides: {
       svg: {
-        color: "#ffffff",
+        color: palette.text.primary,
       },
     },
   },

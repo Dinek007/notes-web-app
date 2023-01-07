@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { ControlledInput } from "./TextInput/TextInput.controlled";
 import { getPalette } from "../theme/theme.palette";
 import { PopupComponent } from "./popup.component";
@@ -21,6 +21,8 @@ export const OneInputComponent: React.FC<OneInputComponentProps> = ({
   handleConfirm,
   isLoading,
 }) => {
+  const theme = useTheme();
+
   const { handleSubmit, control, formState } = useForm({
     defaultValues: { value: "" },
     mode: "onChange",
@@ -51,7 +53,7 @@ export const OneInputComponent: React.FC<OneInputComponentProps> = ({
               transform: "translate(-50%, 0)",
               width: "203px",
               height: "55px",
-              backgroundColor: getPalette().primary.main,
+              backgroundColor: theme.palette.primary.dark,
               boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"

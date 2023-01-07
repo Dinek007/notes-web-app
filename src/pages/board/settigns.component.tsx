@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { getPalette } from "../../theme/theme.palette";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import { settingsSelectors } from "../../redux/settings/settings.selectors";
 
 export const SettingsComponent = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
 
   const themeSetting = useSelector(settingsSelectors.theme);
   const mainColorSetting = useSelector(settingsSelectors.mainColor);
@@ -25,7 +26,7 @@ export const SettingsComponent = () => {
   const noteSizeSetting = useSelector(settingsSelectors.noteSize);
   const boardSizeSetting = useSelector(settingsSelectors.boardSize);
 
-  const [theme, setTheme] = useState<string>(themeSetting);
+  const [themeColor, setThemeColor] = useState<string>(themeSetting);
   const [mainColor, setMainColor] = useState<string>(mainColorSetting);
   const [noteColor, setNoteColor] = useState<string>(noteColorSetting);
 
@@ -34,7 +35,7 @@ export const SettingsComponent = () => {
   const [boardSize, setBoardSize] = useState<size>(boardSizeSetting);
 
   const handleTheme = (themeName) => {
-    setTheme(themeName);
+    setThemeColor(themeName);
     dispatch(settingsActions.setTheme(themeName));
   };
 
@@ -52,7 +53,7 @@ export const SettingsComponent = () => {
   return (
     <Box
       sx={{
-        backgroundColor: getPalette().secondary.dark,
+        backgroundColor: theme.palette.secondary.dark,
         position: "relative",
         top: "5vh",
         display: "flex",
@@ -84,25 +85,26 @@ export const SettingsComponent = () => {
                 onClick={() => handleTheme(themeNames.dark)}
                 sx={{
                   border:
-                    theme === themeNames.dark &&
-                    `3px solid ${getPalette().primary.main}`,
-                  backgroundColor: getPalette().secondary.light,
+                    themeColor === themeNames.dark &&
+                    `3px solid ${theme.palette.primary.main}`,
+                  backgroundColor: "gray",
+                  color: "white",
                   marginRight: "20px",
                 }}
               >
-                Dark
+                <Typography> Dark </Typography>
               </Button>
               <Button
                 onClick={() => handleTheme(themeNames.light)}
                 sx={{
                   border:
-                    theme === themeNames.light &&
-                    `3px solid ${getPalette().primary.main}`,
+                    themeColor === themeNames.light &&
+                    `3px solid ${theme.palette.primary.main}`,
                   backgroundColor: "#f5f5f5",
                   color: "black",
                 }}
               >
-                Light
+                <Typography> Light</Typography>
               </Button>
             </Box>
           }
@@ -121,7 +123,7 @@ export const SettingsComponent = () => {
                     sx={{
                       padding: isChecked ? `7px` : `10px`,
                       border:
-                        isChecked && `3px solid ${getPalette().primary.main}`,
+                        isChecked && `3px solid ${theme.palette.primary.main}`,
                       color: color,
                     }}
                     onClick={() => handleMainColor(color)}
@@ -147,7 +149,7 @@ export const SettingsComponent = () => {
                     sx={{
                       padding: isChecked ? `7px` : `10px`,
                       border:
-                        isChecked && `3px solid ${getPalette().primary.main}`,
+                        isChecked && `3px solid ${theme.palette.primary.main}`,
                       color: color,
                     }}
                     onClick={() => handleNoteColor(color)}

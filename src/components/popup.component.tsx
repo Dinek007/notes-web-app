@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 
 import { getPalette } from "../theme/theme.palette";
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,6 +15,8 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
   title,
   children,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -37,7 +39,7 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          backgroundColor: getPalette().secondary.dark,
+          backgroundColor: theme.palette.secondary.dark,
           borderRadius: "8px",
           padding: "35px",
           paddingTop: "60px",
