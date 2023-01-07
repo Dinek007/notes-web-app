@@ -16,32 +16,49 @@ import { LoadingButton } from "@mui/lab";
 export interface AddItemComponentProps {
   handleCloseAddCategoryPopup: () => void;
   isLoading: boolean;
+  isNewCategory: boolean;
+  folderId: string;
 }
 
 export const AddItemComponent: React.FC<AddItemComponentProps> = ({
   handleCloseAddCategoryPopup,
   isLoading,
+  isNewCategory,
+  folderId,
 }) => {
   const dispatch = useDispatch();
-
+  console.log("isLoading", isLoading);
   const { handleSubmit, control, formState } = useForm<AddCategoryValues>({
     defaultValues: defaultAddCategoryValues,
     mode: "onChange",
   });
 
   const handleAddCategoryConfirm = (values: AddCategoryValues) => {
-    dispatch(
-      notesActions.newCategory({
-        name: values.title,
-        description: values.description,
-      })
-    );
+    if (isNewCategory) {
+      dispatch(
+        notesActions.newCategory({
+          name: values.title,
+          description: values.description,
+        })
+      );
+    } else {
+      dispatch(
+        notesActions.updateCategory({
+          folderId,
+          folderElements: {
+            name: values.title,
+            description: values.description,
+          },
+        })
+      );
+    }
+
     handleCloseAddCategoryPopup();
   };
 
   return (
     <PopupComponent
-      title="Create new category"
+      title={isNewCategory ? "Create new category" : "Update category"}
       handleClosePopup={handleCloseAddCategoryPopup}
       children={
         <form onSubmit={handleSubmit(handleAddCategoryConfirm)}>

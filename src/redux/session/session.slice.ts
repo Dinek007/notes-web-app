@@ -20,6 +20,7 @@ export enum currentActionTexts {
   editingNote = "Editing note",
   loadingFoldersAndNotes = "Loading categories and notes",
   updateNote = "Updating note",
+  updateFolder = "Updating folder",
 }
 
 export enum currentActionNames {
@@ -31,6 +32,7 @@ export enum currentActionNames {
   editingNote = "editingNote",
   loadingFoldersAndNotes = "loadingFoldersAndNotes",
   updateNote = "updateNote",
+  updateFolder = "updateFolder",
 }
 
 export type currentActions = {
@@ -42,6 +44,7 @@ export type currentActions = {
   editingNote: boolean;
   loadingFoldersAndNotes: boolean;
   updateNote: boolean;
+  updateFolder: boolean;
 };
 
 export type settings = {
@@ -74,6 +77,7 @@ export class SessionState {
     removingNote: false,
     savingNote: false,
     updateNote: false,
+    updateFolder: false,
   };
 
   public authToken: string = "";

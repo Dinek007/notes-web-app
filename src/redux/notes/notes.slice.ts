@@ -1,8 +1,14 @@
 import { ActionCreatorsMapObject, createSlice, EntityState, PayloadAction } from '@reduxjs/toolkit'
-import { CreateNoteReqDto, FolderModel, NoteModel, UpdateNoteReqDto } from '../../swagger/api';
-import { StoreKeys } from '../store.keys'
-import { noteCategoriesAdapter, notesAdapter } from './notes.adapter';
-import { CategoryData, NoteCategory, NoteData } from './notes.types';
+import {
+  CreateNoteReqDto,
+  FolderModel,
+  NoteModel,
+  UpdateFolderDto,
+  UpdateNoteReqDto,
+} from "../../swagger/api";
+import { StoreKeys } from "../store.keys";
+import { noteCategoriesAdapter, notesAdapter } from "./notes.adapter";
+import { CategoryData, NoteCategory, NoteData } from "./notes.types";
 
 export type ActionsType<A extends ActionCreatorsMapObject> = {
   [actionName in keyof A]: ReturnType<A[actionName]>;
@@ -10,22 +16,26 @@ export type ActionsType<A extends ActionCreatorsMapObject> = {
 
 export class notesState {
   public categories: EntityState<NoteCategory> =
-    noteCategoriesAdapter.getInitialState()
-
+    noteCategoriesAdapter.getInitialState();
 }
 
 export type SetNotesAndCategoriesPayload = {
-  categories: FolderModel[]
+  categories: FolderModel[];
   notes: {
-    [folderId: string]: NoteModel[]
-  }
-}
+    [folderId: string]: NoteModel[];
+  };
+};
 
 export type updateNotePayload = {
-  noteId: string,
-  folderId: string,
-  noteElements: UpdateNoteReqDto
-}
+  noteId: string;
+  folderId: string;
+  noteElements: UpdateNoteReqDto;
+};
+
+export type updateFolderPayload = {
+  folderId: string;
+  folderElements: UpdateFolderDto;
+};
 
 export const notesSlice = createSlice({
   initialState: { ...new notesState() },
@@ -42,19 +52,9 @@ export const notesSlice = createSlice({
         id: noteId,
         changes: action.payload.noteElements,
       });
-
-      // noteCategoriesAdapter.updateOne(
-      //   state.categories,
-      //   {id: folderId,
-      //   changes: {
-      //     notes:{
-      //       ...state.categories.entities[folderId].notes
-      //     },
-
-      //   }
-      //   }
-      // )
     },
+    updateCategory: (state, _action: PayloadAction<updateFolderPayload>) =>
+      state,
     getCategoriesAndNotes: (state, _action) => state,
     setCategoriesWithNotes: (
       state,

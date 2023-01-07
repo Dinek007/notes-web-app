@@ -14,10 +14,7 @@ import { stateToHTML } from "draft-js-export-html";
 import { notesSelectors } from "../redux/notes/notes.selectors";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { ConfirmPopupComponent } from "./confirmPopup";
-import {
-  currentActionNames,
-  sessionActions,
-} from "../redux/session/session.slice";
+import { currentActionNames } from "../redux/session/session.slice";
 import { sessionSelectors } from "../redux/session/session.selectors";
 import { getPalette } from "../theme/theme.palette";
 
