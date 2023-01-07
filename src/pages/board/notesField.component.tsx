@@ -25,7 +25,6 @@ export const NotesFieldComponent: React.FC<
 > = ({}) => {
   const [pageToShow, setPageToShow] = useState<string>("");
 
-  const foldersAndNotes = useSelector(notesSelectors.noteCategories);
   const areFoldersAndNotesLoading = useSelector(
     sessionSelectors.foldersAndNotesLoading
   );
@@ -34,7 +33,6 @@ export const NotesFieldComponent: React.FC<
   const currentCategoryNotes = currentCategoryData
     ? Object.values(currentCategoryData.notes.entities)
     : [];
-  const dataCounts = useSelector(notesSelectors.foldersAndNotesCount);
   const currentAction = useSelector(sessionSelectors.currentAction);
 
   useEffect(() => {
@@ -66,65 +64,31 @@ export const NotesFieldComponent: React.FC<
         backgroundColor: getPalette().secondary.main,
         width: "85vw",
         height: "95vh",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
+        alignItems: "baseline",
         alignContent: "center",
         overflow: "auto",
       }}
     >
-      {pageToShow === pageNames.loading && <CircularProgress />}
+      {pageToShow === pageNames.loading && (
+        <Box
+          sx={{
+            left: "50%",
+            top: "50%",
+            position: "relative",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress />{" "}
+        </Box>
+      )}
 
       {pageToShow === pageNames.notes &&
         currentCategoryNotes.map((note: NoteModel) => {
           return <NoteComponent key={note.id} note={note} />;
         })}
 
-      {pageToShow === pageNames.home && (
-        <Box
-          sx={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            alignContent: "center",
-            borderRadius: "9px",
-            boxShadow: "5px 5px 20px 5px #222222",
-            padding: "50px",
-            minWidth: "60vw",
-            minHeight: "50vh",
-          }}
-        >
-          <AccountCircleIcon
-            style={{
-              fontSize: "90px",
-              color: getPalette().primary.main,
-            }}
-          />
-          <Typography> Damian </Typography>
-          <Typography
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            Folders count: {dataCounts.folders}
-          </Typography>
-          <Typography> Notes count: {dataCounts.notes} </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              alignContent: "center",
-              marginTop: "20px",
-            }}
-          >
-            {Object.values(foldersAndNotes).map((folder) => {
-              return <HomePageComponent folder={folder} />;
-            })}
-          </Box>
-        </Box>
-      )}
+      {pageToShow === pageNames.home && <></>}
 
       {pageToShow === pageNames.settings && <SettingsComponent />}
     </Box>

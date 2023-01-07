@@ -113,7 +113,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
           isLoading={removeNoteActionStatus}
           popupContent={
             <Typography variant="h5">
-              Are you sure you want to remove
+              Are you sure you want to delete
               <text style={{ color: getPalette().primary.light }}>
                 {" " + note.name + " "}
               </text>

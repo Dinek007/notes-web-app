@@ -42,7 +42,6 @@ export const CategoryListComponent: React.FC<
       !addCategoryActionStatus &&
       !updateCategoryActionStatus
     ) {
-      console.log("here");
       setOpenAddCategory(false);
     }
     if (showAddCategoryForm) {

@@ -7,7 +7,6 @@ import { ControlledInput } from "./TextInput/TextInput.controlled";
 import { defaultAddCategoryValues } from "../pages/board/main.field";
 
 import { getPalette } from "../theme/theme.palette";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { notesActions } from "../redux/notes/notes.slice";
 import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
@@ -27,7 +26,7 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
   folderId,
 }) => {
   const dispatch = useDispatch();
-  console.log("isLoading", isLoading);
+
   const { handleSubmit, control, formState } = useForm<AddCategoryValues>({
     defaultValues: defaultAddCategoryValues,
     mode: "onChange",

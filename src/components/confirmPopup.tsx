@@ -1,18 +1,7 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-
-import { AddCategoryValues } from "../pages/board/main.field";
-import { Box, Button, IconButton, Typography } from "@mui/material";
-import { ControlledInput } from "./TextInput/TextInput.controlled";
-import { defaultAddCategoryValues } from "../pages/board/main.field";
-
+import React from "react";
+import { Box, Button, Typography } from "@mui/material";
 import { getPalette } from "../theme/theme.palette";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { notesActions } from "../redux/notes/notes.slice";
-import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
-import OpacityIcon from "@mui/icons-material/Opacity";
-import { NoteModel } from "../swagger/api";
 import { LoadingButton } from "@mui/lab";
 
 export interface ConfirmPopupComponentProps {

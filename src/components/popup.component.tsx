@@ -19,7 +19,7 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
     <Box
       sx={{
         position: "fixed",
-        background: "#000000e0",
+        background: "#000000e8",
         width: "100%",
         height: "100vh",
         top: "0",
@@ -38,7 +38,7 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
           left: "50%",
           transform: "translate(-50%, -50%)",
           backgroundColor: getPalette().secondary.dark,
-          borderRadius: "10px",
+          borderRadius: "8px",
           padding: "35px",
           paddingTop: "60px",
           paddingBottom: "50px",
