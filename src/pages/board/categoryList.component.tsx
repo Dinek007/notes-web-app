@@ -132,7 +132,7 @@ export const CategoryListComponent: React.FC<
             <IconButton
               size="small"
               sx={{
-                color: getPalette().secondary.light,
+                color: getPalette().primary.light,
                 position: "absolute",
                 right: "0px",
               }}

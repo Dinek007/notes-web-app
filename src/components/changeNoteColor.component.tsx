@@ -4,6 +4,9 @@ import { getPalette } from "../theme/theme.palette";
 import { PopupComponent } from "./popup.component";
 import OpacityIcon from "@mui/icons-material/Opacity";
 import { NoteModel } from "../swagger/api";
+import { noteColorsPalette } from "../redux/settings/settings.slice";
+import { useSelector } from "react-redux";
+import { settingsSelectors } from "../redux/settings/settings.selectors";
 
 export interface ChangeNoteColorComponentProps {
   handleCloseColorPopup: () => void;
@@ -11,25 +14,11 @@ export interface ChangeNoteColorComponentProps {
   note: NoteModel;
 }
 
-export enum noteColorsPalette {
-  red = "#E74C3C",
-  orange = "#F39C12",
-  pink = "#ff96c5",
-  yellow = "#ffdf6d",
-  green = "#cff800",
-  lightGreen = "#82E0AA",
-  violet = "#A569BD",
-  lightViolet = "#D2B4DE",
-  blue = "#00a5e3",
-  lightBlue = "#AED6F1",
-  gray = "#85929E",
-  lightGray = "#CCD1D1",
-}
-
 export const ChangeNoteColorComponent: React.FC<
   ChangeNoteColorComponentProps
 > = ({ handleCloseColorPopup, handleChangeColor, note }) => {
   const [currentColor, setCurrentColor] = useState<string>(note.color);
+  const borderColor = useSelector(settingsSelectors.mainColor);
 
   const colors = Object.values(noteColorsPalette);
 
@@ -61,8 +50,8 @@ export const ChangeNoteColorComponent: React.FC<
                   key={color}
                   size="large"
                   sx={{
-                    border:
-                      isChecked && `3px solid ${getPalette().primary.main}`,
+                    padding: isChecked ? `9px` : `12px`,
+                    border: isChecked && `3px solid ${borderColor}`,
                     color: color,
                   }}
                   onClick={() => handleSetColor(color)}

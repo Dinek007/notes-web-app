@@ -97,7 +97,7 @@ export const NotesPageHeaderComponent = () => {
           handleClosePopup={() => setAddNote(false)}
           handleConfirm={handleConfirmAddNote}
           inputTitle="Note name"
-          popupTtitle="Add note"
+          popupTtitle="Add new note"
           isLoading={addNoteStatus}
         />
       )}

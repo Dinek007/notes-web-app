@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { getPalette } from "../../theme/theme.palette";
 import { useSelector } from "react-redux";
 import { sessionSelectors } from "../../redux/session/session.selectors";
@@ -24,7 +24,10 @@ export const NotesFieldComponent: React.FC<
   CategoryListComponentProps
 > = ({}) => {
   const [pageToShow, setPageToShow] = useState<string>("");
+  const [openList, setOpenList] = useState<boolean>(false);
 
+  const foldersAndNotes = useSelector(notesSelectors.noteCategories);
+  const dataCounts = useSelector(notesSelectors.foldersAndNotesCount);
   const areFoldersAndNotesLoading = useSelector(
     sessionSelectors.foldersAndNotesLoading
   );
@@ -88,7 +91,56 @@ export const NotesFieldComponent: React.FC<
           return <NoteComponent key={note.id} note={note} />;
         })}
 
-      {pageToShow === pageNames.home && <></>}
+      {pageToShow === pageNames.home && (
+        <>
+          {/* <AccountCircleIcon
+            style={{
+              fontSize: "90px",
+              color: getPalette().primary.main,
+            }}
+          />
+          <Typography variant="h4"> Damian </Typography>
+          <Typography
+            style={{
+              marginTop: "20px",
+            }}
+          >
+            Folders count: {dataCounts.folders}
+          </Typography>
+          <Typography> Notes count: {dataCounts.notes} </Typography>
+          <Button
+            sx={{
+              marginTop: "20px",
+            }}
+            onClick={() => {
+              if (openList) {
+                setOpenList(false);
+              } else {
+                setOpenList(true);
+              }
+            }}
+          >
+            <Typography variant="h5">
+              {openList ? "Close" : "Open"} Notes List
+            </Typography>
+          </Button>
+          {openList && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                alignContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              {Object.values(foldersAndNotes).map((folder) => {
+                return <HomePageComponent folder={folder} />;
+              })}
+            </Box>
+          )} */}
+        </>
+      )}
 
       {pageToShow === pageNames.settings && <SettingsComponent />}
     </Box>

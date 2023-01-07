@@ -8,20 +8,27 @@ import storage from 'redux-persist/lib/storage'
 import { StoreKeys } from './store.keys'
 
 import { StoreType } from './store.types'
+import { settingsReducer } from "./settings/settings.slice";
 
 const persistConfig = {
   key: "root",
   throttle: 1000,
   storage: storage,
-  whitelist: [StoreKeys.Session, StoreKeys.Navigation, StoreKeys.Notes],
+  whitelist: [
+    StoreKeys.Session,
+    StoreKeys.Navigation,
+    StoreKeys.Notes,
+    StoreKeys.Settings,
+  ],
   transforms: [],
 };
 
 export const reducers = {
   [StoreKeys.Session]: sessionReducer,
   [StoreKeys.Navigation]: navigationReducer,
-  [StoreKeys.Notes]: notesReducer
-}
+  [StoreKeys.Notes]: notesReducer,
+  [StoreKeys.Settings]: settingsReducer,
+};
 
 export type Store = StoreType<typeof reducers>
 

@@ -7,8 +7,8 @@ export type ActionsType<A extends ActionCreatorsMapObject> = {
 };
 
 export enum currentCategoryNames {
-  home = 'Home',
-  settings = 'Settings'
+  home = "Home",
+  settings = "Settings",
 }
 
 export enum currentActionTexts {
@@ -47,20 +47,6 @@ export type currentActions = {
   updateFolder: boolean;
 };
 
-export type settings = {
-  mainColor: string;
-  noteColor: string;
-  noteSize: {
-    width: number;
-    height: number;
-  };
-  boardSize: {
-    width: number;
-    height: number;
-  };
-  fontSize: number;
-};
-
 export class SessionState {
   public loginInfo: boolean = false;
   public currentCategory: { id: string; name: string } = {
@@ -85,8 +71,6 @@ export class SessionState {
     login: false,
     foldersAndNotes: false,
   };
-
-  public settings;
 }
 
 export const sessionSlice = createSlice({

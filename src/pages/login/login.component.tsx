@@ -34,93 +34,91 @@ export const LoginComponent = () => {
     }
 
     return (
-        <Box sx={{
-            position: 'absolute',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: '300px',
-            left: '50%',
-            transform: 'translate(-50%, 0)'
-        }}>
-            <Typography
-                style={{
-                    marginBottom: '50px'
-                }}
-                variant='h2'>
-                Log In
-            </Typography>
+      <Box
+        sx={{
+          position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          top: "300px",
+          left: "50%",
+          transform: "translate(-50%, 0)",
+        }}
+      >
+        <Typography
+          style={{
+            marginBottom: "50px",
+          }}
+          variant="h2"
+        >
+          Log In
+        </Typography>
 
-            <form
-                onSubmit={handleSubmit(logInButtonClick)}>
-                <ControlledInput
-                    style={{
-                        marginBottom: '10px',
-                        width: "384px",
-                        height: "54px"
-                    }}
-                    name={"email"}
-                    title="Email Adress"
-                    control={control}
-                    type='email'
-                />
-                <ControlledInput
-                    style={{
-                        marginBottom: '10px',
-                        width: "384px",
-                        height: "54px"
-                    }}
-                    name={"password"}
-                    title="Password"
-                    control={control}
-                    type='password'
-                />
-                {!isLoginLoading
-                    ? (<Button
-                        style={{
-                            marginTop: '40px',
-                            left: '50%',
-                            transform: 'translate(-50%, 0)',
-                            width: '305px',
-                            height: '83px',
-                        }}
-                        type="submit"
-                    >
-                        <Typography variant='h4'>
-                            Log In
-                        </Typography>
-                    </Button>)
-
-                    : (<LoadingButton
-                        sx={{
-                            marginTop: '40px',
-                            left: '50%',
-                            transform: 'translate(-50%, 0)',
-                            width: '305px',
-                            height: '83px',
-                            backgroundColor: getPalette().primary.main,
-                        }}
-                        type="submit"
-                        loading
-                        disabled
-                        variant="outlined"
-                        size="large"
-                    />)
-                }
-            </form>
-
+        <form onSubmit={handleSubmit(logInButtonClick)}>
+          <ControlledInput
+            style={{
+              marginBottom: "10px",
+              width: "384px",
+              height: "54px",
+            }}
+            name={"email"}
+            title="Email Adress"
+            control={control}
+            type="email"
+          />
+          <ControlledInput
+            style={{
+              marginBottom: "10px",
+              width: "384px",
+              height: "54px",
+            }}
+            name={"password"}
+            title="Password"
+            control={control}
+            type="password"
+          />
+          {!isLoginLoading ? (
             <Button
-                style={{
-                    marginTop: '17px',
-                }}
-                variant='text'
-                onClick={signUpRedirectButtonClick}
+              style={{
+                marginTop: "40px",
+                left: "50%",
+                transform: "translate(-50%, 0)",
+                width: "305px",
+                height: "83px",
+              }}
+              type="submit"
             >
-                <Typography variant='h6'>
-                    Don't have an account?
-                </Typography>
+              <Typography variant="h4">Log In</Typography>
             </Button>
-        </Box >
-    )
+          ) : (
+            <LoadingButton
+              sx={{
+                marginTop: "40px",
+                left: "50%",
+                transform: "translate(-50%, 0)",
+                width: "305px",
+                height: "83px",
+                backgroundColor: getPalette().primary.main,
+              }}
+              type="submit"
+              loading
+              disabled
+              variant="outlined"
+              size="large"
+            />
+          )}
+        </form>
+
+        <Button
+          style={{
+            marginTop: "17px",
+          }}
+          variant="text"
+          onClick={signUpRedirectButtonClick}
+        >
+          <Typography variant="h6">Don't have an account?</Typography>
+        </Button>
+      </Box>
+    );
 }
