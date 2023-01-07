@@ -1,8 +1,6 @@
 import React from 'react'
-import { Box, ListItemButton, ListItemText, Typography } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { KeyboardArrowDown } from '@mui/icons-material'
-import { Dictionary } from '@reduxjs/toolkit'
+import { Box, ListItemButton, ListItemText } from "@mui/material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 import { NoteCategory } from '../../redux/notes/notes.types'
 import { getPalette } from '../../theme/theme.palette'
 

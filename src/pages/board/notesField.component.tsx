@@ -1,25 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  Box,
-  CircularProgress,
-  IconButton,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { getPalette } from "../../theme/theme.palette";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { sessionSelectors } from "../../redux/session/session.selectors";
 import { notesSelectors } from "../../redux/notes/notes.selectors";
 import { NoteModel } from "../../swagger/api";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import { notesActions } from "../../redux/notes/notes.slice";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { HomePageComponent } from "./homePage.component";
 import { SettingsComponent } from "./settigns.component";
 import { NoteComponent } from "../../components/note.component";
-import { EditNoteComponent } from "./editNote.component";
 
 export enum pageNames {
   addNote = "addNote",
@@ -34,7 +23,6 @@ export interface CategoryListComponentProps {}
 export const NotesFieldComponent: React.FC<
   CategoryListComponentProps
 > = ({}) => {
-  const dispatch = useDispatch();
   const [pageToShow, setPageToShow] = useState<string>("");
 
   const foldersAndNotes = useSelector(notesSelectors.noteCategories);
@@ -70,10 +58,6 @@ export const NotesFieldComponent: React.FC<
     }
   }, [currentCategoryName, areFoldersAndNotesLoading, currentAction]);
 
-  const handleAddNote = () => {
-    dispatch(notesActions.newNote({}));
-  };
-
   return (
     <Box
       id={"notesContainer"}
@@ -89,21 +73,6 @@ export const NotesFieldComponent: React.FC<
       }}
     >
       {pageToShow === pageNames.loading && <CircularProgress />}
-
-      {pageToShow === pageNames.addNote && (
-        <IconButton size="large" onClick={handleAddNote}>
-          <NoteAddIcon fontSize="large" />
-          <Typography
-            style={{
-              marginRight: "30px",
-              marginLeft: "12px",
-            }}
-            variant="h6"
-          >
-            Add first note
-          </Typography>
-        </IconButton>
-      )}
 
       {pageToShow === pageNames.notes &&
         currentCategoryNotes.map((note: NoteModel) => {

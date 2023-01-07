@@ -13,12 +13,14 @@ import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
 import OpacityIcon from "@mui/icons-material/Opacity";
 import { NoteModel } from "../swagger/api";
+import { LoadingButton } from "@mui/lab";
 
 export interface ConfirmPopupComponentProps {
   popupTitle: string;
   popupContent: any;
   handleClose: () => void;
   handleConfirm: () => void;
+  isLoading: boolean;
 }
 
 export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
@@ -26,6 +28,7 @@ export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
   popupTitle,
   popupContent,
   handleConfirm,
+  isLoading,
 }) => {
   return (
     <PopupComponent
@@ -42,7 +45,7 @@ export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
             {popupContent}
           </Box>
           <Box>
-            <Button
+            <LoadingButton
               style={{
                 marginTop: "60px",
                 left: "50%",
@@ -58,9 +61,10 @@ export const ConfirmPopupComponent: React.FC<ConfirmPopupComponentProps> = ({
                 handleConfirm();
                 handleClose();
               }}
+              loading={isLoading}
             >
               <Typography variant="h4">Confirm</Typography>
-            </Button>
+            </LoadingButton>
           </Box>
 
           <Box>

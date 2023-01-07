@@ -11,16 +11,17 @@ import { getCategoriesAndNotesSaga } from "../getCategoriesAndNotes/getCategorie
 import { notesActions } from "../notes.slice";
 
 export function* updateNoteSaga(action: notesActions["updateNote"]) {
-  //yield* put(sessionActions.setFoldersAndNotesLoading(true))
   yield* put(sessionActions.setCurrentAction(currentActionNames.updateNote));
 
-  const responseCreateFolder = yield* call(
-    NotesService.notesControllerUpdate,
-    action.payload.noteId,
-    action.payload.noteElements
-  );
+  try {
+    yield* call(
+      NotesService.notesControllerUpdate,
+      action.payload.noteId,
+      action.payload.noteElements
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
-  // yield* call(getCategoriesAndNotesSaga)
-  // yield* put(sessionActions.setFoldersAndNotesLoading(false))
-  yield* put(sessionActions.setCurrentAction(""));
+  yield* put(sessionActions.removeCurrentAction(currentActionNames.updateNote));
 }

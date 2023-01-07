@@ -1,23 +1,26 @@
 import { IconButton, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NoteModel } from "../../swagger/api";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MUIRichTextEditor from "mui-rte";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notesActions } from "../../redux/notes/notes.slice";
 import { colorShade, invertColor } from "../../common";
 import { ChangeNoteColorComponent } from "../../components/changeNoteColor.component";
-import { convertToRaw } from "draft-js";
 import { OneInputComponent } from "../../components/oneInputPopup.component";
 import EditIcon from "@mui/icons-material/Edit";
-import { convertFromRaw, RawDraftContentState } from "draft-js";
+import { convertFromRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import { ConfirmPopupComponent } from "../../components/confirmPopup";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { currentActionNames } from "../../redux/session/session.slice";
+import { sessionSelectors } from "../../redux/session/session.selectors";
 import { getPalette } from "../../theme/theme.palette";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
 export interface EditNoteComponentProps {
   note: NoteModel;
   handleClose: () => void;
@@ -28,37 +31,27 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
   handleClose,
 }) => {
   const dispatch = useDispatch();
+
   const [color, setColor] = useState<string>(note.color);
   const [showChangeNoteColorComponent, setShowChangeNoteColorComponent] =
     useState<boolean>(false);
   const [changeNoteName, setChangeNoteName] = useState<boolean>(false);
   const [blink, setBlink] = useState<string>("");
+  const [blinkColor, setBlinkColor] = useState<string>("");
 
-  const handleCloseColorPopup = () => {
-    setShowChangeNoteColorComponent(false);
-  };
+  const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
+  const [removeNote, setRemoveNote] = useState<boolean>(false);
+  const [openRemoveNote, setOpenRemoveNote] = useState<boolean>(false);
 
-  const handleShowColorsPopup = () => {
-    setShowChangeNoteColorComponent(true);
-  };
-
-  const handleCloseChangeNoteName = () => {
-    setChangeNoteName(false);
-  };
-
-  const handleShowChangeNoteName = () => {
-    setChangeNoteName(true);
-  };
-
-  const handleChangeColor = (color: string) => {
-    setBlink("blink_me");
-    setColor(color);
-  };
+  const removeNoteActionStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.removingNote)
+  );
 
   const ref = useRef(null);
   const handleClick = () => {
     ref.current?.save();
   };
+
   const handleSaveClick = (data) => {
     dispatch(
       notesActions.updateNote({
@@ -68,6 +61,16 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
       })
     );
     setBlink("");
+    setBlinkColor("");
+  };
+
+  const handleChangeColor = (color: string) => {
+    if (color === note.color) {
+      setBlinkColor("");
+    } else {
+      setBlinkColor("blink_me");
+    }
+    setColor(color);
   };
 
   const handleOnChange = (data) => {
@@ -92,22 +95,22 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
         noteElements: { name: value.value },
       })
     );
-    handleCloseChangeNoteName();
+    setChangeNoteName(false);
   };
 
-  const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
-
-  const handleCloseConfirmPopup = () => {
-    setShowConfirmPopup(false);
+  const handleConfirmRemoveNote = () => {
+    dispatch(notesActions.removeNote(note.id));
+    setRemoveNote(false);
   };
 
-  const handleShowConfirmPopup = () => {
-    setShowConfirmPopup(true);
-  };
-
-  const handleClickConfirmPopup = () => {
-    handleClose();
-  };
+  useEffect(() => {
+    if (!removeNote && !removeNoteActionStatus) {
+      setOpenRemoveNote(false);
+    }
+    if (removeNote) {
+      setOpenRemoveNote(true);
+    }
+  }, [removeNoteActionStatus, removeNote]);
 
   const darkNoteColor = colorShade(color, -30);
   const lightNoteColor = colorShade(color, 65);
@@ -132,7 +135,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
     >
       {showChangeNoteColorComponent && (
         <ChangeNoteColorComponent
-          handleCloseColorPopup={handleCloseColorPopup}
+          handleCloseColorPopup={() => setShowChangeNoteColorComponent(false)}
           handleChangeColor={handleChangeColor}
           note={note}
         />
@@ -140,23 +143,45 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
 
       {changeNoteName && (
         <OneInputComponent
-          handleClosePopup={handleCloseChangeNoteName}
+          handleClosePopup={() => setChangeNoteName(false)}
           handleConfirm={handleConfirmChangeNoteName}
           inputTitle="Note name"
           popupTtitle="Change note name"
+          isLoading={false}
         />
       )}
 
       {showConfirmPopup && (
         <ConfirmPopupComponent
-          handleClose={handleCloseConfirmPopup}
-          handleConfirm={handleClickConfirmPopup}
+          handleClose={() => setShowConfirmPopup(false)}
+          handleConfirm={() => handleClose()}
           popupTitle="Close note editing"
           popupContent={
             <Typography variant="h5">
               Are you sure you want to close note editing ?
               <br />
               You will lose all new changes.
+            </Typography>
+          }
+          isLoading={false}
+        />
+      )}
+
+      {openRemoveNote && (
+        <ConfirmPopupComponent
+          handleClose={() => setRemoveNote(false)}
+          handleConfirm={() => handleConfirmRemoveNote()}
+          popupTitle="Remove note"
+          isLoading={removeNoteActionStatus}
+          popupContent={
+            <Typography variant="h5">
+              Are you sure you want to remove
+              <text style={{ color: getPalette().primary.light }}>
+                {" " + note.name + " "}
+              </text>
+              note?
+              <br />
+              You will lose it forever.
             </Typography>
           }
         />
@@ -222,11 +247,17 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             sx={{
               color: "black",
             }}
-            onClick={handleShowColorsPopup}
+          >
+            <NotificationsIcon fontSize="large" />
+          </IconButton>
+          <IconButton
+            sx={{
+              color: "black",
+            }}
+            onClick={() => setShowChangeNoteColorComponent(true)}
           >
             <ColorLensIcon fontSize="large" />
           </IconButton>
-
           <Typography
             color={"black"}
             variant={"body2"}
@@ -239,14 +270,21 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
           >
             {note.name}
           </Typography>
-
           <IconButton
             sx={{
               color: "black",
             }}
-            onClick={handleShowChangeNoteName}
+            onClick={() => setChangeNoteName(true)}
           >
             <EditIcon fontSize="large" />
+          </IconButton>
+          <IconButton
+            sx={{
+              color: "black",
+            }}
+            onClick={() => setRemoveNote(true)}
+          >
+            <DeleteForeverIcon fontSize="large" />
           </IconButton>
         </Box>
 
@@ -269,14 +307,14 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             }}
           >
             <Typography
-              className={blink}
+              className={blink ? blink : blinkColor}
               style={{
                 marginRight: "8px",
                 fontWeight: "bold",
               }}
               variant="h5"
             >
-              {blink ? "Save Changes" : "No Change"}
+              {blink || blinkColor ? "Save Changes" : "No Change"}
             </Typography>
             <SaveIcon fontSize="large" />
           </IconButton>
@@ -286,8 +324,8 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
               color: "black",
             }}
             onClick={() => {
-              if (blink) {
-                handleShowConfirmPopup();
+              if (blink || blinkColor) {
+                setShowConfirmPopup(true);
               } else {
                 handleClose();
               }

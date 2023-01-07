@@ -11,7 +11,7 @@ export enum currentCategoryNames {
   settings = 'Settings'
 }
 
-export enum currentActionNames {
+export enum currentActionTexts {
   addingFolder = "Adding category",
   addingNote = "Adding note",
   removingFolder = "Removing category",
@@ -21,6 +21,28 @@ export enum currentActionNames {
   loadingFoldersAndNotes = "Loading categories and notes",
   updateNote = "Updating note",
 }
+
+export enum currentActionNames {
+  addingFolder = "addingFolder",
+  addingNote = "addingNote",
+  removingFolder = "removingFolder",
+  removingNote = "removingNote",
+  savingNote = "savingNote",
+  editingNote = "editingNote",
+  loadingFoldersAndNotes = "loadingFoldersAndNotes",
+  updateNote = "updateNote",
+}
+
+export type currentActions = {
+  addingFolder: boolean;
+  addingNote: boolean;
+  removingFolder: boolean;
+  removingNote: boolean;
+  savingNote: boolean;
+  editingNote: boolean;
+  loadingFoldersAndNotes: boolean;
+  updateNote: boolean;
+};
 
 export type settings = {
   mainColor: string;
@@ -37,12 +59,22 @@ export type settings = {
 };
 
 export class SessionState {
+  public loginInfo: boolean = false;
   public currentCategory: { id: string; name: string } = {
     id: "",
     name: currentCategoryNames.home,
   };
   public currentNote: { id: string; name: string } = { id: "", name: "" };
-  public currentAction: string = "Editing Note";
+  public currentAction: currentActions = {
+    addingFolder: false,
+    addingNote: false,
+    editingNote: false,
+    loadingFoldersAndNotes: false,
+    removingFolder: false,
+    removingNote: false,
+    savingNote: false,
+    updateNote: false,
+  };
 
   public authToken: string = "";
   public loading: { login: boolean; foldersAndNotes: boolean } = {
@@ -57,29 +89,41 @@ export const sessionSlice = createSlice({
   initialState: { ...new SessionState() },
   name: StoreKeys.Session,
   reducers: {
+    setLoginInfo: (state, action: PayloadAction<boolean>) => {
+      state.loginInfo = action.payload;
+    },
     login: (state, _action: PayloadAction<LoginReqDTO>) => state,
     signUp: (state, _action: PayloadAction<SignupReqDTO>) => state,
     refreshPage: (state, _action) => state,
-    setCurrentCategory: (state, action: PayloadAction<{ id: string, name: string }>) => {
-      state.currentCategory = action.payload
+    setCurrentCategory: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>
+    ) => {
+      state.currentCategory = action.payload;
     },
-    setCurrentNote: (state, action: PayloadAction<{ id: string, name: string }>) => {
-      state.currentNote = action.payload
+    setCurrentNote: (
+      state,
+      action: PayloadAction<{ id: string; name: string }>
+    ) => {
+      state.currentNote = action.payload;
     },
     setCurrentAction: (state, action: PayloadAction<string>) => {
-      state.currentAction = action.payload
+      state.currentAction[action.payload] = true;
+    },
+    removeCurrentAction: (state, action: PayloadAction<string>) => {
+      state.currentAction[action.payload] = false;
     },
     setAuthToken: (state, action: PayloadAction<string>) => {
-      state.authToken = action.payload
+      state.authToken = action.payload;
     },
     setLoginLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading.login = action.payload
+      state.loading.login = action.payload;
     },
     setFoldersAndNotesLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading.foldersAndNotes = action.payload
+      state.loading.foldersAndNotes = action.payload;
     },
-  }
-})
+  },
+});
 
 export const sessionActions = sessionSlice.actions
 export const sessionReducer = sessionSlice.reducer

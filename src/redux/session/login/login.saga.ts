@@ -17,20 +17,29 @@ export function* loginSaga(action: SessionActions['login']) {
     yield* put(sessionActions.setFoldersAndNotesLoading(true))
     yield* put(sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes))
 
-    const responseLogin = yield* call(
-        UserService.userControllerLogin,
-        action.payload
-    )
+    let responseLogin;
+    try {
+      responseLogin =
+        yield * call(UserService.userControllerLogin, action.payload);
+    } catch (error) {
+      console.error(error);
+    }
 
-    yield* put(navigationActions.navigate(RouterPaths.Notes))
-    
-    yield* put(sessionActions.setAuthToken(responseLogin.accessToken))
-    yield* call(setToken, responseLogin.accessToken)
+    yield * put(sessionActions.setLoginInfo(true));
+    yield * put(navigationActions.navigate(RouterPaths.Notes));
 
-    yield* call(getCategoriesAndNotesSaga)
-    yield* put(sessionActions.setCurrentCategory(currentCategory))
-    yield* put(sessionActions.setLoginLoading(false))
-    yield* put(sessionActions.setFoldersAndNotesLoading(false))
-    yield* put(sessionActions.setCurrentAction(''))
+    yield * put(sessionActions.setAuthToken(responseLogin.accessToken));
+    yield * call(setToken, responseLogin.accessToken);
+
+    yield * call(getCategoriesAndNotesSaga);
+    yield * put(sessionActions.setCurrentCategory(currentCategory));
+    yield * put(sessionActions.setLoginLoading(false));
+    yield * put(sessionActions.setFoldersAndNotesLoading(false));
+    yield *
+      put(
+        sessionActions.removeCurrentAction(
+          currentActionNames.loadingFoldersAndNotes
+        )
+      );
 
 }   

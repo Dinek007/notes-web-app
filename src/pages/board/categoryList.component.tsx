@@ -1,28 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { notesSelectors } from "../../redux/notes/notes.selectors";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { notesActions } from "../../redux/notes/notes.slice";
-import { sessionActions } from "../../redux/session/session.slice";
+import {
+  currentActionNames,
+  sessionActions,
+} from "../../redux/session/session.slice";
 import { sessionSelectors } from "../../redux/session/session.selectors";
 import { getPalette } from "../../theme/theme.palette";
+import { AddItemComponent } from "../../components/addItemFrom.component";
 
-export interface CategoryListComponentProps {
-  handleShowAddCategoryPopup: () => void;
-}
+export interface CategoryListComponentProps {}
 
-export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
-  handleShowAddCategoryPopup,
-}) => {
+export const CategoryListComponent: React.FC<
+  CategoryListComponentProps
+> = ({}) => {
   const dispatch = useDispatch();
   const categories = useSelector(notesSelectors.noteCategories);
   const currentCategory = useSelector(sessionSelectors.currentCategory);
+  const addCategoryActionStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.addingFolder)
+  );
+
+  const [showAddCategoryForm, setShowAddCategoryForm] =
+    useState<boolean>(false);
+  const [openAddCategory, setOpenAddCategory] = useState<boolean>(false);
 
   const handleCategoryClick = (name) => {
     dispatch(sessionActions.setCurrentCategory(name));
   };
+
+  useEffect(() => {
+    if (!showAddCategoryForm && !addCategoryActionStatus) {
+      setOpenAddCategory(false);
+    }
+    if (showAddCategoryForm) {
+      setOpenAddCategory(true);
+    }
+  }, [addCategoryActionStatus, showAddCategoryForm]);
 
   return (
     <Box
@@ -38,6 +54,12 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
         paddingTop: "70px",
       }}
     >
+      {openAddCategory && (
+        <AddItemComponent
+          isLoading={addCategoryActionStatus}
+          handleCloseAddCategoryPopup={() => setShowAddCategoryForm(false)}
+        />
+      )}
       <Button
         style={{
           width: "90px",
@@ -47,7 +69,7 @@ export const CategoryListComponent: React.FC<CategoryListComponentProps> = ({
           marginBottom: "68px",
           backgroundColor: getPalette().primary.dark,
         }}
-        onClick={handleShowAddCategoryPopup}
+        onClick={() => setShowAddCategoryForm(true)}
       >
         <Typography variant="h1"> + </Typography>
       </Button>

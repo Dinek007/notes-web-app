@@ -1,23 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-
-import { AddCategoryValues } from "../pages/board/main.field";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ControlledInput } from "./TextInput/TextInput.controlled";
-import { defaultAddCategoryValues } from "../pages/board/main.field";
-
 import { getPalette } from "../theme/theme.palette";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { notesActions } from "../redux/notes/notes.slice";
-import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
-import { NoteModel } from "../swagger/api";
+import { LoadingButton } from "@mui/lab";
 
 export interface OneInputComponentProps {
   handleClosePopup: () => void;
   handleConfirm: (value) => void;
   popupTtitle: string;
   inputTitle: string;
+  isLoading: boolean;
 }
 
 export const OneInputComponent: React.FC<OneInputComponentProps> = ({
@@ -25,9 +19,8 @@ export const OneInputComponent: React.FC<OneInputComponentProps> = ({
   popupTtitle,
   inputTitle,
   handleConfirm,
+  isLoading,
 }) => {
-  const dispatch = useDispatch();
-
   const { handleSubmit, control, formState } = useForm({
     defaultValues: { value: "" },
     mode: "onChange",
@@ -51,7 +44,7 @@ export const OneInputComponent: React.FC<OneInputComponentProps> = ({
               type="text"
             />
           </Box>
-          <Button
+          <LoadingButton
             style={{
               marginTop: "60px",
               left: "50%",
@@ -62,9 +55,10 @@ export const OneInputComponent: React.FC<OneInputComponentProps> = ({
               boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"
+            loading={isLoading}
           >
             <Typography variant="h4">Confirm</Typography>
-          </Button>
+          </LoadingButton>
         </form>
       }
     ></PopupComponent>

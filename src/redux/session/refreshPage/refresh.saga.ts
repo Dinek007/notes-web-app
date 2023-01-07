@@ -5,14 +5,26 @@ import { sessionSelectors } from '../session.selectors';
 import { currentActionNames, sessionActions, SessionActions } from '../session.slice';
 
 export function* refreshPageSaga(_action: SessionActions['refreshPage']) {
-    const token = yield* select(sessionSelectors.authToken)
+    const loginInfo = yield * select(sessionSelectors.loginInfo);
+    if (!loginInfo) return;
 
-    yield* call(setToken, token)
+    const token = yield * select(sessionSelectors.authToken);
 
-    yield* put(sessionActions.setFoldersAndNotesLoading(true))
-    yield* put(sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes))
+    yield * call(setToken, token);
+    yield * put(sessionActions.setFoldersAndNotesLoading(true));
+    yield *
+      put(
+        sessionActions.setCurrentAction(
+          currentActionNames.loadingFoldersAndNotes
+        )
+      );
 
-    yield* call(getCategoriesAndNotesSaga)
-    yield* put(sessionActions.setFoldersAndNotesLoading(false))
-    yield* put(sessionActions.setCurrentAction(''))
+    yield * call(getCategoriesAndNotesSaga);
+    yield * put(sessionActions.setFoldersAndNotesLoading(false));
+    yield *
+      put(
+        sessionActions.removeCurrentAction(
+          currentActionNames.loadingFoldersAndNotes
+        )
+      );
 }   

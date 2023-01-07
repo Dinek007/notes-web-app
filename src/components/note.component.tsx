@@ -12,13 +12,21 @@ import { colorShade } from "../common";
 import { convertFromRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import { notesSelectors } from "../redux/notes/notes.selectors";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { ConfirmPopupComponent } from "./confirmPopup";
+import {
+  currentActionNames,
+  sessionActions,
+} from "../redux/session/session.slice";
+import { sessionSelectors } from "../redux/session/session.selectors";
+import { getPalette } from "../theme/theme.palette";
+
 export interface NoteComponentProps {
   note: NoteModel;
 }
 
 export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const dispatch = useDispatch();
-  const biggestIndex = useSelector(notesSelectors.biggestZIndex);
 
   const [noteWidth, setNoteWidth] = useState<number>(note.width);
   const [noteHeight, setNoteHeight] = useState<number>(note.height);
@@ -26,8 +34,18 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   const [noteY, setNoteY] = useState<number>(note.y);
   const [openEditing, setOpenEditing] = useState<boolean>(false);
   const [zIndex, setZIndex] = useState<number>(note.zIndex);
+  const [removeNote, setRemoveNote] = useState<boolean>(false);
+  const [openRemoveNote, setOpenRemoveNote] = useState<boolean>(false);
+
+  const biggestIndex = useSelector(notesSelectors.biggestZIndex);
+  const removeNoteActionStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.removingNote)
+  );
 
   const darkNoteColor = colorShade(note.color, -30);
+  const parsedRawContent = JSON.parse(note.content);
+  const contentState = convertFromRaw(parsedRawContent);
+  const htmlContent = stateToHTML(contentState);
 
   useEffect(() => {
     setNoteWidth(note.width);
@@ -67,140 +85,177 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     setNoteHeight(height);
   };
 
-  const handleClickEdit = () => {
-    setOpenEditing(true);
+  const handleConfirmRemoveNote = () => {
+    dispatch(notesActions.removeNote(note.id));
+    setRemoveNote(false);
   };
 
-  const handleCloseNoteEdit = () => {
-    setOpenEditing(false);
-  };
-
-  const parsedRawContent = JSON.parse(note.content);
-  const contentState = convertFromRaw(parsedRawContent);
-  const htmlContent = stateToHTML(contentState);
+  useEffect(() => {
+    if (!removeNote && !removeNoteActionStatus) {
+      setOpenRemoveNote(false);
+    }
+    if (removeNote) {
+      setOpenRemoveNote(true);
+    }
+  }, [removeNoteActionStatus, removeNote]);
 
   return (
-    <Box
-      onMouseDown={() => {
-        setZIndex(biggestIndex + 1);
-        dispatch(
-          notesActions.updateNote({
-            noteId: note.id,
-            folderId: note.folderId,
-            noteElements: { zIndex: biggestIndex + 1 },
-          })
-        );
-      }}
-      sx={{
-        position: "relative",
-        zIndex: zIndex,
-      }}
-    >
-      <Rnd
-        size={{ width: noteWidth, height: noteHeight }}
-        position={{ x: noteX, y: noteY }}
-        onDragStop={(e, d) => {
-          handleDragStop(d.x, d.y);
+    <>
+      {openEditing && (
+        <EditNoteComponent
+          note={note}
+          handleClose={() => setOpenEditing(false)}
+        />
+      )}
+
+      {openRemoveNote && (
+        <ConfirmPopupComponent
+          handleClose={() => setRemoveNote(false)}
+          handleConfirm={() => handleConfirmRemoveNote()}
+          popupTitle="Remove note"
+          isLoading={removeNoteActionStatus}
+          popupContent={
+            <Typography variant="h5">
+              Are you sure you want to remove
+              <text style={{ color: getPalette().primary.light }}>
+                {" " + note.name + " "}
+              </text>
+              note?
+              <br />
+              You will lose it forever.
+            </Typography>
+          }
+        />
+      )}
+      <Box
+        onMouseDown={(data: any) => {
+          if (typeof data.target.className === "string") {
+            setZIndex(biggestIndex + 1);
+            dispatch(
+              notesActions.updateNote({
+                noteId: note.id,
+                folderId: note.folderId,
+                noteElements: { zIndex: biggestIndex + 1 },
+              })
+            );
+          }
         }}
-        onResizeStop={(e, direction, ref, delta, position) => {
-          handleResizeStop(ref.offsetWidth, ref.offsetHeight);
-        }}
-        onResize={(e, direction, ref, delta, position) => {
-          handleResize(ref.offsetWidth, ref.offsetHeight);
-        }}
-        dragHandleClassName={"handle"}
-        enableResizing={{
-          top: false,
-          right: false,
-          bottom: false,
-          left: false,
-          topRight: false,
-          bottomRight: true,
-          bottomLeft: false,
-          topLeft: false,
+        sx={{
+          position: "relative",
+          zIndex: zIndex,
         }}
       >
-        <Box
-          sx={{
-            width: `${noteWidth}px`,
-            height: `${noteHeight}px`,
-            backgroundColor: `${note.color}`,
-            borderRadius: "0px, 0px, 0px, 0px",
-            color: "#000000",
-
-            boxShadow:
-              "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;   ",
+        <Rnd
+          size={{ width: noteWidth, height: noteHeight }}
+          position={{ x: noteX, y: noteY }}
+          onDragStop={(e, d) => {
+            handleDragStop(d.x, d.y);
+          }}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            handleResizeStop(ref.offsetWidth, ref.offsetHeight);
+          }}
+          onResize={(e, direction, ref, delta, position) => {
+            handleResize(ref.offsetWidth, ref.offsetHeight);
+          }}
+          dragHandleClassName={"handle"}
+          enableResizing={{
+            top: false,
+            right: false,
+            bottom: false,
+            left: false,
+            topRight: false,
+            bottomRight: true,
+            bottomLeft: false,
+            topLeft: false,
           }}
         >
           <Box
-            className="handle"
             sx={{
-              display: "flex",
-              background: `linear-gradient(${note.color}, ${darkNoteColor})`,
-              backgroundBlendMode: "multiply",
-              height: "30px",
-              justifyContent: "center",
-              alignItems: "center",
-              alignContent: "center",
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              {note.name}
-            </Typography>
-          </Box>
-          <IconButton
-            size="small"
-            sx={{
-              position: "absolute",
-              right: "0px",
-              top: "0px",
-              color: "black",
-            }}
-            onClick={handleClickEdit}
-          >
-            <EditIcon />
-          </IconButton>
-          <Box
-            sx={{
-              paddingLeft: "10px",
-              paddingRight: "10px",
-              top: "30px",
-              height: " calc(100% - 50px)",
               width: `${noteWidth}px`,
-              left: "0px",
-              position: "absolute",
+              height: `${noteHeight}px`,
+              backgroundColor: `${note.color}`,
+              borderRadius: "0px, 0px, 0px, 0px",
+              color: "#000000",
+
+              boxShadow:
+                "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;   ",
             }}
           >
             <Box
+              className="handle"
               sx={{
-                width: `${noteWidth}px`,
+                display: "flex",
+                background: `linear-gradient(${note.color}, ${darkNoteColor})`,
+                backgroundBlendMode: "multiply",
+                height: "30px",
+                justifyContent: "center",
+                alignItems: "center",
+                alignContent: "center",
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                {note.name}
+              </Typography>
+            </Box>
+            <Box sx={{ position: "absolute", right: "0px", top: "0px" }}>
+              <IconButton
+                size="small"
+                sx={{
+                  color: "black",
+                }}
+                onClick={() => setOpenEditing(true)}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                className="sciera"
+                id="xd"
+                size="small"
+                sx={{
+                  color: "black",
+                }}
+                onClick={() => setRemoveNote(true)}
+              >
+                <DeleteForeverIcon />
+              </IconButton>
+            </Box>
+            <Box
+              sx={{
                 paddingLeft: "10px",
                 paddingRight: "10px",
-                height: "100%",
-                inlineSize: `${noteWidth}px`,
-                overflowWrap: "break-word",
-                position: "absolute",
+                top: "30px",
+                height: " calc(100% - 50px)",
+                width: `${noteWidth}px`,
                 left: "0px",
-                overflowY: "auto",
+                position: "absolute",
               }}
-              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            >
+              <Box
+                sx={{
+                  width: `${noteWidth}px`,
+                  paddingLeft: "10px",
+                  paddingRight: "10px",
+                  height: "100%",
+                  inlineSize: `${noteWidth}px`,
+                  overflowWrap: "break-word",
+                  position: "absolute",
+                  left: "0px",
+                  overflowY: "auto",
+                }}
+                dangerouslySetInnerHTML={{ __html: htmlContent }}
+              />
+            </Box>
+            <SouthEastIcon
+              sx={{
+                position: "absolute",
+                right: "0px",
+                bottom: "0px",
+              }}
+              fontSize="small"
             />
           </Box>
-
-          <SouthEastIcon
-            sx={{
-              position: "absolute",
-              right: "0px",
-              bottom: "0px",
-            }}
-            fontSize="small"
-          />
-        </Box>
-      </Rnd>
-
-      {openEditing && (
-        <EditNoteComponent note={note} handleClose={handleCloseNoteEdit} />
-      )}
-    </Box>
+        </Rnd>
+      </Box>
+    </>
   );
 };

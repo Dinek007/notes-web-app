@@ -33,18 +33,15 @@ export const notesSlice = createSlice({
   reducers: {
     newCategory: (state, _action: PayloadAction<CategoryData>) => state,
     removeCategory: (state, _action: PayloadAction<string>) => state,
-    newNote: (state, _action) => state,
+    newNote: (state, _action: PayloadAction<string>) => state,
     removeNote: (state, _action: PayloadAction<string>) => state,
     updateNote: (state, action: PayloadAction<updateNotePayload>) => {
-      const {folderId, noteId} = action.payload
+      const { folderId, noteId } = action.payload;
 
-      notesAdapter.updateOne(
-        state.categories.entities[folderId].notes,
-        {
-          id: noteId,
-          changes: action.payload.noteElements
-        }
-      )
+      notesAdapter.updateOne(state.categories.entities[folderId].notes, {
+        id: noteId,
+        changes: action.payload.noteElements,
+      });
 
       // noteCategoriesAdapter.updateOne(
       //   state.categories,
@@ -53,28 +50,30 @@ export const notesSlice = createSlice({
       //     notes:{
       //       ...state.categories.entities[folderId].notes
       //     },
-        
+
       //   }
       //   }
       // )
     },
     getCategoriesAndNotes: (state, _action) => state,
-    setCategoriesWithNotes: (state, action: PayloadAction<SetNotesAndCategoriesPayload>) => {
-      const { categories, notes } = action.payload
-      const categoriesWithNotes: NoteCategory[] = []
+    setCategoriesWithNotes: (
+      state,
+      action: PayloadAction<SetNotesAndCategoriesPayload>
+    ) => {
+      const { categories, notes } = action.payload;
+      const categoriesWithNotes: NoteCategory[] = [];
 
       for (let category of categories) {
-        const categoryNotes = notes[category.id] ? notes[category.id] : []
+        const categoryNotes = notes[category.id] ? notes[category.id] : [];
         categoriesWithNotes.push({
           ...category,
-          notes: notesAdapter.setAll({ ids: [], entities: {} }, categoryNotes)
-        })
+          notes: notesAdapter.setAll({ ids: [], entities: {} }, categoryNotes),
+        });
       }
-      noteCategoriesAdapter.setAll(state.categories, categoriesWithNotes)
+      noteCategoriesAdapter.setAll(state.categories, categoriesWithNotes);
     },
-
-  }
-})
+  },
+});
 
 export const notesActions = notesSlice.actions
 export const notesReducer = notesSlice.reducer

@@ -1,5 +1,5 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import { AddCategoryValues } from "../pages/board/main.field";
 import { Box, Button, IconButton, Typography } from "@mui/material";
@@ -11,13 +11,16 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { notesActions } from "../redux/notes/notes.slice";
 import { useDispatch } from "react-redux";
 import { PopupComponent } from "./popup.component";
+import { LoadingButton } from "@mui/lab";
 
 export interface AddItemComponentProps {
   handleCloseAddCategoryPopup: () => void;
+  isLoading: boolean;
 }
 
 export const AddItemComponent: React.FC<AddItemComponentProps> = ({
   handleCloseAddCategoryPopup,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
 
@@ -66,7 +69,8 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
               type="text"
             />
           </Box>
-          <Button
+          <LoadingButton
+            loading={isLoading}
             style={{
               marginTop: "60px",
               left: "50%",
@@ -79,7 +83,7 @@ export const AddItemComponent: React.FC<AddItemComponentProps> = ({
             type="submit"
           >
             <Typography variant="h4">Confirm</Typography>
-          </Button>
+          </LoadingButton>
         </form>
       }
     ></PopupComponent>

@@ -10,16 +10,12 @@ import { StoreKeys } from './store.keys'
 import { StoreType } from './store.types'
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   throttle: 1000,
   storage: storage,
-  whitelist: [
-    StoreKeys.Session,
-    StoreKeys.Navigation,
-    StoreKeys.Notes
-  ],
-  transforms: []
-}
+  whitelist: [StoreKeys.Session, StoreKeys.Navigation, StoreKeys.Notes],
+  transforms: [],
+};
 
 export const reducers = {
   [StoreKeys.Session]: sessionReducer,

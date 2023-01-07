@@ -14,10 +14,14 @@ export function* getCategoriesAndNotesSaga() {
         FoldersService.foldersControllerGetUserFolders)
 
     for (let folder of responseGetAllCategories.folders) {
-        const responseGetAllNotes = yield* call(
-            NotesService.notesControllerFindAll,
-            folder.id
-        )
+        let responseGetAllNotes;
+        try {
+          responseGetAllNotes =
+            yield * call(NotesService.notesControllerFindAll, folder.id);
+        } catch (error) {
+          console.error(error);
+        }
+    
         notes[folder.id] = responseGetAllNotes.notes
     }
 

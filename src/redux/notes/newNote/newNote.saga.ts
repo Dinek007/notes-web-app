@@ -11,32 +11,32 @@ import {
   sessionActions,
 } from "../../session/session.slice";
 import { getCategoriesAndNotesSaga } from "../getCategoriesAndNotes/getCategoriesAndNotes.saga";
+import { notesSelectors } from "../notes.selectors";
 import { notesActions } from "../notes.slice";
 
-export function* newNoteSaga(_action: notesActions["newNote"]) {
-  yield* put(sessionActions.setFoldersAndNotesLoading(true));
+export function* newNoteSaga(action: notesActions["newNote"]) {
   yield* put(sessionActions.setCurrentAction(currentActionNames.addingNote));
+  const biggestIndex = yield* select(notesSelectors.biggestZIndex);
   const currentCategoryData = yield* select(sessionSelectors.currentCategory);
-
   const newNoteContent = `{"blocks":[{"key":"","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`;
   const note: CreateNoteReqDto = {
     color: noteColorsPalette.yellow,
     content: newNoteContent,
     folderId: currentCategoryData.id,
     height: 270,
-    name: "New Note",
+    name: action.payload,
     width: 200,
     x: 25,
     y: 25,
-    zIndex: 100,
+    zIndex: biggestIndex + 1,
   };
 
-  const responseCreateNote = yield* call(
-    NotesService.notesControllerCreate,
-    note
-  );
+  try {
+    yield* call(NotesService.notesControllerCreate, note);
+  } catch (error) {
+    console.error(error);
+  }
 
   yield* call(getCategoriesAndNotesSaga);
-  yield* put(sessionActions.setFoldersAndNotesLoading(false));
-  yield* put(sessionActions.setCurrentAction(""));
+  yield* put(sessionActions.removeCurrentAction(currentActionNames.addingNote));
 }   

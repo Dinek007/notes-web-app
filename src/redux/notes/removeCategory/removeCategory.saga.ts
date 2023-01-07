@@ -7,25 +7,29 @@ import { getCategoriesAndNotesSaga } from '../getCategoriesAndNotes/getCategorie
 import { notesActions } from '../notes.slice';
 
 
-export function* removeCategorySaga(action: notesActions['removeCategory']) {
-    yield* put(sessionActions.setFoldersAndNotesLoading(true))
-    yield* put(sessionActions.setCurrentCategory({
-        id: '',
-        name: currentCategoryNames.home
-    }))
-    yield* put(sessionActions.setCurrentAction(currentActionNames.removingFolder))
+export function* removeCategorySaga(action: notesActions["removeCategory"]) {
+  yield* put(
+    sessionActions.setCurrentAction(currentActionNames.removingFolder)
+  );
 
+  try {
+    yield* call(
+      FoldersService.foldersControllerRemoveUserFolder,
+      action.payload
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
-    const responseRemoveFolder = yield* call(
-        FoldersService.foldersControllerRemoveUserFolder,
-        action.payload
-    )
+  yield* call(getCategoriesAndNotesSaga);
 
-    yield* call(getCategoriesAndNotesSaga)
-    yield* put(sessionActions.setCurrentCategory({
-        id: '',
-        name: currentCategoryNames.home
-    }))
-    yield* put(sessionActions.setFoldersAndNotesLoading(false))
-    yield* put(sessionActions.setCurrentAction(''))
+  yield* put(
+    sessionActions.removeCurrentAction(currentActionNames.removingFolder)
+  );
+  yield* put(
+    sessionActions.setCurrentCategory({
+      id: "",
+      name: currentCategoryNames.home,
+    })
+  );
 } 

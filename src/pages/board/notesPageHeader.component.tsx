@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { notesActions } from "../../redux/notes/notes.slice";
@@ -9,21 +9,31 @@ import HomeIcon from "@mui/icons-material/Home";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import SettingsIcon from "@mui/icons-material/Settings";
 import {
+  currentActionNames,
   currentCategoryNames,
   sessionActions,
 } from "../../redux/session/session.slice";
 import { getPalette } from "../../theme/theme.palette";
 import { ConfirmPopupComponent } from "../../components/confirmPopup";
+import { OneInputComponent } from "../../components/oneInputPopup.component";
 
 export const NotesPageHeaderComponent = () => {
   const dispatch = useDispatch();
 
+  const [showRemoveCategory, setShowRemoveCategory] = useState<boolean>(false);
+  const [openRemoveCategory, setOpenRemoveCategory] = useState<boolean>(false);
+
+  const [addNote, setAddNote] = useState<boolean>(false);
+  const [openAddNote, setOpenAddNote] = useState<boolean>(false);
+
   const currentCategory = useSelector(sessionSelectors.currentCategory);
   const currentAction = useSelector(sessionSelectors.currentAction);
-
-  const handleRemoveCategory = () => {
-    dispatch(notesActions.removeCategory(currentCategory.id));
-  };
+  const addNoteStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.addingNote)
+  );
+  const removeCategoryStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.removingFolder)
+  );
 
   const handleOpenSettings = () => {
     dispatch(
@@ -43,23 +53,32 @@ export const NotesPageHeaderComponent = () => {
     );
   };
 
-  const handleAddNote = () => {
-    dispatch(notesActions.newNote({}));
-  };
-
-  const [showConfirmPopup, setShowConfirmPopup] = useState<boolean>(false);
-
-  const handleCloseConfirmPopup = () => {
-    setShowConfirmPopup(false);
-  };
-
-  const handleShowConfirmPopup = () => {
-    setShowConfirmPopup(true);
-  };
-
   const handleClickConfirmPopup = () => {
-    handleRemoveCategory();
+    dispatch(notesActions.removeCategory(currentCategory.id));
   };
+
+  const handleConfirmAddNote = (value) => {
+    dispatch(notesActions.newNote(value.value));
+    setAddNote(false);
+  };
+
+  useEffect(() => {
+    if (!addNote && !addNoteStatus) {
+      setOpenAddNote(false);
+    }
+    if (addNote) {
+      setOpenAddNote(true);
+    }
+  }, [addNoteStatus, addNote]);
+
+  useEffect(() => {
+    if (!showRemoveCategory && !removeCategoryStatus) {
+      setOpenRemoveCategory(false);
+    }
+    if (showRemoveCategory) {
+      setOpenRemoveCategory(true);
+    }
+  }, [removeCategoryStatus, showRemoveCategory]);
 
   return (
     <Box
@@ -73,11 +92,22 @@ export const NotesPageHeaderComponent = () => {
         backgroundColor: getPalette().secondary.dark,
       }}
     >
-      {showConfirmPopup && (
+      {openAddNote && (
+        <OneInputComponent
+          handleClosePopup={() => setAddNote(false)}
+          handleConfirm={handleConfirmAddNote}
+          inputTitle="Note name"
+          popupTtitle="Add note"
+          isLoading={addNoteStatus}
+        />
+      )}
+
+      {openRemoveCategory && (
         <ConfirmPopupComponent
-          handleClose={handleCloseConfirmPopup}
+          handleClose={() => setShowRemoveCategory(false)}
           handleConfirm={handleClickConfirmPopup}
           popupTitle="Remove category"
+          isLoading={removeCategoryStatus}
           popupContent={
             <Typography variant="h5">
               Are you sure you want to delete category ?
@@ -141,7 +171,7 @@ export const NotesPageHeaderComponent = () => {
       >
         {currentCategory.id && (
           <>
-            <IconButton onClick={handleAddNote}>
+            <IconButton onClick={() => setAddNote(true)}>
               <NoteAddIcon fontSize="large" />
               <Typography
                 style={{
@@ -154,7 +184,7 @@ export const NotesPageHeaderComponent = () => {
               </Typography>
             </IconButton>
 
-            <IconButton onClick={handleShowConfirmPopup}>
+            <IconButton onClick={() => setShowRemoveCategory(true)}>
               <DeleteForeverIcon fontSize="large" />
 
               <Typography

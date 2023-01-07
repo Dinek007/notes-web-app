@@ -7,29 +7,28 @@ import { getCategoriesAndNotesSaga } from '../getCategoriesAndNotes/getCategorie
 import { notesActions } from '../notes.slice';
 
 
-export function* newCategorySaga(action: notesActions['newCategory']) {
-  yield * put(sessionActions.setFoldersAndNotesLoading(true));
-  yield *
-    put(
-      sessionActions.setCurrentCategory({
-        id: "",
-        name: currentCategoryNames.home,
-      })
+export function* newCategorySaga(action: notesActions["newCategory"]) {
+  yield* put(sessionActions.setCurrentAction(currentActionNames.addingFolder));
+
+  let responseCreateFolder;
+  try {
+    responseCreateFolder = yield* call(
+      FoldersService.foldersControllerCreate,
+      action.payload
     );
-  yield * put(sessionActions.setCurrentAction(currentActionNames.addingFolder));
+  } catch (error) {
+    console.error(error);
+  }
 
-  const responseCreateFolder =
-    yield * call(FoldersService.foldersControllerCreate, action.payload);
+  yield* call(getCategoriesAndNotesSaga);
+  yield* put(
+    sessionActions.setCurrentCategory({
+      id: responseCreateFolder.id,
+      name: responseCreateFolder.name,
+    })
+  );
 
-  yield * call(getCategoriesAndNotesSaga);
-  yield *
-    put(
-      sessionActions.setCurrentCategory({
-        id: responseCreateFolder.id,
-        name: responseCreateFolder.name,
-      })
-    );
-  yield * put(sessionActions.setFoldersAndNotesLoading(false));
-
-  yield * put(sessionActions.setCurrentAction(""));
+  yield* put(
+    sessionActions.removeCurrentAction(currentActionNames.addingFolder)
+  );
 } 

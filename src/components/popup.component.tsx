@@ -3,7 +3,7 @@ import { Box, IconButton, Typography } from "@mui/material";
 
 import { getPalette } from "../theme/theme.palette";
 import CloseIcon from "@mui/icons-material/Close";
-import { hexToRgb } from "../common";
+
 export interface PopupComponentProps {
   handleClosePopup: () => void;
   title: string;
@@ -15,8 +15,6 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
   title,
   children,
 }) => {
-  const rgbMainColor = hexToRgb(getPalette().primary.main);
-
   return (
     <Box
       sx={{
@@ -44,7 +42,6 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
           padding: "35px",
           paddingTop: "60px",
           paddingBottom: "50px",
-          //boxShadow: `rgba(${rgbMainColor}, 0.4) 5px 5px, rgba(${rgbMainColor}, 0.3) 10px 10px, rgba(${rgbMainColor}, 0.2) 15px 15px, rgba(${rgbMainColor}, 0.1) 20px 20px, rgba(${rgbMainColor}, 0.05) 25px 25px`,
           boxShadow: `rgba(0,0,0, 0.24) 0px 4px 8px 0px, rgba(0,0,0, 0.64) 0px 4px 32px 0px`,
         }}
       >
