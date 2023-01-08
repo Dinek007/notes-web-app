@@ -1,24 +1,13 @@
 import { colors as muiColors } from "@mui/material";
 import createPalette from "@mui/material/styles/createPalette";
 
-export const getPalette = (theme, mainColor) => {
-  let textColor;
-  let secondaryColor;
-
-  if (theme === "dark") {
-    textColor = "#ffffff";
-    secondaryColor = "#2F303A";
-  } else {
-    textColor = "#000000";
-    secondaryColor = "#ffffff";
-  }
-
+export const getPalette = (textColor, primaryColor, secondaryColor) => {
   return createPalette({
     background: {
       default: "#2F303A",
     },
     primary: {
-      main: mainColor,
+      main: primaryColor,
     },
     secondary: {
       main: secondaryColor,

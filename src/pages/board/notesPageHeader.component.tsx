@@ -53,6 +53,16 @@ export const NotesPageHeaderComponent = () => {
     );
   };
 
+  const handleOpenChangeLogs = () => {
+    setAnchorEl(null);
+    dispatch(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.changeLog,
+      })
+    );
+  };
+
   const handleGoHome = () => {
     dispatch(
       sessionActions.setCurrentCategory({
@@ -238,6 +248,9 @@ export const NotesPageHeaderComponent = () => {
         >
           <MenuItem sx={{ color: "black" }} onClick={handleOpenSettings}>
             <Typography variant="h5">Settings </Typography>
+          </MenuItem>
+          <MenuItem sx={{ color: "black" }} onClick={handleOpenChangeLogs}>
+            <Typography variant="h5">Change logs</Typography>
           </MenuItem>
           <MenuItem sx={{ color: "black" }} onClick={handleClose}>
             <Typography variant="h5">Log out </Typography>

@@ -14,6 +14,7 @@ import { NoteModel } from "../../swagger/api";
 import { HomePageComponent } from "./homePage.component";
 import { SettingsComponent } from "./settigns.component";
 import { NoteComponent } from "../../components/note.component";
+import { ChangeLogComponent } from "../../components/changeLog.component";
 
 export enum pageNames {
   addNote = "addNote",
@@ -21,6 +22,7 @@ export enum pageNames {
   loading = "loading",
   home = "Home",
   settings = "Settings",
+  changeLog = "Change logs",
 }
 
 export interface CategoryListComponentProps {}
@@ -31,10 +33,7 @@ export const NotesFieldComponent: React.FC<
   const theme = useTheme();
 
   const [pageToShow, setPageToShow] = useState<string>("");
-  const [openList, setOpenList] = useState<boolean>(false);
 
-  const foldersAndNotes = useSelector(notesSelectors.noteCategories);
-  const dataCounts = useSelector(notesSelectors.foldersAndNotesCount);
   const areFoldersAndNotesLoading = useSelector(
     sessionSelectors.foldersAndNotesLoading
   );
@@ -60,6 +59,9 @@ export const NotesFieldComponent: React.FC<
           }
           if (currentCategoryName?.name === pageNames.settings) {
             setPageToShow(pageNames.settings);
+          }
+          if (currentCategoryName?.name === pageNames.changeLog) {
+            setPageToShow(pageNames.changeLog);
           }
         }
       }
@@ -101,56 +103,8 @@ export const NotesFieldComponent: React.FC<
         </Box>
       )}
 
-      {pageToShow === pageNames.home && (
-        <>
-          {/* <AccountCircleIcon
-            style={{
-              fontSize: "90px",
-              color: theme.palette.primary.main,
-            }}
-          />
-          <Typography variant="h4"> Damian </Typography>
-          <Typography
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            Folders count: {dataCounts.folders}
-          </Typography>
-          <Typography> Notes count: {dataCounts.notes} </Typography>
-          <Button
-            sx={{
-              marginTop: "20px",
-            }}
-            onClick={() => {
-              if (openList) {
-                setOpenList(false);
-              } else {
-                setOpenList(true);
-              }
-            }}
-          >
-            <Typography variant="h5">
-              {openList ? "Close" : "Open"} Notes List
-            </Typography>
-          </Button>
-          {openList && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-                alignContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              {Object.values(foldersAndNotes).map((folder) => {
-                return <HomePageComponent folder={folder} />;
-              })}
-            </Box>
-          )} */}
-        </>
-      )}
+      {pageToShow === pageNames.home && <></>}
+      {pageToShow === pageNames.changeLog && <ChangeLogComponent />}
 
       {pageToShow === pageNames.settings && <SettingsComponent />}
     </Box>

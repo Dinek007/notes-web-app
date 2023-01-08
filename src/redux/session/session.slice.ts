@@ -9,6 +9,7 @@ export type ActionsType<A extends ActionCreatorsMapObject> = {
 export enum currentCategoryNames {
   home = "Home",
   settings = "Settings",
+  changeLog = "Change logs",
 }
 
 export enum currentActionTexts {

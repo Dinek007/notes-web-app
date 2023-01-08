@@ -116,7 +116,7 @@ export const SettingsComponent = () => {
                   border:
                     themeColor === themeNames.dark &&
                     `3px solid ${theme.palette.primary.main}`,
-                  backgroundColor: "black",
+                  backgroundColor: "#151515",
                   color: "white",
                   marginRight: "20px",
                 }}
@@ -204,6 +204,7 @@ export const SettingsComponent = () => {
                     key={size}
                     sx={{
                       backgroundColor: `${theme.palette.secondary.main}`,
+                      color: `${theme.palette.text.primary}`,
                       marginRight: "20px",
                       padding: isChecked ? `7px` : `10px`,
                       border:
@@ -228,6 +229,7 @@ export const SettingsComponent = () => {
                   <Button
                     key={size}
                     sx={{
+                      color: `${theme.palette.text.primary}`,
                       backgroundColor: `${theme.palette.secondary.main}`,
                       marginRight: "20px",
                       padding: isChecked ? `7px` : `10px`,
