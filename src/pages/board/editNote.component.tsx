@@ -228,7 +228,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
               handleSaveClick(data);
             }}
             label="Type something here..."
-            inlineToolbar={true}
+            inlineToolbar={false}
             defaultValue={note.content}
           />
         </Box>

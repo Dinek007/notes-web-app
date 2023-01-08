@@ -8,12 +8,26 @@ import { HomePageComponent } from "./homePage.component";
 import OpacityIcon from "@mui/icons-material/Opacity";
 import { SettingComponent } from "../../components/setting.component";
 import {
+  boardSizes,
+  fontSizes,
   noteColorsPalette,
+  noteSizes,
   settingsActions,
   size,
   themeNames,
 } from "../../redux/settings/settings.slice";
 import { settingsSelectors } from "../../redux/settings/settings.selectors";
+
+export enum sizesNames {
+  verySmall = "Very small",
+  small = "Small",
+  medium = "Medium",
+  big = "Big",
+  veryBig = "Very big",
+  fhd = "FHD display",
+  k2 = "2k display",
+  k4 = "4k display",
+}
 
 export const SettingsComponent = () => {
   const dispatch = useDispatch();
@@ -47,6 +61,21 @@ export const SettingsComponent = () => {
   const handleNoteColor = (color) => {
     setNoteColor(color);
     dispatch(settingsActions.setNoteColor(color));
+  };
+
+  const handleFontSize = (size) => {
+    setFontSize(size);
+    dispatch(settingsActions.setFontSize(size));
+  };
+
+  const handleNoteSize = (size) => {
+    setNoteSize(size);
+    dispatch(settingsActions.setNoteSize(size));
+  };
+
+  const handleBoardSize = (size) => {
+    setBoardSize(size);
+    dispatch(settingsActions.setBoardSize(size));
   };
 
   const colors = Object.values(noteColorsPalette);
@@ -87,7 +116,7 @@ export const SettingsComponent = () => {
                   border:
                     themeColor === themeNames.dark &&
                     `3px solid ${theme.palette.primary.main}`,
-                  backgroundColor: "gray",
+                  backgroundColor: "black",
                   color: "white",
                   marginRight: "20px",
                 }}
@@ -137,7 +166,7 @@ export const SettingsComponent = () => {
         />
 
         <SettingComponent
-          title="Default note color"
+          title="New note color"
           children={
             <Box>
               {colors.map((color) => {
@@ -161,9 +190,84 @@ export const SettingsComponent = () => {
             </Box>
           }
         />
-        <SettingComponent title="Default note size" children={<></>} />
-        <SettingComponent title="Default note font size" children={<></>} />
-        <SettingComponent title="Default board size" children={<></>} />
+        <SettingComponent
+          title="New note size"
+          children={
+            <Box>
+              {Object.keys(noteSizes).map((size) => {
+                console.log(noteSizes[size], noteSize);
+                const isChecked = Boolean(
+                  noteSizes[size].width === noteSize.width
+                );
+                return (
+                  <Button
+                    key={size}
+                    sx={{
+                      backgroundColor: `${theme.palette.secondary.main}`,
+                      marginRight: "20px",
+                      padding: isChecked ? `7px` : `10px`,
+                      border:
+                        isChecked && `3px solid ${theme.palette.primary.main}`,
+                    }}
+                    onClick={() => handleNoteSize(noteSizes[size])}
+                  >
+                    {sizesNames[size]}
+                  </Button>
+                );
+              })}
+            </Box>
+          }
+        />
+        <SettingComponent
+          title="Note font size"
+          children={
+            <Box>
+              {Object.keys(fontSizes).map((size) => {
+                const isChecked = Boolean(fontSizes[size] === fontSize);
+                return (
+                  <Button
+                    key={size}
+                    sx={{
+                      backgroundColor: `${theme.palette.secondary.main}`,
+                      marginRight: "20px",
+                      padding: isChecked ? `7px` : `10px`,
+                      border:
+                        isChecked && `3px solid ${theme.palette.primary.main}`,
+                    }}
+                    onClick={() => handleFontSize(fontSizes[size])}
+                  >
+                    {sizesNames[size]}
+                  </Button>
+                );
+              })}
+            </Box>
+          }
+        />
+        {/* <SettingComponent
+          title="Board size"
+          children={
+            <Box>
+              {Object.keys(boardSizes).map((size) => {
+                const isChecked = Boolean(boardSizes[size] === boardSize);
+                return (
+                  <Button
+                    key={size}
+                    sx={{
+                      backgroundColor: `${theme.palette.secondary.main}`,
+                      marginRight: "20px",
+                      padding: isChecked ? `7px` : `10px`,
+                      border:
+                        isChecked && `3px solid ${theme.palette.primary.main}`,
+                    }}
+                    onClick={() => handleBoardSize(boardSizes[size])}
+                  >
+                    {sizesNames[size]}
+                  </Button>
+                );
+              })}
+            </Box>
+          }
+        /> */}
       </Box>
     </Box>
   );

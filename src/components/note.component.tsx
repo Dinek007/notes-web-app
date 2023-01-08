@@ -48,14 +48,31 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
   useEffect(() => {
     setNoteWidth(note.width);
     setNoteHeight(note.height);
-    setNoteX(note.x);
-    setNoteY(note.y);
+    if (note.x > 0) {
+      setNoteX(note.x);
+    } else {
+      setNoteX(1);
+    }
+    if (note.y > 0) {
+      setNoteY(note.y);
+    } else {
+      setNoteY(1);
+    }
     setZIndex(note.zIndex);
   }, [note.x, note.y, note.width, note.height, note]);
 
   const handleDragStop = (x: number, y: number) => {
-    setNoteX(x);
-    setNoteY(y);
+    if (x > 0) {
+      setNoteX(x);
+    } else {
+      setNoteX(1);
+    }
+
+    if (y > 0) {
+      setNoteY(y);
+    } else {
+      setNoteY(1);
+    }
     dispatch(
       notesActions.updateNote({
         noteId: note.id,

@@ -41,14 +41,30 @@ export enum fontSizes {
 }
 
 export const noteSizes = {
+  small: {
+    width: "200",
+    height: "270",
+  },
   medium: {
-    width: "",
-    height: "",
+    width: "250",
+    height: "350",
+  },
+  big: {
+    width: "350",
+    height: "470",
   },
 };
 
 export const boardSizes = {
-  medium: {
+  fhd: {
+    width: "",
+    height: "",
+  },
+  k2: {
+    width: "",
+    height: "",
+  },
+  k4: {
     width: "",
     height: "",
   },
@@ -60,7 +76,7 @@ export const defaultSettings = {
   noteColor: noteColorsPalette.yellow,
   fontSize: fontSizes.small,
   noteSize: noteSizes.medium,
-  boardSizes: boardSizes.medium,
+  boardSizes: boardSizes.fhd,
 };
 
 export class SettingsState {

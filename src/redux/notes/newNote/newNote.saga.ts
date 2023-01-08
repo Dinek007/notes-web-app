@@ -16,31 +16,34 @@ import { notesSelectors } from "../notes.selectors";
 import { notesActions } from "../notes.slice";
 
 export function* newNoteSaga(action: notesActions["newNote"]) {
-  yield* put(sessionActions.setCurrentAction(currentActionNames.addingNote));
+  yield * put(sessionActions.setCurrentAction(currentActionNames.addingNote));
 
-  const biggestIndex = yield* select(notesSelectors.biggestZIndex);
-  const currentCategoryData = yield* select(sessionSelectors.currentCategory);
-  const defaultColor = yield* select(settingsSelectors.noteColor);
+  const biggestIndex = yield * select(notesSelectors.biggestZIndex);
+  const currentCategoryData = yield * select(sessionSelectors.currentCategory);
+  const defaultColor = yield * select(settingsSelectors.noteColor);
+  const noteSize = yield * select(settingsSelectors.noteSize);
+
   const newNoteContent = `{"blocks":[{"key":"","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`;
 
   const note: CreateNoteReqDto = {
     color: defaultColor,
     content: newNoteContent,
     folderId: currentCategoryData.id,
-    height: 270,
     name: action.payload,
-    width: 200,
-    x: 25,
-    y: 25,
+    width: Number(noteSize.width.split("px")[0]),
+    height: Number(noteSize.height.split("px")[0]),
+    x: 1000,
+    y: 1000,
     zIndex: biggestIndex + 1,
   };
 
   try {
-    yield* call(NotesService.notesControllerCreate, note);
+    yield * call(NotesService.notesControllerCreate, note);
   } catch (error) {
     console.error(error);
   }
 
-  yield* call(getCategoriesAndNotesSaga);
-  yield* put(sessionActions.removeCurrentAction(currentActionNames.addingNote));
+  yield * call(getCategoriesAndNotesSaga);
+  yield *
+    put(sessionActions.removeCurrentAction(currentActionNames.addingNote));
 }

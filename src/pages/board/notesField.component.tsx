@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { sessionSelectors } from "../../redux/session/session.selectors";
 import { notesSelectors } from "../../redux/notes/notes.selectors";
 import { NoteModel } from "../../swagger/api";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { HomePageComponent } from "./homePage.component";
 import { SettingsComponent } from "./settigns.component";
 import { NoteComponent } from "../../components/note.component";
@@ -90,14 +89,17 @@ export const NotesFieldComponent: React.FC<
             transform: "translate(-50%, -50%)",
           }}
         >
-          <CircularProgress />{" "}
+          <CircularProgress />
         </Box>
       )}
 
-      {pageToShow === pageNames.notes &&
-        currentCategoryNotes.map((note: NoteModel) => {
-          return <NoteComponent key={note.id} note={note} />;
-        })}
+      {pageToShow === pageNames.notes && (
+        <Box sx={{ height: "2160px", left: "0px" }}>
+          {currentCategoryNotes.map((note: NoteModel) => {
+            return <NoteComponent key={note.id} note={note} />;
+          })}
+        </Box>
+      )}
 
       {pageToShow === pageNames.home && (
         <>

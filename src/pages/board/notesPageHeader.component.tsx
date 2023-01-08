@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { notesActions } from "../../redux/notes/notes.slice";
 import { sessionSelectors } from "../../redux/session/session.selectors";
@@ -37,6 +44,7 @@ export const NotesPageHeaderComponent = () => {
   );
 
   const handleOpenSettings = () => {
+    setAnchorEl(null);
     dispatch(
       sessionActions.setCurrentCategory({
         id: "",
@@ -80,6 +88,16 @@ export const NotesPageHeaderComponent = () => {
       setOpenRemoveCategory(true);
     }
   }, [removeCategoryStatus, showRemoveCategory]);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box
@@ -200,9 +218,31 @@ export const NotesPageHeaderComponent = () => {
             </IconButton>
           </>
         )}
-        <IconButton onClick={handleOpenSettings}>
+        <IconButton
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
           <SettingsIcon fontSize="large" />
         </IconButton>
+
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem sx={{ color: "black" }} onClick={handleOpenSettings}>
+            <Typography variant="h5">Settings </Typography>
+          </MenuItem>
+          <MenuItem sx={{ color: "black" }} onClick={handleClose}>
+            <Typography variant="h5">Log out </Typography>
+          </MenuItem>
+        </Menu>
       </Box>
     </Box>
   );
