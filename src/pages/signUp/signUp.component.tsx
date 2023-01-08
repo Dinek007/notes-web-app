@@ -31,87 +31,84 @@ export const SignUpComponent = () => {
     }
 
     return (
-        <Box sx={{
-            position: 'absolute',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: '260px',
-            left: '50%',
-            transform: 'translate(-50%, 0)'
-        }}>
-            <Typography
-                style={{
-                    marginBottom: '50px'
-                }}
-                variant='h2'>
-                Create an account
-            </Typography>
+      <Box
+        sx={{
+          position: "absolute",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "60vh",
+          top: "20vh",
+          left: "50%",
+          transform: "translate(-50%, 0)",
+        }}
+      >
+        <Typography
+          style={{
+            marginBottom: "50px",
+          }}
+          variant="h2"
+        >
+          Create an account
+        </Typography>
 
-            <form
-                onSubmit={handleSubmit(signUpButtonClick)}>
-                <ControlledInput
-                    style={{
-                        marginBottom: '10px',
-                        width: "384px",
-                        height: "54px"
-                    }}
-                    name={"userName"}
-                    title="Username"
-                    control={control}
-                    type='text'
-                />
-                <ControlledInput
-                    style={{
-                        marginBottom: '10px',
-                        width: "384px",
-                        height: "54px"
-                    }}
-                    name={"email"}
-                    title="Email Adress"
-                    control={control}
-                    type='email'
-                />
-                <ControlledInput
-                    style={{
-                        marginBottom: '10px',
-                        width: "384px",
-                        height: "54px"
-                    }}
-                    name={"password"}
-                    title="Password"
-                    control={control}
-                    type='password'
-                />
-                <Button
-                    style={{
-                        marginTop: '40px',
-                        left: '50%',
-                        transform: 'translate(-50%, 0)',
-                        width: '305px',
-                        height: '83px',
-                    }}
-                    type="submit"
-                >
-                    <Typography variant='h4'>
-                        Sign Up
-                    </Typography>
-                </Button>
-
-
-            </form>
-            <Button
-                style={{
-                    marginTop: '17px',
-                }}
-                variant='text'
-                onClick={logInRedirectButtonClick}
-            >
-                <Typography variant='h6'>
-                    Already have an account?
-                </Typography>
-            </Button>
-        </Box >
-    )
+        <form onSubmit={handleSubmit(signUpButtonClick)}>
+          <ControlledInput
+            style={{
+              marginBottom: "10px",
+              width: "384px",
+              height: "54px",
+            }}
+            name={"userName"}
+            title="Username"
+            control={control}
+            type="text"
+          />
+          <ControlledInput
+            style={{
+              marginBottom: "10px",
+              width: "384px",
+              height: "54px",
+            }}
+            name={"email"}
+            title="Email Adress"
+            control={control}
+            type="email"
+          />
+          <ControlledInput
+            style={{
+              marginBottom: "10px",
+              width: "384px",
+              height: "54px",
+            }}
+            name={"password"}
+            title="Password"
+            control={control}
+            type="password"
+          />
+          <Button
+            style={{
+              marginTop: "40px",
+              left: "50%",
+              transform: "translate(-50%, 0)",
+              width: "305px",
+              height: "83px",
+            }}
+            type="submit"
+          >
+            <Typography variant="h4">Sign Up</Typography>
+          </Button>
+        </form>
+        <Button
+          style={{
+            marginTop: "17px",
+          }}
+          variant="text"
+          onClick={logInRedirectButtonClick}
+        >
+          <Typography variant="h6">Already have an account?</Typography>
+        </Button>
+      </Box>
+    );
 }

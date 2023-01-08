@@ -10,12 +10,18 @@ export const ChangeLogComponent = ({}) => {
       Removed: ["_"],
     },
     "0.0.1 - 08 January 2023": {
-      Fixed: ["colors in light mode", "moving notes out of board"],
+      Fixed: [
+        "lighter colors in light mode",
+        "moving notes out of board",
+        "start page responsiveness",
+        "login page responsiveness",
+        "sign up page responsiveness",
+      ],
       Added: [
-        "board height",
-        "menu with settings and logout options",
-        "notes and font sizes in settings",
-        "change logs",
+        "board fixed height",
+        "menu dialog window",
+        "notes and font sizes settings",
+        "change logs page",
       ],
       Removed: ["inline toolbar while editing"],
     },
@@ -48,7 +54,7 @@ export const ChangeLogComponent = ({}) => {
               marginBottom: "50px",
             }}
           >
-            <Typography variant="h1"> {version} </Typography>
+            <Typography variant="h3"> {version} </Typography>
             {Object.keys(changeLogs[version]).map((category: string) => {
               return (
                 <Box
@@ -56,7 +62,7 @@ export const ChangeLogComponent = ({}) => {
                     marginTop: "20px",
                   }}
                 >
-                  <Typography variant="h4"> {category} </Typography>
+                  <Typography variant="h5"> {category} </Typography>
 
                   <ul>
                     {changeLogs[version][category].map((name: string) => {

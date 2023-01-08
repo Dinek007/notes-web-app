@@ -45,7 +45,8 @@ export const LoginComponent = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        top: "300px",
+        height: "60vh",
+        top: "20vh",
         left: "50%",
         transform: "translate(-50%, 0)",
       }}

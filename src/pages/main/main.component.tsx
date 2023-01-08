@@ -5,6 +5,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { navigationActions } from '../../redux/navigation/navigation.slice'
 import { RouterPaths } from '../../router/router.paths'
 import homePageImage from "../../assets/mainPageIcon.png";
+import { height } from "@mui/system";
 
 export const MainComponent = () => {
   const dispatch = useDispatch();
@@ -23,86 +24,117 @@ export const MainComponent = () => {
   }, [navigatePath]);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <Typography
-        style={{
-          position: "absolute",
-          left: "188px",
-          top: "28px",
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100vw",
+          display: "flex",
+          height: "10vh",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          alignContent: "center",
         }}
-        variant="h3"
       >
-        World of Notes
-      </Typography>
+        <Box sx={{ position: "absolute", left: "70px" }}>
+          <Typography variant="h1">World of Notes</Typography>
+        </Box>
 
-      <Button
-        variant="text"
-        style={{
-          position: "absolute",
-          left: "1455px",
-          top: "28px",
-        }}
-        onClick={useLogInButtonClick}
-      >
-        <Typography variant="h3">Log In</Typography>
-      </Button>
-
-      <Button
-        variant="text"
-        style={{
-          position: "absolute",
-          left: "1617px",
-          top: "28px",
-        }}
-        onClick={useSignUpButtonClick}
-      >
-        <Typography variant="h3">Sign Up</Typography>
-      </Button>
-
-      <img
-        src={homePageImage}
-        style={{
-          position: "absolute",
-          left: "36px",
-          top: "-10px",
-        }}
-      />
-
-      <Typography
-        style={{
-          position: "absolute",
-          left: "970px",
-          top: " 397px",
-        }}
-        variant="h2"
-      >
-        Have all your notes always at hand.
-      </Typography>
-
-      <Typography
-        style={{
-          position: "absolute",
-          left: "970px",
-          top: "469px",
+        <Box sx={{ position: "absolute", right: "40px" }}>
+          <Button
+            sx={{ marginRight: "20px" }}
+            variant="text"
+            onClick={useLogInButtonClick}
+          >
+            <Typography variant="h3">Log In</Typography>
+          </Button>
+          <Button
+            sx={{ marginRight: "20px" }}
+            variant="text"
+            onClick={useSignUpButtonClick}
+          >
+            <Typography variant="h3">Sign Up</Typography>
+          </Button>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          height: "90vh",
+          width: "100vw",
           display: "flex",
           alignItems: "center",
+          alignContent: "center",
+          flexDirection: "row",
+          flexWrap: "wrap",
         }}
-        variant="h3"
       >
-        Notes manager that you always needed.
-      </Typography>
-      <Button
-        style={{
-          position: "absolute",
-          left: "970px",
-          top: "600px",
-          width: "305px",
-          height: "83px",
-        }}
-        onClick={useSignUpButtonClick}
-      >
-        <Typography variant="h3"> Get Started </Typography>
-      </Button>
+        <Box
+          sx={{
+            display: "flex",
+            height: "90vh",
+            width: "50vw",
+            flexDirection: "column",
+            alignItems: "center",
+            alignContent: "center",
+          }}
+        >
+          <img
+            src={homePageImage}
+            style={{
+              position: "relative",
+              top: "2vh",
+              left: "2vw",
+              width: "40vw",
+              height: "40vw",
+            }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            height: "90vh",
+            width: "50vw",
+            flexDirection: "column",
+            alignItems: "baseline",
+            alignContent: "flex-start",
+            justifyContent: "center",
+            flexWrap: "nowrap",
+            marginBottom: "16vh",
+          }}
+        >
+          <Box>
+            <Typography variant="h2">
+              Have all your notes always at hand.
+            </Typography>
+
+            <Typography
+              sx={{
+                marginTop: "30px",
+                marginBottom: "50px",
+              }}
+              variant="h3"
+            >
+              Notes manager that you always needed.
+            </Typography>
+          </Box>
+
+          <Button
+            sx={{
+              padding: "15px",
+              paddingRight: "40px",
+              paddingLeft: "40px",
+            }}
+            onClick={useSignUpButtonClick}
+          >
+            <Typography variant="h3"> Get Started </Typography>
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };
