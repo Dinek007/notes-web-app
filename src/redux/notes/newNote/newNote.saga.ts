@@ -32,8 +32,8 @@ export function* newNoteSaga(action: notesActions["newNote"]) {
     name: action.payload,
     width: Number(noteSize.width.split("px")[0]),
     height: Number(noteSize.height.split("px")[0]),
-    x: 1000,
-    y: 1000,
+    x: 20,
+    y: 20,
     zIndex: biggestIndex + 1,
   };
 

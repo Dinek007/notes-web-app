@@ -63,6 +63,11 @@ export const NotesPageHeaderComponent = () => {
     );
   };
 
+  const handleLogOut = () => {
+    setAnchorEl(null);
+    dispatch(sessionActions.logout({}));
+  };
+
   const handleGoHome = () => {
     dispatch(
       sessionActions.setCurrentCategory({
@@ -252,7 +257,7 @@ export const NotesPageHeaderComponent = () => {
           <MenuItem sx={{ color: "black" }} onClick={handleOpenChangeLogs}>
             <Typography variant="h5">Change logs</Typography>
           </MenuItem>
-          <MenuItem sx={{ color: "black" }} onClick={handleClose}>
+          <MenuItem sx={{ color: "black" }} onClick={handleLogOut}>
             <Typography variant="h5">Log out </Typography>
           </MenuItem>
         </Menu>

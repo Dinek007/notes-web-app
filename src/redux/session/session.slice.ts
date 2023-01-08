@@ -48,6 +48,18 @@ export type currentActions = {
   updateFolder: boolean;
 };
 
+export const defaultActions: currentActions = {
+  addingFolder: false,
+  addingNote: false,
+  editingNote: false,
+  loadingFoldersAndNotes: false,
+  removingFolder: false,
+  removingNote: false,
+  savingNote: false,
+  updateNote: false,
+  updateFolder: false,
+};
+
 export class SessionState {
   public loginInfo: boolean = false;
   public currentCategory: { id: string; name: string } = {
@@ -55,17 +67,7 @@ export class SessionState {
     name: currentCategoryNames.home,
   };
   public currentNote: { id: string; name: string } = { id: "", name: "" };
-  public currentAction: currentActions = {
-    addingFolder: false,
-    addingNote: false,
-    editingNote: false,
-    loadingFoldersAndNotes: false,
-    removingFolder: false,
-    removingNote: false,
-    savingNote: false,
-    updateNote: false,
-    updateFolder: false,
-  };
+  public currentAction: currentActions = defaultActions;
 
   public authToken: string = "";
   public loading: { login: boolean; foldersAndNotes: boolean } = {
@@ -78,8 +80,25 @@ export const sessionSlice = createSlice({
   initialState: { ...new SessionState() },
   name: StoreKeys.Session,
   reducers: {
+    resetSessionState: (state, _action) => {
+      state.loginInfo = false;
+      state.currentCategory = {
+        id: "",
+        name: currentCategoryNames.home,
+      };
+      state.currentNote = { id: "", name: "" };
+      state.currentAction = defaultActions;
+      state.authToken = "";
+      state.loading = {
+        login: false,
+        foldersAndNotes: false,
+      };
+    },
     setLoginInfo: (state, action: PayloadAction<boolean>) => {
       state.loginInfo = action.payload;
+    },
+    logout: (state, _action) => {
+      state.loginInfo = false;
     },
     login: (state, _action: PayloadAction<LoginReqDTO>) => state,
     signUp: (state, _action: PayloadAction<SignupReqDTO>) => state,
@@ -110,6 +129,9 @@ export const sessionSlice = createSlice({
     },
     setFoldersAndNotesLoading: (state, action: PayloadAction<boolean>) => {
       state.loading.foldersAndNotes = action.payload;
+    },
+    resetCurrentActions: (state, _action) => {
+      state.currentAction = defaultActions;
     },
   },
 });

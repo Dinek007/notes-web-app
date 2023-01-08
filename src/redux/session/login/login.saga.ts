@@ -8,31 +8,39 @@ import { sessionSelectors } from '../session.selectors';
 import { currentActionNames, currentCategoryNames, SessionActions, sessionActions } from '../session.slice';
 
 export function* loginSaga(action: SessionActions['login']) {
-    const currentCategory = yield* select(sessionSelectors.currentCategory)
-    yield* put(sessionActions.setCurrentCategory({
-        id: '',
-        name: currentCategoryNames.home
-    }))
-    yield* put(sessionActions.setLoginLoading(true))
-    yield* put(sessionActions.setFoldersAndNotesLoading(true))
-    yield* put(sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes))
+  yield * put(sessionActions.resetCurrentActions({}));
 
-    let responseLogin;
-    try {
-      responseLogin =
-        yield * call(UserService.userControllerLogin, action.payload);
-    } catch (error) {
-      console.error(error);
-    }
+  yield * put(sessionActions.setLoginLoading(true));
+  yield * put(sessionActions.setFoldersAndNotesLoading(true));
+  yield *
+    put(
+      sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes)
+    );
 
-    yield * put(sessionActions.setLoginInfo(true));
-    yield * put(navigationActions.navigate(RouterPaths.Notes));
+  let responseLogin;
+  try {
+    responseLogin =
+      yield * call(UserService.userControllerLogin, action.payload);
+  } catch (error) {
+    console.error(error);
+    yield * put(sessionActions.logout({}));
+    return;
+  }
 
-    yield * put(sessionActions.setAuthToken(responseLogin.accessToken));
-    yield * call(setToken, responseLogin.accessToken);
+  yield * put(sessionActions.setLoginInfo(true));
+  yield * put(navigationActions.navigate(RouterPaths.Notes));
 
-    yield * call(getCategoriesAndNotesSaga);
-    yield * put(sessionActions.setCurrentCategory(currentCategory));
+  yield * put(sessionActions.setAuthToken(responseLogin.accessToken));
+  yield * call(setToken, responseLogin.accessToken);
+
+  yield * call(getCategoriesAndNotesSaga);
+  yield *
+    put(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.home,
+      })
+    );
     yield * put(sessionActions.setLoginLoading(false));
     yield * put(sessionActions.setFoldersAndNotesLoading(false));
     yield *

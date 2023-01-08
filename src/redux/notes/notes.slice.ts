@@ -41,6 +41,9 @@ export const notesSlice = createSlice({
   initialState: { ...new notesState() },
   name: StoreKeys.Notes,
   reducers: {
+    resetNotesState: (state, _action) => {
+      state.categories = noteCategoriesAdapter.getInitialState();
+    },
     newCategory: (state, _action: PayloadAction<CategoryData>) => state,
     removeCategory: (state, _action: PayloadAction<string>) => state,
     newNote: (state, _action: PayloadAction<string>) => state,
