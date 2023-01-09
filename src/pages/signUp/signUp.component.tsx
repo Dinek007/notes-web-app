@@ -100,8 +100,10 @@ export const SignUpComponent = () => {
               marginTop: "40px",
               left: "50%",
               transform: "translate(-50%, 0)",
-              width: "305px",
-              height: "83px",
+              width: "203px",
+              height: "55px",
+              backgroundColor: theme.palette.primary.dark,
+              boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"
           >
@@ -113,9 +115,10 @@ export const SignUpComponent = () => {
               marginTop: "40px",
               left: "50%",
               transform: "translate(-50%, 0)",
-              width: "305px",
-              height: "83px",
-              backgroundColor: theme.palette.primary.main,
+              width: "203px",
+              height: "55px",
+              backgroundColor: theme.palette.primary.dark,
+              boxShadow: `rgba(0,0,0, 0.12) 0px 4px 8px 0px, rgba(0,0,0, 0.32) 0px 4px 32px 0px`,
             }}
             type="submit"
             loading
