@@ -23,7 +23,7 @@ export const LocationChecker = () => {
       dispatch(navigationActions.navigate(RouterPaths.Login));
       dispatch(sessionActions.logout({}));
     }
-  }, [isLogged, authToken]);
+  }, [isLogged, authToken, isNotesPage]);
 
   return <Outlet />;
 };
