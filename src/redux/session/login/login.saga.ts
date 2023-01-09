@@ -8,7 +8,7 @@ import { sessionSelectors } from '../session.selectors';
 import { currentActionNames, currentCategoryNames, SessionActions, sessionActions } from '../session.slice';
 
 export function* loginSaga(action: SessionActions['login']) {
-  yield * put(sessionActions.resetCurrentActions({}));
+  yield * put(sessionActions.logout({}));
 
   yield * put(sessionActions.setLoginLoading(true));
   yield * put(sessionActions.setFoldersAndNotesLoading(true));
@@ -18,12 +18,12 @@ export function* loginSaga(action: SessionActions['login']) {
     );
 
   let responseLogin;
+
   try {
     responseLogin =
       yield * call(UserService.userControllerLogin, action.payload);
   } catch (error) {
     console.error(error);
-    yield * put(sessionActions.logout({}));
     return;
   }
 

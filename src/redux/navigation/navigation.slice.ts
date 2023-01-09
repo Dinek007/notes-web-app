@@ -8,16 +8,18 @@ export type ActionsType<A extends ActionCreatorsMapObject> = {
 };
 
 export class NavigationState {
-  public isLoading: string = 'no ta'
+  public location: string = "/";
 }
 
 export const navigationSlice = createSlice({
   initialState: { ...new NavigationState() },
   name: StoreKeys.Navigation,
   reducers: {
-    navigate: (state, _action: PayloadAction<RouterPaths>) => state,
-  }
-})
+    navigate: (state, action: PayloadAction<RouterPaths>) => {
+      state.location = action.payload;
+    },
+  },
+});
 
 export const navigationActions = navigationSlice.actions
 export const navigationReducer = navigationSlice.reducer

@@ -8,8 +8,10 @@ export const App = () => {
 
   if (window.performance) {
     if (performance.navigation.type == 1) {
-      dispatch(sessionActions.refreshPage({}))
-    } 
+      dispatch(sessionActions.refreshPage({}));
+    } else {
+      dispatch(sessionActions.refreshPage({}));
+    }
   }
 
   return (

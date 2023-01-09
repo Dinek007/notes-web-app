@@ -132,6 +132,10 @@ export const sessionSlice = createSlice({
     },
     resetCurrentActions: (state, _action) => {
       state.currentAction = defaultActions;
+      state.loading = {
+        login: false,
+        foldersAndNotes: false,
+      };
     },
   },
 });

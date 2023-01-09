@@ -116,7 +116,7 @@ export const SettingsComponent = () => {
                   border:
                     themeColor === themeNames.dark &&
                     `3px solid ${theme.palette.primary.main}`,
-                  backgroundColor: "#151515",
+                  backgroundColor: "#2a2a2a",
                   color: "white",
                   marginRight: "20px",
                 }}

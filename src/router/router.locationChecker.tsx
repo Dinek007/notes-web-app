@@ -1,49 +1,29 @@
-// import { useEffect } from "react";
-// import { Outlet, useLocation } from "react-router";
-// import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useLocation } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom";
 
-// import { authActions } from "../store/auth/auth.slice";
-// import { userActions } from "../store/user/user.slice";
-// import { accessTokenSelector } from "../store/auth/auth.selectors";
-// import { userProfileSelector } from "../store/user/user.selectors";
-// import { RouterPaths } from "./router.paths";
-
-// export const LocationChecker = () => {
-//   const location = useLocation();
-//   const dispatch = useDispatch();
-
-//   const searchParams = new URLSearchParams(location.search);
-//   const accessToken = useSelector(accessTokenSelector);
-//   const userProfile = useSelector(userProfileSelector);
-//   const emailAccess = searchParams.get("emailAccess");
-//   const isLoginPage = location.pathname.includes("login");
-
-//   useEffect(() => {
-//     const isRegisteredAgentPage =
-//       location.pathname === RouterPaths.RegisterAgent;
-
-//     if (isRegisteredAgentPage) {
-//       dispatch(authActions.signOut({ shouldRedirectToLoginPage: false }));
-//       return;
-//     }
-
-//     if (!isLoginPage && (!accessToken || emailAccess)) {
-//       dispatch(authActions.signOut({ shouldRedirectToLoginPage: true }));
-//       return;
-//     }
-
-//     if (!userProfile && !!accessToken && !isRegisteredAgentPage) {
-//       dispatch(userActions.fetchUserProfileRequest());
-//     }
-//   }, [accessToken, dispatch, userProfile, location, emailAccess, isLoginPage]);
-
-//   return <Outlet />;
-// };
+import { RouterPaths } from "./router.paths";
+import { sessionSelectors } from "../redux/session/session.selectors";
+import { sessionActions } from "../redux/session/session.slice";
+import { navigationActions } from "../redux/navigation/navigation.slice";
 
 export const LocationChecker = () => {
-  return <Outlet />
-}
+  const location = useLocation();
+  const dispatch = useDispatch();
 
- 
+  const isLogged = useSelector(sessionSelectors.loginInfo);
+  const authToken = useSelector(sessionSelectors.authToken);
+  const isNotesPage = location.pathname.includes(RouterPaths.Notes);
+
+  useEffect(() => {
+    //logguot when loginInfo or authToken is false and navigate to login page
+    if ((!isLogged || !Boolean(authToken)) && isNotesPage) {
+      dispatch(navigationActions.navigate(RouterPaths.Login));
+      dispatch(sessionActions.logout({}));
+    }
+  }, [isLogged, authToken]);
+
+  return <Outlet />;
+};

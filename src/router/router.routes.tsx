@@ -5,7 +5,8 @@ import { LoginComponent } from "../pages/login/login.component";
 import { SignUpComponent } from "../pages/signUp/signUp.component";
 import { MainComponent } from "../pages/main/main.component";
 import { NotesComponent } from "../pages/board/main.component";
-
+import { PopupComponent } from "../components/popup.component";
+import { WrongComponent } from "../components/404.component";
 
 export const routes: RouteObject[] = [
   {
@@ -30,7 +31,11 @@ export const routes: RouteObject[] = [
       },
       {
         element: <MainComponent />,
-        index: true
+        index: true,
+      },
+      {
+        element: <WrongComponent />,
+        path: "*",
       },
     ],
   },
