@@ -40,11 +40,11 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
           left: "50%",
           transform: "translate(-50%, -50%)",
           backgroundColor: theme.palette.secondary.dark,
-          borderRadius: "8px",
+          borderRadius: "12px",
           padding: "35px",
           paddingTop: "60px",
           paddingBottom: "50px",
-          boxShadow: `rgba(0,0,0, 0.24) 0px 4px 8px 0px, rgba(0,0,0, 0.64) 0px 4px 32px 0px`,
+          boxShadow: `rgba(30,30,30, 0.24) 0px 4px 8px 0px, rgba(30,30,30, 0.64) 0px 4px 32px 0px`,
         }}
       >
         <IconButton

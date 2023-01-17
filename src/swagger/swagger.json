@@ -446,7 +446,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "string"
+                                    "$ref": "#/components/schemas/NotificationModel"
                                 }
                             }
                         }
@@ -454,6 +454,110 @@
                 },
                 "tags": [
                     "notifications"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/notifications/reoccurring": {
+            "post": {
+                "operationId": "NotificationsController_createReoccurring",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateReoccurringNotificationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotificationModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/notifications/{noteId}": {
+            "get": {
+                "operationId": "NotificationsController_findOne",
+                "parameters": [
+                    {
+                        "name": "noteId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotificationDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/notifications/{notificationId}": {
+            "delete": {
+                "operationId": "NotificationsController_remove",
+                "parameters": [
+                    {
+                        "name": "notificationId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
                 ]
             }
         }
@@ -791,17 +895,104 @@
             "CreateOneTimeNotificationDto": {
                 "type": "object",
                 "properties": {
-                    "triggerTime": {
+                    "name": {
                         "type": "string"
                     },
                     "noteId": {
                         "type": "string"
+                    },
+                    "triggerTime": {
+                        "type": "string"
                     }
                 },
                 "required": [
-                    "triggerTime",
-                    "noteId"
+                    "name",
+                    "noteId",
+                    "triggerTime"
                 ]
+            },
+            "NotificationModel": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "expression": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "enum": [
+                            "reoccurring",
+                            "oneTime"
+                        ],
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    },
+                    "noteId": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "expression",
+                    "type",
+                    "userId",
+                    "noteId",
+                    "id"
+                ]
+            },
+            "CreateReoccurringNotificationDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "noteId": {
+                        "type": "string"
+                    },
+                    "dayOfWeek": {
+                        "type": "string",
+                        "enum": [
+                            "SUN",
+                            "MON",
+                            "TUE",
+                            "WED",
+                            "THU",
+                            "FRI",
+                            "SAT"
+                        ]
+                    },
+                    "hours": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 23
+                    },
+                    "minutes": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 59
+                    }
+                },
+                "required": [
+                    "name",
+                    "noteId",
+                    "dayOfWeek",
+                    "hours",
+                    "minutes"
+                ]
+            },
+            "NotificationDto": {
+                "type": "object",
+                "properties": {
+                    "notification": {
+                        "$ref": "#/components/schemas/NotificationModel"
+                    }
+                }
             }
         }
     }

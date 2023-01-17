@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type CreateOneTimeNotificationDto = {
-    triggerTime: string;
+    name: string;
     noteId: string;
+    triggerTime: string;
 };
