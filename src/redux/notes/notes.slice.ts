@@ -1,8 +1,10 @@
 import { ActionCreatorsMapObject, createSlice, EntityState, PayloadAction } from '@reduxjs/toolkit'
 import {
   CreateNoteReqDto,
+  CreateReoccurringNotificationDto,
   FolderModel,
   NoteModel,
+  NotificationModel,
   UpdateFolderDto,
   UpdateNoteReqDto,
 } from "../../swagger/api";
@@ -17,6 +19,11 @@ export type ActionsType<A extends ActionCreatorsMapObject> = {
 export class notesState {
   public categories: EntityState<NoteCategory> =
     noteCategoriesAdapter.getInitialState();
+
+  public reminder: { expression: string; id: string } = {
+    expression: "",
+    id: "",
+  };
 }
 
 export type SetNotesAndCategoriesPayload = {
@@ -37,10 +44,37 @@ export type updateFolderPayload = {
   folderElements: UpdateFolderDto;
 };
 
+export type sendReminderPayload = {
+  name: string;
+  noteId: string;
+  type: NotificationModel.type;
+  date: {
+    triggerTime?: string;
+    dayOfWeek?: CreateReoccurringNotificationDto.dayOfWeek;
+    hours?: number;
+    minutes?: number;
+    timezoneOffset?: number;
+  };
+};
+
 export const notesSlice = createSlice({
   initialState: { ...new notesState() },
   name: StoreKeys.Notes,
   reducers: {
+    sendReminder: (state, _action: PayloadAction<sendReminderPayload>) => state,
+    setReminder: (
+      state,
+      action: PayloadAction<{ expression: string; id: string }>
+    ) => {
+      state.reminder = action.payload;
+    },
+    getReminder: (state, _action: PayloadAction<string>) => state,
+    removeReminder: (state, _action: PayloadAction<string>) => {
+      state.reminder = {
+        expression: "",
+        id: "",
+      };
+    },
     resetNotesState: (state, _action) => {
       state.categories = noteCategoriesAdapter.getInitialState();
     },

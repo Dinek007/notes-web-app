@@ -1,7 +1,11 @@
 import { IconButton, Typography, useTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useEffect, useRef, useState } from "react";
-import { NoteModel } from "../../swagger/api";
+import {
+  CreateReoccurringNotificationDto,
+  NoteModel,
+  NotificationModel,
+} from "../../swagger/api";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import SaveIcon from "@mui/icons-material/Save";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -20,6 +24,7 @@ import { currentActionNames } from "../../redux/session/session.slice";
 import { sessionSelectors } from "../../redux/session/session.selectors";
 import { getPalette } from "../../theme/theme.palette";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { ReminderComponent } from "../../components/reminder.component";
 
 export interface EditNoteComponentProps {
   note: NoteModel;
@@ -44,8 +49,19 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
   const [removeNote, setRemoveNote] = useState<boolean>(false);
   const [openRemoveNote, setOpenRemoveNote] = useState<boolean>(false);
 
+  const [reminder, setReminder] = useState<boolean>(false);
+  const [openReminder, setOpenReminder] = useState<boolean>(false);
+
   const removeNoteActionStatus = useSelector(
     sessionSelectors.actionStatus(currentActionNames.removingNote)
+  );
+
+  const setReminderActionStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.setReminder)
+  );
+
+  const removeReminderActionStatus = useSelector(
+    sessionSelectors.actionStatus(currentActionNames.removeReminder)
   );
 
   const ref = useRef(null);
@@ -104,14 +120,38 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
     setRemoveNote(false);
   };
 
+  const handleOpenReminder = () => {
+    setReminder(true);
+  };
+
+  const handleSetReminder = (value, type) => {
+    dispatch(
+      notesActions.sendReminder({
+        date: value,
+        name: note.name,
+        noteId: note.id,
+        type: type,
+      })
+    );
+  };
+
   useEffect(() => {
-    if (!removeNote && !removeNoteActionStatus) {
+    if (!reminder && !removeNoteActionStatus) {
+      setOpenReminder(false);
+    }
+    if (reminder) {
+      setOpenReminder(true);
+    }
+  }, [removeNoteActionStatus, reminder]);
+
+  useEffect(() => {
+    if (!removeNote && !setReminderActionStatus) {
       setOpenRemoveNote(false);
     }
     if (removeNote) {
       setOpenRemoveNote(true);
     }
-  }, [removeNoteActionStatus, removeNote]);
+  }, [setReminderActionStatus, removeNote]);
 
   const darkNoteColor = colorShade(color, -30);
   const lightNoteColor = colorShade(color, 65);
@@ -130,7 +170,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
         alignContent: "center",
         left: "15vw",
         top: "5vh",
-        zIndex: 99999999999999999999,
+        zIndex: "100000000",
         overflow: "auto",
       }}
     >
@@ -185,6 +225,14 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
               You will lose it forever.
             </Typography>
           }
+        />
+      )}
+
+      {openReminder && (
+        <ReminderComponent
+          handleClosePopup={() => setReminder(false)}
+          handleConfirm={handleSetReminder}
+          isLoading={setReminderActionStatus || removeReminderActionStatus}
         />
       )}
 
@@ -248,6 +296,7 @@ export const EditNoteComponent: React.FC<EditNoteComponentProps> = ({
             sx={{
               color: "black",
             }}
+            onClick={() => handleOpenReminder()}
           >
             <NotificationsIcon fontSize="large" />
           </IconButton>

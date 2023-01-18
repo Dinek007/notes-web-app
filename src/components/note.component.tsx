@@ -105,6 +105,11 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
     setRemoveNote(false);
   };
 
+  const handleOpenEditNote = () => {
+    dispatch(notesActions.getReminder(note.id));
+    setOpenEditing(true);
+  };
+
   useEffect(() => {
     if (!removeNote && !removeNoteActionStatus) {
       setOpenRemoveNote(false);
@@ -218,7 +223,7 @@ export const NoteComponent: React.FC<NoteComponentProps> = ({ note }) => {
                 sx={{
                   color: "black",
                 }}
-                onClick={() => setOpenEditing(true)}
+                onClick={() => handleOpenEditNote()}
               >
                 <EditIcon />
               </IconButton>

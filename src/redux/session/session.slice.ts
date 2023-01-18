@@ -22,6 +22,9 @@ export enum currentActionTexts {
   loadingFoldersAndNotes = "Loading categories and notes",
   updateNote = "Updating note",
   updateFolder = "Updating folder",
+  setReminder = "Setting reminder",
+  removeReminder = "Removing reminder",
+  getReminder = "Getting reminder",
 }
 
 export enum currentActionNames {
@@ -34,6 +37,9 @@ export enum currentActionNames {
   loadingFoldersAndNotes = "loadingFoldersAndNotes",
   updateNote = "updateNote",
   updateFolder = "updateFolder",
+  setReminder = "setReminder",
+  removeReminder = "removeReminder",
+  getReminder = "getReminder",
 }
 
 export type currentActions = {

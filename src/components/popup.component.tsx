@@ -26,7 +26,7 @@ export const PopupComponent: React.FC<PopupComponentProps> = ({
         height: "100vh",
         top: "0",
         left: "0",
-        zIndex: "10000000000000000000000000000000",
+        zIndex: "1000000000000000000000",
       }}
     >
       <Box

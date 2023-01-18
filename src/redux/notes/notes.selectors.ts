@@ -46,9 +46,15 @@ const biggestZIndex = createSelector(currentCategoryNotes, (notes) => {
   return index;
 });
 
+const reminder = createSelector(
+  notesSlice,
+  (reducerState) => reducerState.reminder
+);
+
 export const notesSelectors = {
   noteCategories,
   currentCategoryNotes,
   foldersAndNotesCount,
   biggestZIndex,
+  reminder,
 };

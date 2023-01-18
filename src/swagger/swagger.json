@@ -976,6 +976,9 @@
                         "type": "number",
                         "minimum": 0,
                         "maximum": 59
+                    },
+                    "timezoneOffset": {
+                        "type": "number"
                     }
                 },
                 "required": [
@@ -983,7 +986,8 @@
                     "noteId",
                     "dayOfWeek",
                     "hours",
-                    "minutes"
+                    "minutes",
+                    "timezoneOffset"
                 ]
             },
             "NotificationDto": {

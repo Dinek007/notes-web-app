@@ -8,6 +8,7 @@ export type CreateReoccurringNotificationDto = {
     dayOfWeek: CreateReoccurringNotificationDto.dayOfWeek;
     hours: number;
     minutes: number;
+    timezoneOffset: number;
 };
 
 export namespace CreateReoccurringNotificationDto {

@@ -16,9 +16,30 @@ export const getComponents = (palette: any) => ({
       src: url(${PoppinsMedium}) format("truetype");
       font-weight: normal;
     }
+    .css-j8mouv-MuiPaper-root-MuiPickersPopper-paper {
+      background-color: #999999;
+    }
 
+    .css-kzcqt2-MuiButtonBase-root-MuiPickersDay-root {
+      background-color: #999999;
+    }
+
+    .css-12pusbm-MuiClockNumber-root {
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: normal;
+    }
+
+    .css-j8mouv-MuiPaper-root-MuiPickersPopper-paper {
+      background-color: #999999;
+    }
+
+    .css-kzcqt2-MuiButtonBase-root-MuiPickersDay-root {
+      background-color: #999999;
+    }
     `,
   },
+
   MuiIconButton: {
     styleOverrides: {
       root: {
@@ -106,9 +127,15 @@ export const getComponents = (palette: any) => ({
           borderColor: palette.borderGrey.main,
           width: "384px",
         },
-        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: palette.secondary.main,
           width: "384px",
+        },
+        "& .MuiInputAdornment-root ": {
+          position: "absolute",
+          right: "30px",
+          margin: "0",
+          padding: "0",
         },
       },
       input: {
