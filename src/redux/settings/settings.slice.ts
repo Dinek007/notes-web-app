@@ -30,6 +30,8 @@ export enum noteColorsPalette {
   lightBlue = "#5DADE2",
   gray = "#85929E",
   lightGray = "#CCD1D1",
+  brown = "#883C12",
+  darkGreen = "#00645f",
 }
 
 export enum fontSizes {
