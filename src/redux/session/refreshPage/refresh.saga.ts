@@ -29,6 +29,7 @@ export function* refreshPageSaga(_action: SessionActions["refreshPage"]) {
     sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes)
   );
 
+  yield * call(getCategories);
   yield* call(getNotes);
 
   yield* put(sessionActions.setFoldersAndNotesLoading(false));
