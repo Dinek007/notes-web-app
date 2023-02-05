@@ -7,7 +7,7 @@ import {
   currentCategoryNames,
   sessionActions,
 } from "../../session/session.slice";
-import { getCategoriesAndNotesSaga } from "../getCategoriesAndNotes/getCategoriesAndNotes.saga";
+import { getNotes } from "../getCategoriesAndNotes/getNotes.saga";
 import { notesActions } from "../notes.slice";
 
 export function* updateCategorySaga(action: notesActions["updateCategory"]) {
@@ -23,7 +23,7 @@ export function* updateCategorySaga(action: notesActions["updateCategory"]) {
     console.error(error);
   }
 
-  yield* call(getCategoriesAndNotesSaga);
+  yield* call(getNotes);
 
   yield* put(
     sessionActions.removeCurrentAction(currentActionNames.updateFolder)

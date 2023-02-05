@@ -7,26 +7,10 @@ import { notesActions, SetNotesAndCategoriesPayload } from '../notes.slice';
 import { NoteCategory } from '../notes.types';
 
 
-export function* getCategoriesAndNotesSaga() {
-    let notes: { [folderId: string]: NoteModel[] } = {}
+export function* getCategories() {
+  const responseGetAllCategories = yield* call(
+    FoldersService.foldersControllerGetUserFolders
+  );
 
-    const responseGetAllCategories = yield* call(
-        FoldersService.foldersControllerGetUserFolders)
-
-    for (let folder of responseGetAllCategories.folders) {
-        let responseGetAllNotes;
-        try {
-          responseGetAllNotes =
-            yield * call(NotesService.notesControllerFindAll, folder.id);
-        } catch (error) {
-          console.error(error);
-        }
-    
-        notes[folder.id] = responseGetAllNotes.notes
-    }
-
-    yield* put(notesActions.setCategoriesWithNotes({
-        categories: responseGetAllCategories.folders,
-        notes: notes
-    }))
+  yield* put(notesActions.setCategoriesWithNotes(responseGetAllCategories));
 }   

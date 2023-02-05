@@ -199,32 +199,6 @@
                         "bearer": []
                     }
                 ]
-            },
-            "delete": {
-                "operationId": "FoldersController_removeUserFolder",
-                "parameters": [
-                    {
-                        "name": "folderId",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "Folders"
-                ],
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
             }
         },
         "/notes": {
@@ -398,32 +372,6 @@
                         "bearer": []
                     }
                 ]
-            },
-            "delete": {
-                "operationId": "NotesController_remove",
-                "parameters": [
-                    {
-                        "name": "noteId",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "Notes"
-                ],
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
             }
         },
         "/notifications/one-time": {
@@ -553,6 +501,62 @@
                 },
                 "tags": [
                     "notifications"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/reset/note/{noteId}": {
+            "delete": {
+                "operationId": "ResetController_removeNote",
+                "parameters": [
+                    {
+                        "name": "noteId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Reset"
+                ],
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/reset/folder/{folderId}": {
+            "delete": {
+                "operationId": "ResetController_removeFolder",
+                "parameters": [
+                    {
+                        "name": "folderId",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Reset"
                 ],
                 "security": [
                     {
@@ -927,6 +931,9 @@
                         ],
                         "type": "string"
                     },
+                    "triggerTime": {
+                        "type": "string"
+                    },
                     "userId": {
                         "type": "string"
                     },
@@ -935,6 +942,31 @@
                     },
                     "id": {
                         "type": "string"
+                    },
+                    "dayOfWeek": {
+                        "enum": [
+                            "SUN",
+                            "MON",
+                            "TUE",
+                            "WED",
+                            "THU",
+                            "FRI",
+                            "SAT"
+                        ],
+                        "type": "string"
+                    },
+                    "hours": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 23
+                    },
+                    "minutes": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 59
+                    },
+                    "timezoneOffset": {
+                        "type": "number"
                     }
                 },
                 "required": [

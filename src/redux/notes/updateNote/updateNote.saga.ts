@@ -7,7 +7,6 @@ import {
   currentCategoryNames,
   sessionActions,
 } from "../../session/session.slice";
-import { getCategoriesAndNotesSaga } from "../getCategoriesAndNotes/getCategoriesAndNotes.saga";
 import { notesActions } from "../notes.slice";
 
 export function* updateNoteSaga(action: notesActions["updateNote"]) {

@@ -3,6 +3,8 @@ import {
   CreateNoteReqDto,
   CreateReoccurringNotificationDto,
   FolderModel,
+  GetAllUserFoldersResDTO,
+  GetFolderNotesResDTO,
   NoteModel,
   NotificationModel,
   UpdateFolderDto,
@@ -92,22 +94,30 @@ export const notesSlice = createSlice({
     },
     updateCategory: (state, _action: PayloadAction<updateFolderPayload>) =>
       state,
-    getCategoriesAndNotes: (state, _action) => state,
     setCategoriesWithNotes: (
       state,
-      action: PayloadAction<SetNotesAndCategoriesPayload>
+      action: PayloadAction<GetAllUserFoldersResDTO>
     ) => {
-      const { categories, notes } = action.payload;
-      const categoriesWithNotes: NoteCategory[] = [];
+      const folders = action.payload?.folders.map((folder) => {
+        const notes: EntityState<NoteModel> = { entities: {}, ids: [] };
+        return { ...folder, notes };
+      });
 
-      for (let category of categories) {
-        const categoryNotes = notes[category.id] ? notes[category.id] : [];
-        categoriesWithNotes.push({
-          ...category,
-          notes: notesAdapter.setAll({ ids: [], entities: {} }, categoryNotes),
-        });
-      }
-      noteCategoriesAdapter.setAll(state.categories, categoriesWithNotes);
+      noteCategoriesAdapter.setAll(state.categories, folders);
+    },
+    getNotes: (state, _action: PayloadAction<string>) => state,
+    setNotes: (
+      state,
+      action: PayloadAction<{ notes: GetFolderNotesResDTO; folderId: string }>
+    ) => {
+      const { notes, folderId } = action.payload;
+
+      noteCategoriesAdapter.updateOne(state.categories, {
+        id: folderId,
+        changes: {
+          notes: notesAdapter.setAll({ ids: [], entities: {} }, notes.notes),
+        },
+      });
     },
   },
 });

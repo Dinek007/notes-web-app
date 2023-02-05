@@ -11,6 +11,7 @@ import { sessionSelectors } from "../../redux/session/session.selectors";
 import { getPalette } from "../../theme/theme.palette";
 import { AddItemComponent } from "../../components/categoryForm.component";
 import EditIcon from "@mui/icons-material/Edit";
+import { notesActions } from "../../redux/notes/notes.slice";
 
 export interface CategoryListComponentProps {}
 
@@ -36,6 +37,7 @@ export const CategoryListComponent: React.FC<
 
   const handleCategoryClick = (name) => {
     dispatch(sessionActions.setCurrentCategory(name));
+    dispatch(notesActions.getNotes());
   };
 
   useEffect(() => {

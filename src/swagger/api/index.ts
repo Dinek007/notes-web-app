@@ -28,4 +28,5 @@ export type { UserModel } from './models/UserModel';
 export { FoldersService } from './services/FoldersService';
 export { NotesService } from './services/NotesService';
 export { NotificationsService } from './services/NotificationsService';
+export { ResetService } from './services/ResetService';
 export { UserService } from './services/UserService';

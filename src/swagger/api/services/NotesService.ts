@@ -95,21 +95,4 @@ requestBody: UpdateNoteReqDto,
         });
     }
 
-    /**
-     * @param noteId 
-     * @returns any 
-     * @throws ApiError
-     */
-    public static notesControllerRemove(
-noteId: string,
-): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/notes/{noteId}',
-            path: {
-                'noteId': noteId,
-            },
-        });
-    }
-
 }

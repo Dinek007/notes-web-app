@@ -3,9 +3,9 @@ import { call, put, select } from 'typed-redux-saga';
 import { FoldersService } from '../../../swagger/api';
 import { sessionSelectors } from '../../session/session.selectors';
 import { currentActionNames, currentCategoryNames, sessionActions } from '../../session/session.slice';
-import { getCategoriesAndNotesSaga } from '../getCategoriesAndNotes/getCategoriesAndNotes.saga';
-import { notesActions } from '../notes.slice';
-
+import { getCategories } from "../getCategoriesAndNotes/getCategoriesAndNotes.saga";
+import { getNotes } from "../getCategoriesAndNotes/getNotes.saga";
+import { notesActions } from "../notes.slice";
 
 export function* newCategorySaga(action: notesActions["newCategory"]) {
   yield* put(sessionActions.setCurrentAction(currentActionNames.addingFolder));
@@ -20,7 +20,7 @@ export function* newCategorySaga(action: notesActions["newCategory"]) {
     console.error(error);
   }
 
-  yield* call(getCategoriesAndNotesSaga);
+  yield* call(getCategories);
   yield* put(
     sessionActions.setCurrentCategory({
       id: responseCreateFolder.id,

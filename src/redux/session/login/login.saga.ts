@@ -3,51 +3,54 @@ import { RouterPaths } from '../../../router/router.paths';
 import { UserService } from '../../../swagger/api';
 import { setToken } from '../../../swagger/swagger.config';
 import { navigationActions } from '../../navigation/navigation.slice';
-import { getCategoriesAndNotesSaga } from '../../notes/getCategoriesAndNotes/getCategoriesAndNotes.saga';
-import { sessionSelectors } from '../session.selectors';
-import { currentActionNames, currentCategoryNames, SessionActions, sessionActions } from '../session.slice';
+import { getCategories } from "../../notes/getCategoriesAndNotes/getCategoriesAndNotes.saga";
+import { sessionSelectors } from "../session.selectors";
+import {
+  currentActionNames,
+  currentCategoryNames,
+  SessionActions,
+  sessionActions,
+} from "../session.slice";
 
-export function* loginSaga(action: SessionActions['login']) {
-  yield * put(sessionActions.logout({}));
+export function* loginSaga(action: SessionActions["login"]) {
+  yield* put(sessionActions.logout({}));
 
-  yield * put(sessionActions.setLoginLoading(true));
-  yield * put(sessionActions.setFoldersAndNotesLoading(true));
-  yield *
-    put(
-      sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes)
-    );
+  yield* put(sessionActions.setLoginLoading(true));
+  yield* put(sessionActions.setFoldersAndNotesLoading(true));
+  yield* put(
+    sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes)
+  );
 
   let responseLogin;
 
   try {
-    responseLogin =
-      yield * call(UserService.userControllerLogin, action.payload);
+    responseLogin = yield* call(
+      UserService.userControllerLogin,
+      action.payload
+    );
   } catch (error) {
     console.error(error);
     return;
   }
 
-  yield * put(sessionActions.setLoginInfo(true));
-  yield * put(navigationActions.navigate(RouterPaths.Notes));
+  yield* put(sessionActions.setLoginInfo(true));
+  yield* put(navigationActions.navigate(RouterPaths.Notes));
 
-  yield * put(sessionActions.setAuthToken(responseLogin.accessToken));
-  yield * call(setToken, responseLogin.accessToken);
+  yield* put(sessionActions.setAuthToken(responseLogin.accessToken));
+  yield* call(setToken, responseLogin.accessToken);
 
-  yield * call(getCategoriesAndNotesSaga);
-  yield *
-    put(
-      sessionActions.setCurrentCategory({
-        id: "",
-        name: currentCategoryNames.home,
-      })
-    );
-    yield * put(sessionActions.setLoginLoading(false));
-    yield * put(sessionActions.setFoldersAndNotesLoading(false));
-    yield *
-      put(
-        sessionActions.removeCurrentAction(
-          currentActionNames.loadingFoldersAndNotes
-        )
-      );
-
+  yield* call(getCategories);
+  yield* put(
+    sessionActions.setCurrentCategory({
+      id: "",
+      name: currentCategoryNames.home,
+    })
+  );
+  yield* put(sessionActions.setLoginLoading(false));
+  yield* put(sessionActions.setFoldersAndNotesLoading(false));
+  yield* put(
+    sessionActions.removeCurrentAction(
+      currentActionNames.loadingFoldersAndNotes
+    )
+  );
 }   

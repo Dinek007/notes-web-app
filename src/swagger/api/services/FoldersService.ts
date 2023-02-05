@@ -77,21 +77,4 @@ requestBody: UpdateFolderDto,
         });
     }
 
-    /**
-     * @param folderId 
-     * @returns any 
-     * @throws ApiError
-     */
-    public static foldersControllerRemoveUserFolder(
-folderId: string,
-): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/folders/{folderId}',
-            path: {
-                'folderId': folderId,
-            },
-        });
-    }
-
 }
