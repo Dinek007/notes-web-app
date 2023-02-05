@@ -18,12 +18,12 @@ export function* getReminderSaga(action: notesActions["getReminder"]) {
   let date = null;
 
   try {
-    reminder = yield* call(
-      NotificationsService.notificationsControllerFindOne,
-      action.payload
-    );
+    reminder =
+      yield *
+      call(NotificationsService.notificationsControllerFindOne, action.payload);
   } catch (error) {
     console.error(error);
+    return;
   }
 
   if (reminder?.notification?.type === NotificationModel.type.ONE_TIME) {
@@ -35,18 +35,13 @@ export function* getReminderSaga(action: notesActions["getReminder"]) {
   }
 
   if (!reminder?.notification?.type) {
-    yield* put(notesActions.setReminder({ expression: "", id: "" }));
+    yield * put(notesActions.setReminder(reminder.notification));
   }
 
   if (date) {
     const expression = cronstrue.toString(reminder.notification.expression);
 
-    yield* put(
-      notesActions.setReminder({
-        id: reminder.notification.id,
-        expression: expression.substring(0, expression.length - 1),
-      })
-    );
+    yield * put(notesActions.setReminder(reminder.notification));
   }
 
   yield* put(

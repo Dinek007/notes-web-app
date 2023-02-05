@@ -27,10 +27,10 @@ export function* sendReminderSaga(action: notesActions["sendReminder"]) {
 
     console.log("try 1", requestDate);
     try {
-      response = yield* call(
-        NotificationsService.notificationsControllerCreate,
-        requestDate
-      );
+      response =
+        yield *
+        call(NotificationsService.notificationsControllerCreate, requestDate);
+      yield * put(notesActions.setReminder(response));
     } catch (error) {
       console.error(error);
     }
@@ -48,25 +48,21 @@ export function* sendReminderSaga(action: notesActions["sendReminder"]) {
     console.log("try 2", requestDate);
 
     try {
-      response = yield* call(
-        NotificationsService.notificationsControllerCreateReoccurring,
-        requestDate
-      );
+      response =
+        yield *
+        call(
+          NotificationsService.notificationsControllerCreateReoccurring,
+          requestDate
+        );
+      console.log("aaaaaaaaaaaa");
+      yield * put(notesActions.setReminder(response));
     } catch (error) {
       console.error(error);
     }
   }
   console.log("response", response);
 
-  if (response?.expression) {
-    const expression = cronstrue.toString(response.expression);
-    yield* put(
-      notesActions.setReminder({
-        id: response.id,
-        expression: expression.substring(0, expression.length - 1),
-      })
-    );
-  }
+
 
   yield* put(
     sessionActions.removeCurrentAction(currentActionNames.setReminder)

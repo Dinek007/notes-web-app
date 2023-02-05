@@ -6,6 +6,7 @@ import {
   GetAllUserFoldersResDTO,
   GetFolderNotesResDTO,
   NoteModel,
+  NotificationDto,
   NotificationModel,
   UpdateFolderDto,
   UpdateNoteReqDto,
@@ -22,10 +23,7 @@ export class notesState {
   public categories: EntityState<NoteCategory> =
     noteCategoriesAdapter.getInitialState();
 
-  public reminder: { expression: string; id: string } = {
-    expression: "",
-    id: "",
-  };
+  public reminder: NotificationModel;
 }
 
 export type SetNotesAndCategoriesPayload = {
@@ -64,18 +62,12 @@ export const notesSlice = createSlice({
   name: StoreKeys.Notes,
   reducers: {
     sendReminder: (state, _action: PayloadAction<sendReminderPayload>) => state,
-    setReminder: (
-      state,
-      action: PayloadAction<{ expression: string; id: string }>
-    ) => {
+    setReminder: (state, action: PayloadAction<NotificationModel>) => {
       state.reminder = action.payload;
     },
     getReminder: (state, _action: PayloadAction<string>) => state,
     removeReminder: (state, _action: PayloadAction<string>) => {
-      state.reminder = {
-        expression: "",
-        id: "",
-      };
+      state.reminder = undefined;
     },
     resetNotesState: (state, _action) => {
       state.categories = noteCategoriesAdapter.getInitialState();

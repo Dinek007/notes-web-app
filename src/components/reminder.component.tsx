@@ -51,224 +51,231 @@ export const ReminderComponent: React.FC<ReminderComponentProps> = ({
     NotificationModel.type.ONE_TIME
   );
 
-  const isReminder = useSelector(notesSelectors.reminder).expression;
+  const reminder = useSelector(notesSelectors.reminder);
 
-  const reminderId = useSelector(notesSelectors.reminder).id;
+  const reminderId = useSelector(notesSelectors.reminder)?.id;
   const [oneTimeValue, setOneTimeValue] = useState<Dayjs | null>(
-    dayjs("2048-01-01T00:00:00")
+    dayjs(new Date())
   );
 
-  const [weeklyTime, setWeeklyTime] = useState<Dayjs | null>(
-    dayjs("2048-01-01T00:00:00")
-  );
-
-  const [weeklyDay, setWeeklyDay] = useState<any>(
+  const [weeklyTime, setWeeklyTime] = useState<Dayjs | null>(dayjs(new Date()));
+  const [weeklyDay, setWeeklyDay] = useState<string>(
     CreateReoccurringNotificationDto.dayOfWeek.WED
   );
+
+  useEffect(() => {
+    console.log(reminder);
+    if (!reminder) return;
+    console.log(reminder.type);
+    setType(reminder.type);
+
+    if (reminder?.type === NotificationModel.type.ONE_TIME) {
+      setOneTimeValue(dayjs(reminder.triggerTime));
+    } else {
+      const date = new Date();
+      date.setHours(reminder.hours);
+      date.setMinutes(reminder.minutes);
+      setWeeklyTime(dayjs(date));
+      setWeeklyDay(reminder.dayOfWeek);
+    }
+  }, [reminder]);
 
   const handleChangeOneTime = (newValue: Dayjs | null) => {
     setOneTimeValue(newValue);
   };
 
   const handleChangeHoursAndMins = (newValue: Dayjs | null) => {
-    console.log(newValue.hour());
     setWeeklyTime(newValue);
   };
 
   const handleChangeDay = (event: SelectChangeEvent) => {
     setWeeklyDay(event.target.value as string);
   };
-
-  useEffect(() => {}, [type]);
-
   return (
     <PopupComponent
       title="Reminder"
       handleClosePopup={handleClosePopup}
       children={
         <Box>
-          {!isReminder && (
-            <>
-              <Stack
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  position: "relative",
-                  marginTop: "-20px",
-                  marginBottom: "20px",
-                }}
-                direction="row"
-                spacing={1}
-                alignItems="center"
-              >
-                <Typography>One Time</Typography>
-                <Switch
-                  defaultChecked={false}
-                  onChange={(_event, checked) => {
-                    if (checked) setType(NotificationModel.type.REOCCURRING);
-                    if (!checked) setType(NotificationModel.type.ONE_TIME);
-                  }}
-                  inputProps={{ "aria-label": "ant design" }}
-                />
-                <Typography>Weekly </Typography>
-              </Stack>
+          <Stack
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              position: "relative",
+              marginTop: "-20px",
+              marginBottom: "20px",
+            }}
+            direction="row"
+            spacing={1}
+            alignItems="center"
+          >
+            <Typography>One Time</Typography>
+            <Switch
+              defaultChecked={false}
+              disabled={Boolean(reminder)}
+              checked={
+                type === NotificationModel.type.REOCCURRING ? true : false
+              }
+              onChange={(_event, checked) => {
+                if (checked) setType(NotificationModel.type.REOCCURRING);
+                if (!checked) setType(NotificationModel.type.ONE_TIME);
+              }}
+              inputProps={{ "aria-label": "ant design" }}
+            />
+            <Typography>Weekly </Typography>
+          </Stack>
 
-              {type === NotificationModel.type.ONE_TIME && (
-                <Box sx={{ marginTop: "10px" }}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <InputLabel
-                      style={{
-                        color: theme.palette.text.primary,
-                        marginBottom: "2px",
-                      }}
-                      sx={{ width: "384px" }}
-                    >
-                      Date
-                    </InputLabel>
-                    <DateTimePicker
-                      ampm={false}
-                      value={oneTimeValue}
-                      onChange={handleChangeOneTime}
-                      renderInput={(params) => (
-                        <TextField
-                          sx={{
-                            width: "396px",
-                          }}
-                          {...params}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Box>
-              )}
-
-              {type === NotificationModel.type.REOCCURRING && (
-                <Box
-                  sx={{
-                    marginTop: "10px",
-                    display: "flex",
-                    flexDirection: "column",
+          {type === NotificationModel.type.ONE_TIME && (
+            <Box sx={{ marginTop: "10px" }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <InputLabel
+                  style={{
+                    color: theme.palette.text.primary,
+                    marginBottom: "2px",
                   }}
+                  sx={{ width: "384px" }}
                 >
-                  <Box sx={{ width: "384px", marginBottom: "30px" }}>
-                    <InputLabel
-                      style={{
-                        color: theme.palette.text.primary,
-                        marginBottom: "2px",
-                      }}
-                      sx={{ width: "384px" }}
-                      id="demo-simple-select-label"
-                    >
-                      Day
-                    </InputLabel>
-                    <Select
+                  Date
+                </InputLabel>
+                <DateTimePicker
+                  disabled={Boolean(reminder)}
+                  ampm={false}
+                  value={oneTimeValue}
+                  onChange={handleChangeOneTime}
+                  renderInput={(params) => (
+                    <TextField
                       sx={{
-                        width: "384px",
+                        width: "396px",
                       }}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={weeklyDay}
-                      label="Day"
-                      color="secondary"
-                      onChange={handleChangeDay}
-                    >
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.MON}
-                      >
-                        <Typography> Monday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.TUE}
-                      >
-                        <Typography> Tuesday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.WED}
-                      >
-                        <Typography> Wednesday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.THU}
-                      >
-                        <Typography> Thursday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.FRI}
-                      >
-                        <Typography> Friday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.SAT}
-                      >
-                        <Typography> Saturday </Typography>
-                      </MenuItem>
-                      <MenuItem
-                        sx={{
-                          color: "black",
-                        }}
-                        value={CreateReoccurringNotificationDto.dayOfWeek.SUN}
-                      >
-                        <Typography> Sunday </Typography>
-                      </MenuItem>
-                    </Select>
-                  </Box>
-
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <InputLabel
-                      style={{
-                        color: theme.palette.text.primary,
-                        marginBottom: "2px",
-                      }}
-                      sx={{ width: "384px" }}
-                    >
-                      Time
-                    </InputLabel>
-                    <TimePicker
-                      ampm={false}
-                      value={weeklyTime}
-                      onChange={handleChangeHoursAndMins}
-                      renderInput={(params) => (
-                        <TextField
-                          sx={{
-                            width: "396px",
-                            paddingRight: "0px",
-                          }}
-                          {...params}
-                        />
-                      )}
+                      {...params}
                     />
-                  </LocalizationProvider>
-                </Box>
-              )}
-            </>
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
           )}
 
-          {isReminder && (
-            <Typography variant="h5" textAlign={"center"}>
-              {isReminder}
-            </Typography>
+          {type === NotificationModel.type.REOCCURRING && (
+            <Box
+              sx={{
+                marginTop: "10px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Box sx={{ width: "384px", marginBottom: "30px" }}>
+                <InputLabel
+                  style={{
+                    color: theme.palette.text.primary,
+                    marginBottom: "2px",
+                  }}
+                  sx={{ width: "384px" }}
+                  id="demo-simple-select-label"
+                >
+                  Day
+                </InputLabel>
+                <Select
+                  sx={{
+                    width: "384px",
+                  }}
+                  disabled={Boolean(reminder)}
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={weeklyDay}
+                  label="Day"
+                  color="secondary"
+                  onChange={handleChangeDay}
+                >
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.MON}
+                  >
+                    <Typography> Monday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.TUE}
+                  >
+                    <Typography> Tuesday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.WED}
+                  >
+                    <Typography> Wednesday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.THU}
+                  >
+                    <Typography> Thursday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.FRI}
+                  >
+                    <Typography> Friday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.SAT}
+                  >
+                    <Typography> Saturday </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    sx={{
+                      color: "black",
+                    }}
+                    value={CreateReoccurringNotificationDto.dayOfWeek.SUN}
+                  >
+                    <Typography> Sunday </Typography>
+                  </MenuItem>
+                </Select>
+              </Box>
+
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <InputLabel
+                  style={{
+                    color: theme.palette.text.primary,
+                    marginBottom: "2px",
+                  }}
+                  sx={{ width: "384px" }}
+                >
+                  Time
+                </InputLabel>
+                <TimePicker
+                  disabled={Boolean(reminder)}
+                  ampm={false}
+                  value={weeklyTime}
+                  onChange={handleChangeHoursAndMins}
+                  renderInput={(params) => (
+                    <TextField
+                      sx={{
+                        width: "396px",
+                        paddingRight: "0px",
+                      }}
+                      {...params}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </Box>
           )}
 
           <LoadingButton
-            style={{
+            sx={{
               marginTop: "60px",
               left: "50%",
               transform: "translate(-50%, 0)",
@@ -280,7 +287,7 @@ export const ReminderComponent: React.FC<ReminderComponentProps> = ({
             // disabled={Boolean(isReminder)}
             type="submit"
             onClick={() => {
-              if (!isReminder) {
+              if (!reminder) {
                 if (type === NotificationModel.type.ONE_TIME) {
                   handleConfirm(
                     { triggerTime: oneTimeValue.toISOString() },
@@ -306,9 +313,24 @@ export const ReminderComponent: React.FC<ReminderComponentProps> = ({
             loading={isLoading}
           >
             <Typography variant="h4">
-              {isReminder ? "Remove" : "Confirm"}
+              {reminder ? "Remove" : "Confirm"}
             </Typography>
           </LoadingButton>
+          <Box
+            sx={{
+              position: "relative",
+              width: "150px",
+              textAlign: "center",
+              left: "50%",
+              transform: "translate(-50%, 0)",
+            }}
+          >
+            <Button variant="text" onClick={handleClosePopup}>
+              <Typography variant="h6" color="GrayText">
+                Nevermind
+              </Typography>
+            </Button>
+          </Box>
         </Box>
       }
     ></PopupComponent>

@@ -5,5 +5,5 @@
 import type { NotificationModel } from './NotificationModel';
 
 export type NotificationDto = {
-    notification?: NotificationModel;
+  notification?: NotificationModel;
 };

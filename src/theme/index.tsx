@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { settingsSelectors } from "../redux/settings/settings.selectors";
 import { themeNames } from "../redux/settings/settings.slice";
 import { colorShade } from "../common";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 
 declare module "@mui/material/styles/createPalette" {
   interface Palette {
