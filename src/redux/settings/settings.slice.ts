@@ -18,18 +18,14 @@ export enum themeNames {
 }
 
 export enum noteColorsPalette {
-  red = "#E74C3C",
-  orange = "#F39C12",
-  pink = "#ff96c5",
-  yellow = "#ffdf6d",
-  green = "#cff800",
-  lightGreen = "#82E0AA",
-  violet = "#A569BD",
-  lightViolet = "#D2B4DE",
   blue = "#14548F",
-  lightBlue = "#5DADE2",
-  gray = "#85929E",
-  lightGray = "#CCD1D1",
+  yellow = "#F9F871",
+  violet = "#7564AE",
+  pink = "#E978B8",
+  brown = "#883C12",
+  green = "#00645F",
+  gray = "#887456",
+  lightGreen = "#00c7A0",
 }
 
 export enum fontSizes {
