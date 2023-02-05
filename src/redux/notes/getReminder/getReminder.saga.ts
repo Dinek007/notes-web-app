@@ -28,12 +28,10 @@ export function* getReminderSaga(action: notesActions["getReminder"]) {
 
   if (reminder?.notification?.type === NotificationModel.type.ONE_TIME) {
     date = cronstrue.toString(reminder.notification.expression);
-    console.log("remonder1", date);
   }
 
   if (reminder?.notification?.type === NotificationModel.type.REOCCURRING) {
     date = cronstrue.toString(reminder.notification.expression);
-    console.log("remonder2", date);
   }
 
   if (!reminder?.notification?.type) {

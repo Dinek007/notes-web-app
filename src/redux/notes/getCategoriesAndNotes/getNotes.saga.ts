@@ -19,8 +19,11 @@ export function* getNotes() {
   const currentCategory = yield* select(sessionSelectors.currentCategory);
   const currentNotes = yield* select(notesSelectors.currentCategoryNotes);
 
-  if (!Object.keys(currentNotes?.notes?.entities).length) {
-    yield* put(sessionActions.setFoldersAndNotesLoading(true));
+  if (
+    currentNotes?.notes?.entities &&
+    !Object.keys(currentNotes?.notes?.entities).length
+  ) {
+    yield * put(sessionActions.setFoldersAndNotesLoading(true));
   }
 
   try {
