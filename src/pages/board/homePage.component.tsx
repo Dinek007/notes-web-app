@@ -15,6 +15,7 @@ import { sessionSelectors } from "../../redux/session/session.selectors";
 import { notesSelectors } from "../../redux/notes/notes.selectors";
 import homePageImage from "../../assets/mainPageIcon.png";
 import { sessionActions } from "../../redux/session/session.slice";
+import { notesActions } from "../../redux/notes/notes.slice";
 
 export interface HomePageComponentProps {}
 
@@ -27,6 +28,7 @@ export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
 
   const handleCategory = (category: { id: string; name: string }) => {
     dispatch(sessionActions.setCurrentCategory(category));
+    dispatch(notesActions.getNotes());
   };
   return (
     <Box
