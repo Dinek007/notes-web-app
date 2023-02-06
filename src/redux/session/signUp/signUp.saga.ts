@@ -1,12 +1,13 @@
 import { call, put } from 'typed-redux-saga';
 import { RouterPaths } from '../../../router/router.paths';
-import { UserService } from '../../../swagger/api';
+import { LoginResDTO, UserService } from '../../../swagger/api';
 import { setToken } from '../../../swagger/swagger.config';
 import { navigationActions } from '../../navigation/navigation.slice';
 import { SessionActions, sessionActions } from '../session.slice';
 
 export function* signUpSaga(action: SessionActions['signUp']) {
-    let responseSignUp;
+    let responseSignUp: LoginResDTO;
+
     yield * put(sessionActions.logout({}));
     yield * put(sessionActions.setLoginLoading(true));
 
@@ -18,6 +19,8 @@ export function* signUpSaga(action: SessionActions['signUp']) {
       return;
     }
 
+
+	yield* put(sessionActions.setUsername(responseSignUp.user.name));
     yield * put(sessionActions.setLoginInfo(true));
     yield * put(sessionActions.setLoginLoading(false));
     yield* put(navigationActions.navigate(RouterPaths.Notes))

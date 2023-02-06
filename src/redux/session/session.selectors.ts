@@ -52,6 +52,10 @@ const loginInfo = createSelector(
   sessionSlice,
   (reducerState) => reducerState.loginInfo
 );
+const username = createSelector(
+	sessionSlice,
+	(reducerState) => reducerState.username
+  );
 
 export const sessionSelectors = {
   currentCategory,
@@ -62,4 +66,5 @@ export const sessionSelectors = {
   authToken,
   loginInfo,
   actionStatus,
+  username,
 };

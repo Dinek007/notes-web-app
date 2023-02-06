@@ -1,6 +1,6 @@
 import { call, put, select } from 'typed-redux-saga';
 import { RouterPaths } from '../../../router/router.paths';
-import { UserService } from '../../../swagger/api';
+import { LoginReqDTO, LoginResDTO, UserService } from '../../../swagger/api';
 import { setToken } from '../../../swagger/swagger.config';
 import { navigationActions } from '../../navigation/navigation.slice';
 import { getCategories } from "../../notes/getCategoriesAndNotes/getCategoriesAndNotes.saga";
@@ -21,7 +21,7 @@ export function* loginSaga(action: SessionActions["login"]) {
     sessionActions.setCurrentAction(currentActionNames.loadingFoldersAndNotes)
   );
 
-  let responseLogin;
+  let responseLogin: LoginResDTO;
 
   try {
     responseLogin = yield* call(
@@ -32,6 +32,7 @@ export function* loginSaga(action: SessionActions["login"]) {
     console.error(error);
     return;
   }
+  yield* put(sessionActions.setUsername(responseLogin.user.name));
 
   yield* put(sessionActions.setLoginInfo(true));
   yield* put(navigationActions.navigate(RouterPaths.Notes));

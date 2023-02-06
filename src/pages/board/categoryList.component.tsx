@@ -132,7 +132,16 @@ export const CategoryListComponent: React.FC<
               handleCategoryClick({ id: category.id, name: category.name });
             }}
           >
-            <Typography textAlign={"left"} variant="h5">
+            <Typography
+              sx={{
+                width: "94%",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+              textAlign={"left"}
+              variant="h5"
+            >
               {category.name}
             </Typography>
             <IconButton

@@ -1,72 +1,128 @@
-import React from 'react'
-import { Box, ListItemButton, ListItemText, useTheme } from "@mui/material";
+import React from "react";
+import {
+  Box,
+  Button,
+  ListItemButton,
+  ListItemText,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import { NoteCategory } from "../../redux/notes/notes.types";
 import { getPalette } from "../../theme/theme.palette";
+import { useDispatch, useSelector } from "react-redux";
+import { sessionSelectors } from "../../redux/session/session.selectors";
+import { notesSelectors } from "../../redux/notes/notes.selectors";
+import homePageImage from "../../assets/mainPageIcon.png";
+import { sessionActions } from "../../redux/session/session.slice";
 
-export interface HomePageComponentProps {
-  folder: NoteCategory;
-}
+export interface HomePageComponentProps {}
 
-export const HomePageComponent: React.FC<HomePageComponentProps> = ({
-  folder,
-}) => {
+export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(true);
+  const username = useSelector(sessionSelectors.username);
+  const categories = useSelector(notesSelectors.noteCategoriesList);
+  const dispatch = useDispatch();
 
+  const handleCategory = (category: { id: string; name: string }) => {
+    dispatch(sessionActions.setCurrentCategory(category));
+  };
   return (
     <Box
       sx={{
-        bgcolor: open ? "rgba(71, 98, 130, 0.2)" : null,
-        pb: open ? 2 : 0,
+        "&::before": {
+          position: "absolute",
+          top: "0px",
+          right: "0px",
+          bottom: "0px",
+          left: "0px",
+          content: '""',
+          backgroundImage: `url(${homePageImage})`,
+          backgroundSize: "auto 100%",
+          opacity: "0.3",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        },
+        minHeight: "70vh",
+
         padding: "0px",
+        maxWidth: "1200px",
       }}
     >
-      <ListItemButton
-        alignItems="flex-start"
-        onClick={() => setOpen(!open)}
+      <Typography
+        variant="h2"
         sx={{
-          px: 3,
-          pt: 2.5,
-          pb: open ? 0 : 2.5,
-          "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
-          backgroundColor: theme.palette.primary.main,
-          height: "55px",
+          textAlign: "center",
+          marginBottom: 12,
         }}
       >
-        <ListItemText
-          primary={folder.name}
-          primaryTypographyProps={{
-            fontSize: 15,
-            fontWeight: "medium",
-            lineHeight: "20px",
-            mb: "2px",
-          }}
-          sx={{ my: 0 }}
-        />
-        <KeyboardArrowDown
-          sx={{
-            mr: -1,
-            opacity: 0,
-            transform: open ? "rotate(-180deg)" : "rotate(0)",
-            transition: "0.2s",
-          }}
-        />
-      </ListItemButton>
-      {open &&
-        Object.values(folder.notes.entities).map((note) => (
-          <ListItemButton
-            key={note.name}
-            sx={{ py: 0, minHeight: 32, color: "rgba(255,255,255,.8)" }}
-          >
-            <ListItemText
-              primary={note.name}
-              primaryTypographyProps={{ fontSize: 14, fontWeight: "medium" }}
-            />
-          </ListItemButton>
-        ))}
+        Hello {username}!
+      </Typography>
+
+      <Typography
+        variant="h3"
+        sx={{
+          textAlign: "left",
+          marginBottom: 2,
+        }}
+      >
+        Category List:
+      </Typography>
+
+      <Box
+        sx={{
+          gap: "15px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+        }}
+      >
+        {categories.map((category) => {
+          return (
+            <Button
+              onClick={() => handleCategory(category)}
+              sx={{
+                overflowY: "auto",
+                overflowX: "hidden",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                height: "150px",
+                backgroundColor: `${theme.palette.secondary.main}`,
+                borderRadius: "5px",
+                marginBottom: "10px",
+                borderBottom: `5px solid ${theme.palette.primary.main}`,
+                boxShadow: "4px 4px 10px 4px #222222",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  top: "0px",
+                  //   textAlign: "center",
+                  fontWeight: 500,
+                  width: "100%",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {category.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  marginTop: "15px",
+                  textAlign: "left",
+                  width: "100%",
+                }}
+              >
+                {category.description}
+              </Typography>
+            </Button>
+          );
+        })}
+      </Box>
     </Box>
   );
 };
-

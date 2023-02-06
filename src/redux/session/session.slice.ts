@@ -66,7 +66,8 @@ export const defaultActions: currentActions = {
   updateFolder: false,
 };
 
-export class SessionState {
+export class SessionState  {
+	public username: string = "";
   public loginInfo: boolean = false;
   public currentCategory: { id: string; name: string } = {
     id: "",
@@ -103,6 +104,9 @@ export const sessionSlice = createSlice({
     setLoginInfo: (state, action: PayloadAction<boolean>) => {
       state.loginInfo = action.payload;
     },
+	setUsername: (state, action: PayloadAction<string>) => {
+		state.username = action.payload;
+	  },
     logout: (state, _action) => {
       state.loginInfo = false;
     },

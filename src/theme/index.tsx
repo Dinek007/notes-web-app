@@ -33,7 +33,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   let secondaryColor;
 
   if (themeColor === themeNames.dark) {
-    textColor = "#ffffff";
+    textColor = "#D9D9D9";
     primaryColor = mainColor;
     secondaryColor = "#2F303A";
   } else {

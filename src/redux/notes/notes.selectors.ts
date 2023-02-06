@@ -13,6 +13,9 @@ const noteCategories = createSelector(notesSlice, reducerState =>
     .getSelectors()
     .selectEntities(reducerState.categories)
 )
+const noteCategoriesList = createSelector(noteCategories, categories =>
+	Object.values(categories)
+  )
 
 const currentCategoryNotes = createSelector(
   noteCategories,
@@ -57,4 +60,5 @@ export const notesSelectors = {
   foldersAndNotesCount,
   biggestZIndex,
   reminder,
+  noteCategoriesList,
 };

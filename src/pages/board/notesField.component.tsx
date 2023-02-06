@@ -151,23 +151,6 @@ export const NotesFieldComponent: React.FC<
             minHeight: "50vh",
           }}
         >
-          <AccountCircleIcon
-            style={{
-              fontSize: "90px",
-              color: theme.palette.primary.main,
-            }}
-          />
-
-          <Typography> Damian </Typography>
-          <Typography
-            style={{
-              marginTop: "20px",
-            }}
-          >
-            {" "}
-            Folders count: {dataCounts.folders}{" "}
-          </Typography>
-          <Typography> Notes count: {dataCounts.notes} </Typography>
 
           <Box
             sx={{
@@ -178,9 +161,8 @@ export const NotesFieldComponent: React.FC<
               marginTop: "20px",
             }}
           >
-            {Object.values(foldersAndNotes).map((folder) => {
-              return <HomePageComponent folder={folder} />;
-            })}
+            <HomePageComponent/>
+            
           </Box>
         </Box>
       )}
