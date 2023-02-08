@@ -47,7 +47,6 @@ export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
           backgroundPosition: "center",
         },
         minHeight: "70vh",
-
         padding: "0px",
         maxWidth: "1200px",
       }}
@@ -69,7 +68,7 @@ export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
           marginBottom: 2,
         }}
       >
-        Category List:
+        {Boolean(categories.length) && "Category List:"}
       </Typography>
 
       <Box
@@ -77,6 +76,7 @@ export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
           gap: "15px",
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          width: "100%",
         }}
       >
         {categories.map((category) => {
@@ -84,6 +84,7 @@ export const HomePageComponent: React.FC<HomePageComponentProps> = ({}) => {
             <Button
               onClick={() => handleCategory(category)}
               sx={{
+                width: "250px",
                 overflowY: "auto",
                 overflowX: "hidden",
                 display: "flex",
