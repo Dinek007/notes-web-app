@@ -11,6 +11,7 @@ import { RouterPaths } from "../../router/router.paths";
 import { navigationActions } from "../../redux/navigation/navigation.slice";
 import { LoadingButton } from "@mui/lab";
 import { sessionSelectors } from "../../redux/session/session.selectors";
+import { LoginErrorComponent } from "../../components/loginError.component";
 
 export const SignUpComponent = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export const SignUpComponent = () => {
     mode: "onChange",
   });
 
+  const loginError = useSelector(sessionSelectors.loginError);
   const isLoginLoading = useSelector(sessionSelectors.loginLoading);
 
   const signUpButtonClick = async (values: SignUpValues) => {
@@ -137,6 +139,7 @@ export const SignUpComponent = () => {
       >
         <Typography variant="h6">Already have an account?</Typography>
       </Button>
+      {/* <LoginErrorComponent error={loginError} /> */}
     </Box>
   );
 };

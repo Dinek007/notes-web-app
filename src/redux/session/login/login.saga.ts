@@ -24,10 +24,8 @@ export function* loginSaga(action: SessionActions["login"]) {
   let responseLogin: LoginResDTO;
 
   try {
-    responseLogin = yield* call(
-      UserService.userControllerLogin,
-      action.payload
-    );
+    responseLogin =
+      yield * call(UserService.userControllerLogin, action.payload);
   } catch (error) {
     yield * put(sessionActions.setLoginLoading(false));
     yield * put(sessionActions.setFoldersAndNotesLoading(false));
@@ -37,29 +35,34 @@ export function* loginSaga(action: SessionActions["login"]) {
           currentActionNames.loadingFoldersAndNotes
         )
       );
+    yield * put(sessionActions.setLoginError(error.body.message));
     console.error(error);
     return;
   }
-  yield* put(sessionActions.setUsername(responseLogin.user.name));
+  yield * put(sessionActions.setUsername(responseLogin.user.name));
 
-  yield* put(sessionActions.setLoginInfo(true));
-  yield* put(navigationActions.navigate(RouterPaths.Notes));
+  yield * put(sessionActions.setLoginInfo(true));
+  yield * put(navigationActions.navigate(RouterPaths.Notes));
 
-  yield* put(sessionActions.setAuthToken(responseLogin.accessToken));
-  yield* call(setToken, responseLogin.accessToken);
+  yield * put(sessionActions.setAuthToken(responseLogin.accessToken));
+  yield * call(setToken, responseLogin.accessToken);
 
-  yield* call(getCategories);
-  yield* put(
-    sessionActions.setCurrentCategory({
-      id: "",
-      name: currentCategoryNames.home,
-    })
-  );
-  yield* put(sessionActions.setLoginLoading(false));
-  yield* put(sessionActions.setFoldersAndNotesLoading(false));
-  yield* put(
-    sessionActions.removeCurrentAction(
-      currentActionNames.loadingFoldersAndNotes
-    )
-  );
+  yield * call(getCategories);
+  yield *
+    put(
+      sessionActions.setCurrentCategory({
+        id: "",
+        name: currentCategoryNames.home,
+      })
+    );
+  yield * put(sessionActions.setLoginLoading(false));
+  yield * put(sessionActions.setFoldersAndNotesLoading(false));
+  yield *
+    put(
+      sessionActions.removeCurrentAction(
+        currentActionNames.loadingFoldersAndNotes
+      )
+    );
+  yield * put(sessionActions.setLoginError(""));
+
 }   

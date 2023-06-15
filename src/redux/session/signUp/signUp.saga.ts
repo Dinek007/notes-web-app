@@ -17,15 +17,16 @@ export function* signUpSaga(action: SessionActions['signUp']) {
     } catch (error) {
       console.error(error);
       yield * put(sessionActions.setLoginLoading(false));
+      yield * put(sessionActions.setLoginError(error.body.message));
       return;
     }
 
-
-	yield* put(sessionActions.setUsername(responseSignUp.user.name));
+    yield * put(sessionActions.setUsername(responseSignUp.user.name));
     yield * put(sessionActions.setLoginInfo(true));
     yield * put(sessionActions.setLoginLoading(false));
-    yield* put(navigationActions.navigate(RouterPaths.Notes))
-    yield* put(sessionActions.setAuthToken(responseSignUp.accessToken))
+    yield * put(navigationActions.navigate(RouterPaths.Notes));
+    yield * put(sessionActions.setAuthToken(responseSignUp.accessToken));
 
-    yield* call(setToken, responseSignUp.accessToken)
+    yield * call(setToken, responseSignUp.accessToken);
+    yield * put(sessionActions.setLoginError(""));
 }   

@@ -12,11 +12,13 @@ import { RouterPaths } from "../../router/router.paths";
 import { LoadingButton } from "@mui/lab";
 import { sessionSelectors } from "../../redux/session/session.selectors";
 import { getPalette } from "../../theme/theme.palette";
+import { LoginErrorComponent } from "../../components/loginError.component";
 
 export const LoginComponent = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
+  const loginError = useSelector(sessionSelectors.loginError);
   const isLoginLoading = useSelector(sessionSelectors.loginLoading);
 
   const { handleSubmit, control, formState } = useForm<LoginValues>({
@@ -127,6 +129,8 @@ export const LoginComponent = () => {
       >
         <Typography variant="h6">Don't have an account?</Typography>
       </Button>
+
+      <LoginErrorComponent error={loginError} />
     </Box>
   );
 };

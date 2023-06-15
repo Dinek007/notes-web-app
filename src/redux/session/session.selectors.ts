@@ -57,6 +57,11 @@ const username = createSelector(
 	(reducerState) => reducerState.username
   );
 
+const loginError = createSelector(
+  sessionSlice,
+  (reducerState) => reducerState.loginError
+);
+
 export const sessionSelectors = {
   currentCategory,
   currentNote,
@@ -67,4 +72,5 @@ export const sessionSelectors = {
   loginInfo,
   actionStatus,
   username,
+  loginError,
 };

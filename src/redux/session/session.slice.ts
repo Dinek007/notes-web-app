@@ -66,8 +66,8 @@ export const defaultActions: currentActions = {
   updateFolder: false,
 };
 
-export class SessionState  {
-	public username: string = "";
+export class SessionState {
+  public username: string = "";
   public loginInfo: boolean = false;
   public currentCategory: { id: string; name: string } = {
     id: "",
@@ -81,12 +81,16 @@ export class SessionState  {
     login: false,
     foldersAndNotes: false,
   };
+  public loginError: string = "";
 }
 
 export const sessionSlice = createSlice({
   initialState: { ...new SessionState() },
   name: StoreKeys.Session,
   reducers: {
+    setLoginError: (state, action: PayloadAction<string>) => {
+      state.loginError = action.payload;
+    },
     resetSessionState: (state, _action) => {
       state.loginInfo = false;
       state.currentCategory = {
@@ -104,9 +108,9 @@ export const sessionSlice = createSlice({
     setLoginInfo: (state, action: PayloadAction<boolean>) => {
       state.loginInfo = action.payload;
     },
-	setUsername: (state, action: PayloadAction<string>) => {
-		state.username = action.payload;
-	  },
+    setUsername: (state, action: PayloadAction<string>) => {
+      state.username = action.payload;
+    },
     logout: (state, _action) => {
       state.loginInfo = false;
     },

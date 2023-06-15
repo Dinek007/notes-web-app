@@ -15,6 +15,7 @@ import {
 export function* refreshPageSaga(_action: SessionActions["refreshPage"]) {
   const loginInfo = yield* select(sessionSelectors.loginInfo);
   yield* put(sessionActions.resetCurrentActions({}));
+  yield * put(sessionActions.setLoginError(""));
 
   if (!loginInfo) {
     yield* put(sessionActions.logout({}));
