@@ -16,6 +16,7 @@ export function* signUpSaga(action: SessionActions['signUp']) {
         yield * call(UserService.userControllerSignUp, action.payload);
     } catch (error) {
       console.error(error);
+      yield * put(sessionActions.setLoginLoading(false));
       return;
     }
 

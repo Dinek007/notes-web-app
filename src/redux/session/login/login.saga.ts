@@ -29,6 +29,14 @@ export function* loginSaga(action: SessionActions["login"]) {
       action.payload
     );
   } catch (error) {
+    yield * put(sessionActions.setLoginLoading(false));
+    yield * put(sessionActions.setFoldersAndNotesLoading(false));
+    yield *
+      put(
+        sessionActions.removeCurrentAction(
+          currentActionNames.loadingFoldersAndNotes
+        )
+      );
     console.error(error);
     return;
   }
